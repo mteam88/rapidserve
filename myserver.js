@@ -26,7 +26,7 @@ function decode256(encodedNumber) {
 	    encodedNumberAry += encodedNumber.charCodeAt(i);
     }
     encodedNumber = encodedNumberAry.split("");
-for (var i = 0;i < encodedNumber.length;i++) {
+    for (var i = 0;i < encodedNumber.length;i++) {
 	if (i == encodedNumber.length - 1) {
     	decodedNumber = encodedNumber[i];
     } else {
