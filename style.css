@@ -9,9 +9,9 @@
     float: left;
     color: #f2f2f2;
     text-align: center;
-    padding: 14px 16px;
+    padding: 10px 30px;
     text-decoration: none;
-    font-size: 17px;
+    font-size: 30px;
     }
 
     /* Change the color of links on hover */
@@ -26,9 +26,11 @@
     color: white;
     }
 
-.navlogo img {
-    height: 5px;
+.topnav img.navlogo {
+    padding-bottom: 0px;
+    height: 54px;
     background: transparent;
+    float: left;
 }
 .topnav a.navlogospot {
     float: center;
