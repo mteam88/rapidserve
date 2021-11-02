@@ -27,11 +27,13 @@ function decode256(encodedNumber) {
     }
     encodedNumber = encodedNumberAry.split("");
     for (var i = 0;i < encodedNumber.length;i++) {
-	if (i == encodedNumber.length - 1) {
-    	decodedNumber = encodedNumber[i];
-    } else {
-    	encodedNumber[i - 1] = Number(encodedNumber[i - 1]) + 256 * Number(encodedNumber[i]);
-        encodedNumber[i - 1] = encodedNumber[i - 1].toString();
+	    if (i == encodedNumber.length - 1) {
+    	    decodedNumber = encodedNumber[i];
+        } else {
+    	    encodedNumber[i - 1] = Number(encodedNumber[i - 1]) + 256 * Number(encodedNumber[i]);
+            encodedNumber[i - 1] = encodedNumber[i - 1].toString();
+        }
     }
-}
+
+    return decodedNumber;
 }
