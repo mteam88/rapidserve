@@ -11,3 +11,9 @@ function toghlp() {
         x.style.display = "none";
     }
     }
+
+function plcordr() {
+    alert("Boring Processing Stuff...")
+    var orderstuffelem = document.getElementById("orderstuff")
+    orderstuffelem.innerHTML = "<h3>Your order has been placed!</h3>"
+    }
