@@ -39,3 +39,14 @@
     text-decoration: none;
     font-size: 17px;
 }
+
+button {
+    height: 50px;
+    width: 75px;
+    font-size: 30;
+    background-color: red;
+}
+
+h1 {
+    text-align: center;
+}
