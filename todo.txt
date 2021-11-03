@@ -1,1 +1,2 @@
 nutrislice argument
+NOTETOCEDRIC: "python -m http.server" runs the server
