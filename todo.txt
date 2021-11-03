@@ -1,2 +1,5 @@
 nutrislice argument
 NOTETOCEDRIC: "python -m http.server" runs the server
+
+Make sure to focus on server interactions and not details
+Get framework in place before fancying it up.
