@@ -1,0 +1,33 @@
+{
+  "name": "rapidserve",
+  "version": "1.0.0",
+  "description": "rapid serve lunch solution",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mteam88/rapidservehtml.git"
+  },
+  "keywords": [
+    "lunch",
+    "cafeteria",
+    "html",
+    "express",
+    "node",
+    "js",
+    "css"
+  ],
+  "author": "Matthew Edelen, Cedric Hotopp",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mteam88/rapidservehtml/issues"
+  },
+  "homepage": "https://github.com/mteam88/rapidservehtml#readme",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "express": "^4.17.1"
+  }
+}

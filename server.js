@@ -1,5 +1,15 @@
 //It's not me, It's you, goodbye my not love, I will always forget you
 
+// Load Node modules
+var express = require('express');
+// Initialise Express
+var app = express();
+// Render static files
+app.use(express.static('public'));
+// Port website will run on
+app.listen(8080);
+
+
 
 function encode256(number) {
     var bigString = number.toString();
@@ -22,16 +32,18 @@ function encode256(number) {
 function decode256(encodedNumber) {
     var decodedNumber = 0;
     var encodedNumberAry = "";
-    for (var i = 0;i < encodedNumber.length;i++) {
+    var encodedNumberLen = encodedNumber.length;
+    for (var i = 0;i < encodedNumberLen;i++) {
 	    encodedNumberAry += encodedNumber.charCodeAt(i);
     }
     encodedNumber = encodedNumberAry.split("");
-    for (var i = 0;i < encodedNumber.length;i++) {
-	    if (i == encodedNumber.length - 1) {
+    encodedNumberLen = encodedNumber.length;
+    for (var i = 0;i < encodedNumberLen;i++) {
+	    if (i == encodedNumberLen - 1) {
     	    decodedNumber = encodedNumber[i];
         } else {
-    	    encodedNumber[i - 1] = Number(encodedNumber[i - 1]) + 256 * Number(encodedNumber[i]);
-            encodedNumber[i - 1] = encodedNumber[i - 1].toString();
+    	    encodedNumber[i + 1] = Number(encodedNumber[i + 1]) + 256 * Number(encodedNumber[i]);
+            encodedNumber[i + 1] = encodedNumber[i + 1].toString();
         }
     }
 
