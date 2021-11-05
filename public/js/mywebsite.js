@@ -1,3 +1,5 @@
+alert("JSLOADED")
+
 function hidehlp() {
     var x = document.getElementById("hlptxt");
     x.style.display = "none";

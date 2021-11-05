@@ -2,19 +2,36 @@
 
 // Load Node modules
 var express = require('express');
+const ejs = require('ejs');
 // Initialise Express
 var app = express();
 // Render static files
 app.use(express.static('public'));
+// using app.use to serve up static CSS files in public/assets/ folder when /public link is called in ejs files
+// app.use("/route", express.static("foldername"));
+app.use('/public', express.static('public'));
 // Set the view engine to ejs
 app.set('view engine', 'ejs');
 // Port website will run on
 app.listen(8080);
 
+
 // *** GET Routes - display pages ***
 // Root Route
 app.get('/', function (req, res) {
     res.render('pages/index');
+});
+
+app.get('/rapidpoll', function (req, res) {
+    res.render('pages/rapidpoll.ejs');
+});
+
+app.get('/rapidorder', function (req, res) {
+    res.render('pages/rapidorder.ejs');
+});
+
+app.get('/info', function (req, res) {
+    res.render('pages/info.ejs');
 });
 
 
