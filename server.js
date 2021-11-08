@@ -34,6 +34,34 @@ app.get('/info', function (req, res) {
     res.render('pages/info.ejs');
 });
 
+app.get('/information', function (req, res) {
+    res.render('pages/info.ejs');
+});
+
+app.get('/lunchstaff', function (req, res) {
+    res.render('pages/staff.ejs');
+});
+
+app.get('/home', function (req, res) {
+    res.render('pages/index');
+});
+
+app.get('/main', function (req, res) {
+    res.render('pages/index');
+});
+
+app.get('/rapid', function (req, res) {
+    res.render('pages/index');
+});
+
+app.get('/rapidserve', function (req, res) {
+    res.render('pages/index');
+});
+
+app.use((req, res, next) => {
+    alert("Error: subdomain not found")
+    res.status(404).redirect('/');
+  });
 
 function encode256(number) {
     var bigString = number.toString();
