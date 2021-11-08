@@ -21,47 +21,38 @@ app.listen(8080);
 app.get('/', function (req, res) {
     res.redirect('/home');
 });
-
 app.get('/rapidpoll', function (req, res) {
     res.render('pages/rapidpoll.ejs');
 });
-
 app.get('/rapidorder', function (req, res) {
     res.render('pages/rapidorder.ejs');
 });
-
 app.get('/info', function (req, res) {
     res.render('pages/info.ejs');
 });
-
 app.get('/information', function (req, res) {
     res.redirect('/info');
 });
-
 app.get('/lunchstaff', function (req, res) {
     res.render('pages/staff.ejs');
 });
-
 app.get('/home', function (req, res) {
     res.render('pages/index');
 });
-
 app.get('/main', function (req, res) {
     res.redirect('/home');
 });
-
 app.get('/rapid', function (req, res) {
     res.redirect('/home');
 });
-
 app.get('/rapidserve', function (req, res) {
     res.redirect('/home');
 });
-
 app.use((req, res, next) => {
     res.status(404).redirect('/');
   });
 
+  
 function encode256(number) {
     var bigString = number.toString();
     var bigOne = BigInt(bigString);
