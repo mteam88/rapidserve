@@ -35,7 +35,7 @@ app.get('/info', function (req, res) {
 });
 
 app.get('/information', function (req, res) {
-    res.render('pages/info.ejs');
+    res.redirect('/info');
 });
 
 app.get('/lunchstaff', function (req, res) {
@@ -59,7 +59,6 @@ app.get('/rapidserve', function (req, res) {
 });
 
 app.use((req, res, next) => {
-    alert("Error: subdomain not found")
     res.status(404).redirect('/');
   });
 
