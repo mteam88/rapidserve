@@ -19,7 +19,7 @@ app.listen(8080);
 // *** GET Routes - display pages ***
 // Root Route
 app.get('/', function (req, res) {
-    res.render('pages/index');
+    res.redirect('/home');
 });
 
 app.get('/rapidpoll', function (req, res) {
@@ -47,15 +47,15 @@ app.get('/home', function (req, res) {
 });
 
 app.get('/main', function (req, res) {
-    res.render('pages/index');
+    res.redirect('/home');
 });
 
 app.get('/rapid', function (req, res) {
-    res.render('pages/index');
+    res.redirect('/home');
 });
 
 app.get('/rapidserve', function (req, res) {
-    res.render('pages/index');
+    res.redirect('/home');
 });
 
 app.use((req, res, next) => {
