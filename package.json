@@ -1,11 +1,11 @@
 {
   "name": "rapidserve",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "rapid serve lunch solution",
-  "main": "server.js",
+  "main": "nodehost.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "node nodehost.js"
   },
   "repository": {
     "type": "git",
