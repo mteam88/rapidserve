@@ -1,3 +1,7 @@
+
+
+// INSERT INTO `orders` (`ID`, `OrderCode`, `Time`, `Notes`) VALUES ('1234568098', '28956', NOW(), 'Hello World test')
+
 function encode256(number) {
     var bigString = number.toString();
     var bigOne = BigInt(bigString);
