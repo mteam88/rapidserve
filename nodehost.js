@@ -13,8 +13,8 @@ app.use('/public', express.static('public'));
 // Set the view engine to ejs
 app.set('view engine', 'ejs');
 // Port website will run on
-app.listen(8080) // This is actually the port it will listen on, default 8080 as of now.
-console.log("Listening on port 8080. Check code for more info.")
+app.listen(80) // This is actually the port it will listen on, default 80 as of now.
+console.log("Listening on port 80. Check code for more info.")
 
 
 // *** GET Routes - display pages ***
