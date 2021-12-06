@@ -1,6 +1,11 @@
 nutrislice argument
-NOTETOCEDRIC: "python -m http.server" runs the server
+NOTETOCEDRIC: "npm start" runs the server
 NOTETOCEDRIC: https://gitpod.io/#github.com/mteam88/rapidservehtml
 
 Make sure to focus on server interactions and not details
 Get framework in place before fancying it up.
+
+Get domain name
+Set up client-side server communication
+Find a way to encrypt/hide mysql credentials
+UI
