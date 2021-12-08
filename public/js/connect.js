@@ -8,7 +8,7 @@ var conpool = mysql.createPool({
   host: 'remotemysql.com',
   port: '3306',
   user: '1PWxjfOccD',
-  password: '****', //Not real password talk to me at school if you have questions jh hello
+  password: '****', //Not real password talk to me at school if you have questions
   database: '1PWxjfOccD'
 });
 //GetOrders();
