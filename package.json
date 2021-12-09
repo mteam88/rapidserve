@@ -29,6 +29,7 @@
   "dependencies": {
     "ejs": "^3.1.6",
     "express": "^4.17.1",
+    "jdbc": "^0.7.6",
     "mysql": "^2.18.1"
   }
 }
