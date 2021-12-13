@@ -2,17 +2,17 @@
 $action = intval($_GET['action']);
 
 if ($action == "read") {
-    $fh = fopen('filename.txt','r');
+    $fh = fopen('public/php/storage.txt','r');
     while ($line = fgets($fh)) {
         echo($line);
     }
     fclose($fh);
 } else if ($action == "write") {
-    $fn = "storage.txt";
+    $fn = "public/php/storage.txt";
     $file = fopen($fn, "a+");
     $size = filesize($fn);
 
-    if($_POST['addition']) fwrite($file, $_POST['addition']);
+    if($_GET['line']) fwrite($file, $_GET['line']);
 
     $text = fread($file, $size);
     fclose($file);
