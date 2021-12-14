@@ -2,9 +2,12 @@
 
 // Load Node modules
 var express = require('express');
+var sphp = require('sphp');
+
 const ejs = require('ejs');
 // Initialise Express
 var app = express();
+app.use(sphp.express('public/'));
 // Render static files
 app.use(express.static('public'));
 // using app.use to serve up static CSS files in public/assets/ folder when /public link is called in ejs files

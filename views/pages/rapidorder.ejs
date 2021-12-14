@@ -3,7 +3,7 @@
   <head>
     <%- include('../partials/_head') %>
   </head>
-  <body>
+  <body onload="updateContent()">
     <div class="topnav">
         <a class="navlogospot" href="/"><img class="navlogo" src="/public/assets/Rlogo.png"></img></a>
         <a href="rapidpoll">Poll</a>
@@ -27,7 +27,7 @@
 
       <div id=orderstuff>
         <p>I Am Order Stuffs!!!<br>Blahblah<br>mIlK aNd ChEeSe</p>
-        <button style="float: right;" onclick="WriteToPHP()">Place Order</button>
+        <button style="float: right;" onclick="ReadPHP()">Place Order</button>
       </div> 
   </body>
 </html>
