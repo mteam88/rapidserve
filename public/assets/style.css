@@ -2,6 +2,8 @@
 .topnav {
     background-color: rgb(85, 85, 85);
     overflow: hidden;
+    border-radius: 20px;
+    padding: 0px;
     }
 
     /* Style the links inside the navigation bar */
@@ -12,6 +14,7 @@
     padding: 10px 30px;
     text-decoration: none;
     font-size: 30px;
+    border-radius: 20px;
     }
 
     /* Change the color of links on hover */
@@ -39,20 +42,38 @@
     text-decoration: none;
     font-size: 17px;
 }
-
-
 button {
     height: 50px;
     width: 75px;
     font-size: 30;
     background-color: red;
+    border-radius: 20px;
+    padding: 2px;
+    border-style: solid;
+    border-color:rgba(63, 42, 255, 0.671);
+}
+button:hover {
+    background-color: rgb(179, 0, 0);
 }
 
 h1 {
     text-align: center;
+    background-color: royalblue;
+    border-radius: 20px;
 }
 #grad {
     height: 100%;
     background-image:red;
     background-image: linear-gradient(rgba(63, 42, 255, 0.671), rgba(255, 255, 255, 0.753));
   }
+
+html {
+    min-height: 100%;
+} 
+
+#hlptxt {
+    display: none;
+    background-color: royalblue;
+    border-radius: 20px;
+    padding: 10px;
+}

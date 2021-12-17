@@ -1,5 +1,6 @@
 <?php
-$action = intval($_GET['action']);
+echo("Test begin php running");
+$action = "write";//intval($_GET['action']);
 
 if ($action == "read") {
     $fh = fopen('public/php/storage.txt','r');
@@ -12,7 +13,8 @@ if ($action == "read") {
     $file = fopen($fn, "a+");
     $size = filesize($fn);
 
-    if($_GET['line']) fwrite($file, $_GET['line']);
+    //if($_GET['line']) fwrite($file, $_GET['line']);
+    fwrite($file, 'line');
 
     $text = fread($file, $size);
     fclose($file);

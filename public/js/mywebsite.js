@@ -17,3 +17,11 @@ function plcordr() {
     var orderstuffelem = document.getElementById("orderstuff")
     orderstuffelem.innerHTML = "<h3>Your order has been placed!</h3>"
     }
+
+//window.onresize() {
+//    document.getElementById("grad").height = window.outerHeight;
+//}
+
+//window.onload() {
+//    document.getElementById("grad").height = window.outerHeight;
+//}
