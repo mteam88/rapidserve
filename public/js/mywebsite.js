@@ -25,3 +25,24 @@ function plcordr() {
 //window.onload() {
 //    document.getElementById("grad").height = window.outerHeight;
 //}
+
+function changebg(element) {
+    var wasred = false;
+    if (element.style.backgroundColor == "red") {
+        wasred = true;
+    }
+    if (wasred == true) {
+        var toset = "white";
+    } else {
+        var toset = "red";
+    }
+//    element.style.backgroundColor = (element.style.backgroundColor == "red") ? "white":"red";
+//    element.style.backgroundColor = (element.style.backgroundColor == "#dddddd") ? "red":"#dddddd";
+    if (element.id == "#dddddd") {
+        if (wasred == true) {
+            toset = "#dddddd";
+        }
+    }
+    element.style.backgroundColor = toset;
+//    alert(element.id);
+}
