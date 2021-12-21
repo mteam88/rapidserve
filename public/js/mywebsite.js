@@ -38,7 +38,7 @@ function changebg(element) {
     }
 //    element.style.backgroundColor = (element.style.backgroundColor == "red") ? "white":"red";
 //    element.style.backgroundColor = (element.style.backgroundColor == "#dddddd") ? "red":"#dddddd";
-    if (element.id == "#dddddd") {
+    if (element.parentElement.id == "#dddddd") {
         if (wasred == true) {
             toset = "#dddddd";
         }
