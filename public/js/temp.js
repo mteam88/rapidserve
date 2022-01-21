@@ -1,5 +1,5 @@
 /*
-
+functions to interact with sql database
 */
 function placeOrder() {
 
