@@ -98,3 +98,18 @@ tr:nth-child(even) {
 tr:nth-child(odd) {
     background-color: #fcfcfc;
 }
+
+#bottomof {
+    position: fixed;
+    bottom: 0;
+    left: -300px;
+    width: 300px;
+}
+#bottomof.addedclass {
+    animation-name: zoom;
+    animation-duration: 4s;
+}
+@keyframes zoom {
+    0%   {left:-300px;}
+    100%  {left:150%;}
+  }
