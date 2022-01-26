@@ -3,8 +3,8 @@
   <head>
     <%- include('../partials/_head') %>
   </head>
-  <body id="grad">
-    <div class="topnav shadow">
+  <body id="grad" onload="getMenu()">
+    <div class="topnav">
         <a class="navlogospot" href="/"><img class="navlogo" src="/public/assets/Rlogo.png"></img></a>
         <a class="active" href="rapidpoll">Poll</a>
         <a href="rapidorder">Order</a>
@@ -25,7 +25,7 @@
       </p>
       <div id=orderstuff>
         <p>I Am Order Stuffs!!!<br>Blahblah<br>mIlK aNd ChEeSe</p>
-        <button style="float: right;" onclick="plcordr()">Place Order</button>
+        <button style="float: right;" onclick="plcordr(); placeOrder();">Place Order</button>
       </div> 
   </body>
 </html>
