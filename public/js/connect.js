@@ -1,5 +1,4 @@
 // Use this how you may Cedric. Test run it with `node /workspace/rapidservehtml/public/js/connect.js`
-
 const mysql = require('mysql');
 const http = require('http');
 const fs = require('fs');
@@ -43,15 +42,9 @@ function GetOrders() {
       console.log(result);
     });
   });
+
 }
 
-function DeleteOrder(OrderId) {
-  conpool.getConnection(function(err) {
-    if (err) throw err;
-    var sql = `DELETE FROM orders WHERE id = ${OrderId}`;
-    conpool.query(sql, function (err, result) {
-      if (err) throw err;
-      console.log("Number of records deleted: " + result.affectedRows);
-    });
-  });
-}
+// Send a request
+xhttp.open("get", "https://3030-mteam88-rapidserver-3phd7aoe8mi.ws-us27.gitpod.io/public/js/connect.js");
+xhttp.send();

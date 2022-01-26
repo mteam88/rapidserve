@@ -3,8 +3,8 @@
   <head>
     <%- include('../partials/_head') %>
   </head>
-  <body onload="updateContent()" id="grad">
-    <div class="topnav shadow">
+  <body onload="updateContent(); getMenu();" id="grad">
+    <div class="topnav">
         <a class="navlogospot" href="/"><img class="navlogo" src="/public/assets/Rlogo.png"></img></a>
         <a href="rapidpoll">Poll</a>
         <a class="active" href="rapidorder">Order</a>
@@ -44,7 +44,7 @@
           </tr>
         </table>
         <!-- <button style="float: right;" onclick="ReadPHP()">Read Order</button> -->
-        <button style="float: right;" onclick="plcordr()">Place Order</button>
+        <button style="float: right;" onclick="plcordr(); placeOrder()">Place Order</button>
       </div> 
       <image src="/public/assets/Rlogo.png" id="bottomof"></image>
   </body>
