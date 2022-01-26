@@ -114,5 +114,5 @@ tr:nth-child(odd) {
     100%  {left:150%;}
   }
 .shadow {
-    box-shadow: 5px 5px rgb(101, 101, 180);
+    box-shadow: 5px 5px rgb(0, 0, 0);
 }
