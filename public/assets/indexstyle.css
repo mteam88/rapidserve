@@ -1,3 +1,6 @@
-p {
-    text-align: center;
+#ind002 {
+    background-color:lightblue;
+    border-radius: 20px;
+    padding: 10px;
+    width: 20%;
 }
