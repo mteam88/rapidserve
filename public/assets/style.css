@@ -121,3 +121,10 @@ tr:nth-child(odd) {
     padding: 10px;
     box-shadow: 5px 5px rgb(41, 58, 136);
 }
+.bubble {
+    background-color:lightblue;
+    border-radius: 20px;
+    padding: 10px;
+    width: 20%;
+    box-shadow: 5px 5px rgb(58, 100, 124);
+}
