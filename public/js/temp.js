@@ -1,13 +1,13 @@
 /*
 functions to interact with sql database
 */
-alert(1);
-var XMLHttpRequest = require('xhr2');
+//var XMLHttpRequest = require('xhr2');
 getOrder();
 function placeOrder() {
 
 }
 function getOrder() {
+
     var xhr = new XMLHttpRequest();
     // we defined the xhr
 
@@ -18,8 +18,9 @@ function getOrder() {
             var data = JSON.parse(this.responseText);
 
             alert(data);
+        } else {
+            alert(this.status);
         }
-
         // end of state change: it can be after some time (async)
     };
 
