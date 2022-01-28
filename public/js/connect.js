@@ -11,7 +11,7 @@ var conpool = mysql.createPool({
   password: 'JXLuoQC3xM', //Not real password talk to me at school if you have questions
   database: '1PWxjfOccD'
 });
-//GetOrders();
+GetOrders();
 //CreateOrder(1, 10, "1");
 //DeleteOrder(1);
 
@@ -41,6 +41,7 @@ function GetOrders() {
     conpool.query("SELECT * FROM orders", function (err, result, fields) {
       if (err) throw err;
       console.log(result);
+      return result;
     });
   });
 const xhttp = new XMLHttpRequest();
