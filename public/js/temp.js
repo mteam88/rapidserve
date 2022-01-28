@@ -1,6 +1,7 @@
 /*
 functions to interact with sql database
 */
+alert(1);
 var XMLHttpRequest = require('xhr2');
 getOrder();
 function placeOrder() {
