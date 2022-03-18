@@ -2,6 +2,8 @@
 
 // Load Node modules
 var express = require('express');
+const mongoose = require('mongoose');
+
 //var sphp = require('sphp');
 
 const ejs = require('ejs');
@@ -13,11 +15,26 @@ app.use(express.static('public'));
 // using app.use to serve up static CSS files in public/assets/ folder when /public link is called in ejs files
 // app.use("/route", express.static("foldername"));
 app.use('/public', express.static('public'));
+
+//Connect to MongoDB
+const dbURI = "mongodb+srv://rapidserver:nHz0ChzcY1JuBDG3@rapidserve.m4dah.mongodb.net/rapiddata?retryWrites=true&w=majority";
+mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then((result) => {
+        console.log("connected to MongoDB")
+        app.listen(3030) // This is actually the port it will listen on, default 8080 as of now.
+        console.log("Listening on port 3030. Check code for more info.");
+    })
+    .catch((err) => {
+        console.log(err);
+    })
+
+
+
 // Set the view engine to ejs
 app.set('view engine', 'ejs');
 // Port website will run on
-app.listen(3030) // This is actually the port it will listen on, default 8080 as of now.
-console.log("Listening on port 3030. Check code for more info.");
+
+
 
 
 // *** GET Routes - display pages ***
