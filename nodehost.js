@@ -3,6 +3,7 @@
 // Load Node modules
 var express = require('express');
 const mongoose = require('mongoose');
+const Order = require('./models/order');
 
 //var sphp = require('sphp');
 
@@ -32,7 +33,32 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 // Set the view engine to ejs
 app.set('view engine', 'ejs');
-// Port website will run on
+
+//Mongoose and mongo sandbox route
+app.get('/add-order', (req, res) => {
+    const order = new Order({
+        orderBody: "HelloWorld"
+    });
+
+    order.save()
+        .then((result) => {
+            res.send(result);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+});
+
+app.get('/all-orders', (req,res) => {
+    Order.find()
+        .then((result) => {
+            res.send(result);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+})
+
 
 
 
