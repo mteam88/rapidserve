@@ -81,6 +81,13 @@ app.get('/information', function (req, res) {
     res.redirect('/info');
 });
 app.get('/lunchstaff', function (req, res) {
+    Order.find()
+        .then((result) => {
+            res.send(result);
+        })
+        .catch((err) => {
+            console.log(err);
+        });
     res.render('pages/staff.ejs');
 });
 app.get('/home', function (req, res) {
