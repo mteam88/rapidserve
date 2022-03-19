@@ -83,13 +83,13 @@ app.get('/information', function (req, res) {
 app.get('/lunchstaff', function (req, res) {
     Order.find()
         .then((result) => {
-            res.send(result);
+            res.render('./pages/staff.ejs', {orders: result})
         })
         .catch((err) => {
             console.log(err);
         });
-    res.render('pages/staff.ejs');
 });
+
 app.get('/home', function (req, res) {
     res.render('pages/index');
 });
