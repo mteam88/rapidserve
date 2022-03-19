@@ -81,7 +81,7 @@ app.get('/information', function (req, res) {
     res.redirect('/info');
 });
 app.get('/lunchstaff', function (req, res) {
-    Order.find()
+    Order.find().sort({ createdAt: -1 })
         .then((result) => {
             res.render('./pages/staff.ejs', {orders: result})
         })
