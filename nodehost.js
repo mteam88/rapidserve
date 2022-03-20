@@ -2,6 +2,7 @@
 
 // Load Node modules
 var express = require('express');
+const morgan = require('morgan')
 const mongoose = require('mongoose');
 const Order = require('./models/order');
 
@@ -13,6 +14,13 @@ var app = express();
 //app.use(sphp.express('public/'));
 // Render static files
 app.use(express.static('public'));
+app.use(express.urlencoded({ extended: true}));
+app.use(morgan('dev'));
+app.use((req, res, next) => {
+  res.locals.path = req.path;
+  next();
+});
+
 // using app.use to serve up static CSS files in public/assets/ folder when /public link is called in ejs files
 // app.use("/route", express.static("foldername"));
 app.use('/public', express.static('public'));
@@ -59,12 +67,12 @@ app.get('/all-orders', (req,res) => {
         });
 })
 
-
-
-
-
 // *** GET Routes - display pages ***
 // Root Route
+app.post('/rapidorder', (req, res) => {
+    console.log(req.body);
+})
+
 app.get('/', function (req, res) {
     res.redirect('/home');
 });
@@ -89,6 +97,7 @@ app.get('/lunchstaff', function (req, res) {
             console.log(err);
         });
 });
+
 
 app.get('/home', function (req, res) {
     res.render('pages/index');

@@ -26,7 +26,14 @@
       </p>
 
       <div id=orderstuff>
-        <table>
+        <form action="/rapidorder" method="POST">
+          <label for="body">Orderbody:</label>
+          <textarea id="body" name="body" required></textarea>
+          <button>Submit</button>
+        </form>
+        
+        
+        <!--<table>
           <tr id=headerrow>
             <th>Main Course</th>
             <th>Side</th>
@@ -44,7 +51,7 @@
           </tr>
         </table>
         <!-- <button style="float: right;" onclick="ReadPHP()">Read Order</button> -->
-        <button style="float: right;" onclick="plcordr(); placeOrder()">Place Order</button>
+        <!--<button style="float: right;" onclick="plcordr(); placeOrder()">Place Order</button>-->
       </div> 
       <image src="/public/assets/Rlogo.png" id="bottomof"></image>
   </body>
