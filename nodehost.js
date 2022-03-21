@@ -70,6 +70,7 @@ app.get('/all-orders', (req,res) => {
 // *** GET Routes - display pages ***
 // Root Route
 app.post('/rapidorder', (req, res) => {
+    console.log(req.body);
     const order = new Order(req.body);
     order.save()
         .then((result) => {
