@@ -26,14 +26,14 @@
       </p>
 
       <div id=orderstuff>
-        <form action="/rapidorder" method="POST">
+        <!-- <form action="/rapidorder" method="POST">
           <label for="body">orderBody</label>
           <textarea id="body" name="orderBody" required></textarea>
           <button>Submit</button>
-        </form>
+        </form> -->
         
         
-        <!--<table>
+       <table>
           <tr id=headerrow>
             <th>Main Course</th>
             <th>Side</th>
@@ -50,8 +50,22 @@
             <td onclick="changebg(this)">Apple Juice</td>
           </tr>
         </table>
-        <button style="float: right;" onclick="plcordr(); placeOrder()">Place Order</button>-->
+        <button id='submitButton' style="float: right;">Place Order</button>
       </div> 
+      <script>
+        const submitButton = document.getElementById('submitButton');
+
+        submitButton.addEventListener('click', (e) => {
+          const endpoint = '/rapidorder';
+          var orderBody = {body: "BlahBlah"};
+
+          fetch(endpoint, {
+            method: 'POST',
+            body: JSON.stringify(orderBody)
+          }).then((result) => {console.log(result)})
+          .catch((err) => console.log(err))
+        });
+      </script>
       <image src="/public/assets/Rlogo.png" id="bottomof"></image>
   </body>
 </html>
