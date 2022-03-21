@@ -33,7 +33,7 @@
         </form> -->
         
         
-       <table>
+       <table id="ordertable">
           <tr id=headerrow>
             <th>Main Course</th>
             <th>Side</th>
@@ -57,13 +57,44 @@
 
         submitButton.addEventListener('click', (e) => {
           const endpoint = '/rapidorder';
-          var orderBody = {body: "BlahBlah"};
+          var orderBody = {orderBody: "Blah!!!"};
+
+          var table = document.getElementById("ordertable");
+          
+          var output = [];//CEDRIC starts here
+          for (var i = 1, row; row = table.rows[i]; i++) {
+            output.push([])
+            //console.log(i);
+            for (var j = 0, col; col = row.cells[j]; j++) {
+              var BG = window.getComputedStyle(table.rows[i].cells[j]).backgroundColor
+              //console.log(j);
+              output[i-1].push(BG);
+            } 
+          }
+          console.log(output);
+          for (var i = 0, rows; rows = output[i]; i++) {
+            for (var j = 0, cellbg; cellbg = output[i][j]; j++)
+              console.log(output[i][j]);
+          } //CEDRIC this is stuff i did. feel free to comment it out.
+          //alert(JSON.stringify(orderBody));
+
+          var formatted = [];
+          for (var property in orderBody) {
+            var encodedKey = encodeURIComponent(property);
+            var encodedValue = encodeURIComponent(orderBody[property]);
+            formatted.push(encodedKey + "=" + encodedValue);
+          }
+          formatted = formatted.join("&");
 
           fetch(endpoint, {
             method: 'POST',
-            body: JSON.stringify(orderBody)
+            headers: {
+              //'Content-Type': 'application/json'
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: formatted
           }).then((result) => {console.log(result)})
-          .catch((err) => console.log(err))
+          .catch((err) => {alert(err)})
         });
       </script>
       <image src="/public/assets/Rlogo.png" id="bottomof"></image>
