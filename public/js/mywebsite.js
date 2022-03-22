@@ -30,7 +30,7 @@ async function toghlp() {
 }
 
 function plcordr() {
-    alert("Boring Processing Stuff...")
+    //alert("Boring Processing Stuff...")
     var bottomofelem = document.getElementById("bottomof")
     bottomofelem.classList.add('addedclass');
     var orderstuffelem = document.getElementById("orderstuff")
