@@ -34,20 +34,20 @@
         
         
        <table id="ordertable">
-          <tr id=headerrow>
+          <tr id="headerrow">
             <th>Main Course</th>
             <th>Side</th>
             <th>Drink</th>
           </tr>
-          <tr id=#dddddd>
-            <td onclick="changebg(this)">Chicken Sandwich</td>
-            <td onclick="changebg(this)">Apples</td>
-            <td onclick="changebg(this)">Milk</td>
+          <tr id="menu-row0">
+            <td class="ordertable" onclick="changebg(this)">Chicken Sandwich</td>
+            <td class="ordertable" onclick="changebg(this)">Apples</td>
+            <td class="ordertable" onclick="changebg(this)">Milk</td>
           </tr>
-          <tr id=row1>
-            <td onclick="changebg(this)">Cheeseburger</td>
-            <td onclick="changebg(this)">Lettuce</td>
-            <td onclick="changebg(this)">Apple Juice</td>
+          <tr id="menu-row1">
+            <td class="ordertable" onclick="changebg(this)">Cheeseburger</td>
+            <td class="ordertable" onclick="changebg(this)">Lettuce</td>
+            <td class="ordertable" onclick="changebg(this)">Apple Juice</td>
           </tr>
         </table>
         <button id='submitButton' style="float: right;">Place Order</button>
@@ -59,32 +59,38 @@
           const endpoint = '/rapidorder';
           var orderBody = {orderBody: "Blah!!!"};
 
-          var table = document.getElementById("ordertable");
+          var table = document.getElementById("ordertable").rows;
+          var boxes = [];
+
+          var loopAmount = table.length;
+          for (var i = 0;i < loopAmount;i++) {
+            if (table[i].id.includes("menu-row")) {
+              var loopAmount2 = table[i].cells.length;
+              for (var k = 0;k < loopAmount2;k++) {
+                boxes.push(table[i].cells[k]);
+              }
+            }
+          }
           
           var output = [];//CEDRIC starts here
-          for (var i = 1, row; row = table.rows[i]; i++) {
-            output.push([])
-            //console.log(i);
-            for (var j = 0, col; col = row.cells[j]; j++) {
-              var BG = window.getComputedStyle(table.rows[i].cells[j]).backgroundColor
-              //console.log(j);
-              output[i-1].push(BG);
-            } 
-          }
+          var loopAmount = boxes.length;
+          for (var i = 0;i < loopAmount;i++) {
+            var BG = (boxes[i].style.backgroundColor == "red") ? 1 : 0;
+            //console.log(j);
+            output.push(BG);
+          } 
+          
           console.log(output);
-          for (var i = 0, rows; rows = output[i]; i++) {
-            for (var j = 0, cellbg; cellbg = output[i][j]; j++)
-              console.log(output[i][j]);
-          } //CEDRIC this is stuff i did. feel free to comment it out.
-          //alert(JSON.stringify(orderBody));
+          output = output.join('');
+          alert(output);
+          var orderBody = output;
+          //CEDRIC this is stuff i did. feel free to comment it out.
 
           var formatted = [];
-          for (var property in orderBody) {
-            var encodedKey = encodeURIComponent(property);
-            var encodedValue = encodeURIComponent(orderBody[property]);
-            formatted.push(encodedKey + "=" + encodedValue);
-          }
-          formatted = formatted.join("&");
+          var encodedKey = encodeURIComponent('orderBody');
+          var encodedValue = encodeURIComponent(output);
+          formatted.push(encodedKey + "=" + encodedValue);
+          alert(formatted);
 
           fetch(endpoint, {
             method: 'POST',
@@ -93,7 +99,14 @@
               'Content-Type': 'application/x-www-form-urlencoded',
             },
             body: formatted
-          }).then((result) => {console.log(result)})
+          }).then((response) => response.json())
+          .then((data) => {
+            alert(data.status)
+            if (data.status == 'success') {
+              plcordr();
+              placeOrder();
+            }
+          })
           .catch((err) => {alert(err)})
         });
       </script>

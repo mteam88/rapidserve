@@ -74,10 +74,11 @@ app.post('/rapidorder', (req, res) => {
     const order = new Order(req.body);
     order.save()
         .then((result) => {
-            res.redirect('/rapidorder');
+            res.json({redirect: 'rapidorder', status: 'success'})
         })
         .catch((err) => {
             console.log(err);
+            res.json({redirect: 'rapidorder', status: 'err'})
         })
 })
 
