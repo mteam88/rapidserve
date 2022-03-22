@@ -37,35 +37,8 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
         console.log(err);
     })
 
-
-
 // Set the view engine to ejs
 app.set('view engine', 'ejs');
-
-//Mongoose and mongo sandbox route
-app.get('/add-order', (req, res) => {
-    const order = new Order({
-        orderBody: "HelloWorld"
-    });
-
-    order.save()
-        .then((result) => {
-            res.send(result);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
-
-app.get('/all-orders', (req,res) => {
-    Order.find()
-        .then((result) => {
-            res.send(result);
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-})
 
 // *** GET Routes - display pages ***
 // Root Route
