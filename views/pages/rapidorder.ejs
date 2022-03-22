@@ -37,26 +37,12 @@
         
         
        <table id="ordertable">
-          <tr id="headerrow">
-            <th>Main Course</th>
-            <th>Side</th>
-            <th>Drink</th>
-          </tr>
-          <tr id="menu-row0" class="selectable">
-            <td onclick="changebg(this)">Chicken Sandwich</td>
-            <td onclick="changebg(this)">Apples</td>
-            <td onclick="changebg(this)">Milk</td>
-          </tr>
-          <tr id="menu-row1" class="selectable">
-            <td onclick="changebg(this)">Cheeseburger</td>
-            <td onclick="changebg(this)">Lettuce</td>
-            <td onclick="changebg(this)">Apple Juice</td>
-          </tr>
+          
         </table>
         <button id='submitButton' style="float: right;">Place Order</button>
       </div> 
       <script>
-        var menuCheck = window.setInterval(CreateMenu, 1000);
+        var menuCheck = window.setInterval(CreateMenu, 100);
         const submitButton = document.getElementById('submitButton');
 
         submitButton.addEventListener('click', (e) => {
@@ -120,6 +106,40 @@
         function CreateMenu() {
           if (menuObject) {
             clearInterval(menuCheck);
+            var loopAmount = 0;
+            var tableRow = document.createElement("tr");
+            tableRow.id = "menu-row0";
+            for (var [key, value] of Object.entries(menuObject)) {
+              if (value.length > loopAmount) {
+                loopAmount = value.length + 2;
+              }
+              var rowCell = document.createElement("th");
+              rowCell.innerHTML = key.replace(/_/g,"");
+              tableRow.appendChild(rowCell);
+            }
+            document.getElementById("ordertable").appendChild(tableRow);
+
+            for (var i = 0;i < loopAmount;i++) {
+              if (i == 0) {
+                continue;
+              }
+              var tableRow = document.createElement("tr");
+              tableRow.id = "menu-row" + (1 + i);
+              for (var [key, value] of Object.entries(menuObject)) {
+                if (value.length < i) {
+                  var rowCell = document.createElement("td");
+                  rowCell.innerHTML = "";
+                  tableRow.appendChild(rowCell);
+                } else {
+                  var rowCell = document.createElement("td");
+                  rowCell.classList.add("selectable");
+                  rowCell.onclick = function() {changebg(this)};
+                  rowCell.innerHTML = value[i - 1];
+                  tableRow.appendChild(rowCell);
+                }
+              }
+              document.getElementById("ordertable").appendChild(tableRow);
+            }
           }
         }
       </script>
