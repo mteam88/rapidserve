@@ -4,7 +4,7 @@
     overflow: hidden;
     border-radius: 20px;
     padding: 0px;
-    }
+}
 
     /* Style the links inside the navigation bar */
 .topnav a {
@@ -15,19 +15,19 @@
     text-decoration: none;
     font-size: 30px;
     border-radius: 20px;
-    }
+}
 
     /* Change the color of links on hover */
 .topnav a:hover {
     background-color: rgb(0, 0, 0);
     color: white;
-    }
+}
 
     /* Add a color to the active/current link */
 .topnav a.active {
     background-color: #ff0000;
     color: white;
-    }
+}
 
 .topnav img.navlogo {
     padding-bottom: 0px;
@@ -65,7 +65,7 @@ h1 {
     height: 100%;
     background-image:red;
     background-image: linear-gradient(rgba(63, 42, 255, 0.671), rgba(255, 255, 255, 0.753));
-  }
+}
 
 html {
     min-height: 100%;
