@@ -85,7 +85,7 @@
           
           console.log(output);
           output = output.join('');
-          alert(output);
+          //alert(output);
           var orderBody = output;
           //CEDRIC this is stuff i did. feel free to comment it out.
 
@@ -93,7 +93,7 @@
           var encodedKey = encodeURIComponent('orderBody');
           var encodedValue = encodeURIComponent(output);
           formatted.push(encodedKey + "=" + encodedValue);
-          alert(formatted);
+          //alert(formatted);
 
           fetch(endpoint, {
             method: 'POST',
@@ -104,13 +104,13 @@
             },
             body: formatted
           })
-          .then(response => response.text())
+          .then(response => response.json())
               .then((data) => {
-                alert(data);
+                //alert(data);
+                //alert(data.status)
                 if (data.status == 'success') {
-                  alert("success!!!");
+                  //alert("success!!!");
                   plcordr();
-                  placeOrder();
                 }
           })
           .catch((err) => {alert(err)})

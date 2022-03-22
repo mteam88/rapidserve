@@ -75,7 +75,6 @@ app.post('/rapidorder', (req, res) => {
     order.save()
         .then((result) => {
             res.json({status: 'success'});
-            res.send()
         })
         .catch((err) => {
             console.log(err);
