@@ -74,7 +74,7 @@ app.post('/rapidorder', (req, res) => {
     const order = new Order(req.body);
     order.save()
         .then((result) => {
-            res.redirect('/home');
+            res.redirect('/rapidorder');
         })
         .catch((err) => {
             console.log(err);
