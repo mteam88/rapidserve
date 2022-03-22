@@ -14,16 +14,19 @@
       <h1 class="bubbleheader">Rapid Order</h1>
 
       <p>Input your order, then click "Place Order."</p>
-      <button style="float: right;" onclick="toghlp()">Help</button>
-      <p id="hlptxt" style="display: none;" class="bubbleheader">
-        Select items that you would like to order by clicking on them or tapping them.
-        When a box is next to the selection, you can choose multiple items.
-        If you want to change your selection, click or tap on the item that you currently have selected.
-        Then, click or tap on your new item.
-        When you are satisfied with your selections, click on or tap the "Place Order" button.
-
-        If you still need help, contact us or tell your teacher.
-      </p>
+      <button style="float: right;width: 75px" onclick="toghlp()">Help</button>
+      <div  id="hlptxt" class="bubbleheader">
+        <h2 style="text-align: center;">Help</h2>
+        <p>
+          Select items that you would like to order by clicking on them or tapping them.
+          When a box is next to the selection, you can choose multiple items.
+          If you want to change your selection, click or tap on the item that you currently have selected.
+          Then, click or tap on your new item.
+          When you are satisfied with your selections, click on or tap the "Place Order" button.
+  
+          If you still need help, contact us or tell your teacher.
+        </p>
+      </div>
 
       <div id=orderstuff>
         <!-- <form action="/rapidorder" method="POST">
@@ -56,7 +59,7 @@
         const submitButton = document.getElementById('submitButton');
 
         submitButton.addEventListener('click', (e) => {
-          const endpoint = '/rapidorder';
+          const endpoint = '/rapidorder/';
           var orderBody = {orderBody: "Blah!!!"};
 
           var table = document.getElementById("ordertable").rows;
@@ -96,19 +99,19 @@
             method: 'POST',
             headers: {
               //'Content-Type': 'application/json'
+              'Accept': 'application/json',
               'Content-Type': 'application/x-www-form-urlencoded',
             },
             body: formatted
-          }).then(response => {
-            alert(response);
-            response.json()
+          })
+          .then(response => response.text())
               .then((data) => {
-                alert(data.status)
+                alert(data);
                 if (data.status == 'success') {
+                  alert("success!!!");
                   plcordr();
                   placeOrder();
                 }
-          })
           })
           .catch((err) => {alert(err)})
         });

@@ -1,16 +1,33 @@
-function hidehlp() {
+async function hidehlp() {
     var x = document.getElementById("hlptxt");
-    x.style.display = "none";
+    var scale = (300) / 10;
+    for (var i = scale;i > 0;i--) {
+        x.style.width = i * 10 + "px";
+        x.style.height = i * 10 + "px";
+        await sleep(1);
     }
+    x.style.display = "none";
+}
 
-function toghlp() {
+async function toghlp() {
     var x = document.getElementById("hlptxt");
+    var scale = (300) / 10;
     if (x.style.display === "none") {
         x.style.display = "block";
+        for (var i = 0;i < scale;i++) {
+            x.style.width = i * 10 + "px";
+            x.style.height = i * 10 + "px";
+            await sleep(1);
+        }
     } else {
+        for (var i = scale;i > 0;i--) {
+            x.style.width = i * 10 + "px";
+            x.style.height = i * 10 + "px";
+            await sleep(1);
+        }
         x.style.display = "none";
     }
-    }
+}
 
 function plcordr() {
     alert("Boring Processing Stuff...")
@@ -42,4 +59,8 @@ function changebg(element) {
     }
     element.style.backgroundColor = toset;
 //    alert(element.id);
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }

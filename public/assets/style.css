@@ -76,6 +76,11 @@ html {
     background-color: royalblue;
     border-radius: 20px;
     padding: 10px;
+    overflow: hidden;
+    position: absolute;
+    z-index: 100;
+    width:300px;
+    right: 95px;
 }
 
 table {
