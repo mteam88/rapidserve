@@ -15,7 +15,7 @@
 
       <p>Input your order, then click "Place Order."</p>
       <button style="float: right;" onclick="toghlp()">Help</button>
-      <p id="hlptxt" style="display: none;">
+      <p id="hlptxt" style="display: none;" class="bubbleheader">
         Select items that you would like to order by clicking on them or tapping them.
         When a box is next to the selection, you can choose multiple items.
         If you want to change your selection, click or tap on the item that you currently have selected.
@@ -39,15 +39,15 @@
             <th>Side</th>
             <th>Drink</th>
           </tr>
-          <tr id="menu-row0">
-            <td class="ordertable" onclick="changebg(this)">Chicken Sandwich</td>
-            <td class="ordertable" onclick="changebg(this)">Apples</td>
-            <td class="ordertable" onclick="changebg(this)">Milk</td>
+          <tr id="menu-row0" class="selectable">
+            <td onclick="changebg(this)">Chicken Sandwich</td>
+            <td onclick="changebg(this)">Apples</td>
+            <td onclick="changebg(this)">Milk</td>
           </tr>
-          <tr id="menu-row1">
-            <td class="ordertable" onclick="changebg(this)">Cheeseburger</td>
-            <td class="ordertable" onclick="changebg(this)">Lettuce</td>
-            <td class="ordertable" onclick="changebg(this)">Apple Juice</td>
+          <tr id="menu-row1" class="selectable">
+            <td onclick="changebg(this)">Cheeseburger</td>
+            <td onclick="changebg(this)">Lettuce</td>
+            <td onclick="changebg(this)">Apple Juice</td>
           </tr>
         </table>
         <button id='submitButton' style="float: right;">Place Order</button>
@@ -99,13 +99,16 @@
               'Content-Type': 'application/x-www-form-urlencoded',
             },
             body: formatted
-          }).then((response) => response.json())
-          .then((data) => {
-            alert(data.status)
-            if (data.status == 'success') {
-              plcordr();
-              placeOrder();
-            }
+          }).then(response => {
+            alert(response);
+            response.json()
+              .then((data) => {
+                alert(data.status)
+                if (data.status == 'success') {
+                  plcordr();
+                  placeOrder();
+                }
+          })
           })
           .catch((err) => {alert(err)})
         });

@@ -83,12 +83,17 @@ table {
     border-collapse: collapse;
     width: 100%;
     opacity: 0.8;
+    border: 1px solid black;
+    margin: 5px;
 }
   
 td, th {
-    border: 1px solid #dddddd;
+    border: 1px solid black;
     text-align: left;
     padding: 8px;
+}
+
+.selectable {
     cursor: pointer;
 }
 

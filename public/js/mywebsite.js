@@ -29,21 +29,16 @@ function plcordr() {
 //}
 
 function changebg(element) {
-    var wasred = false;
-    if (element.style.backgroundColor == "red") {
-        wasred = true;
-    }
-    if (wasred == true) {
-        var toset = "white";
-    } else {
-        var toset = "red";
-    }
 //    element.style.backgroundColor = (element.style.backgroundColor == "red") ? "white":"red";
 //    element.style.backgroundColor = (element.style.backgroundColor == "#dddddd") ? "red":"#dddddd";
-    if (Number(element.parentElement.id.replace("row","")) / 2 == Math.floor(Number(element.parentElement.id.replace("row","")) / 2)) {
-        if (wasred == true) {
+    if (element.style.backgroundColor == "red") {
+        if (Number(element.parentElement.id.replace("menu-row","")) / 2 == Math.floor(Number(element.parentElement.id.replace("menu-row","")) / 2)) {
             toset = "#dddddd";
+        } else {
+            toset = "white";
         }
+    } else {
+        toset = "red";
     }
     element.style.backgroundColor = toset;
 //    alert(element.id);
