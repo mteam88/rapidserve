@@ -12,7 +12,7 @@ async function hidehlp() {
 async function toghlp() {
     var x = document.getElementById("hlptxt");
     var scale = (300) / 10;
-    if (x.style.display === "none") {
+    if (x.style.display === "none" || !x.style.display) {
         x.style.display = "block";
         for (var i = 0;i < scale;i++) {
             x.style.width = i * 10 + "px";
@@ -35,7 +35,7 @@ function plcordr() {
     bottomofelem.classList.add('addedclass');
     var orderstuffelem = document.getElementById("orderstuff")
     orderstuffelem.innerHTML = "<h3>Your order has been placed!</h3>"
-    }
+}
 
 //window.onresize() {
 //    document.getElementById("grad").height = window.outerHeight;

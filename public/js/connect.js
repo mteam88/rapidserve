@@ -1,5 +1,5 @@
 // Use this how you may Cedric. Test run it with `node /workspace/rapidservehtml/public/js/connect.js`
-return "b";
+
 const mysql = require('mysql');
 const http = require('http');
 const fs = require('fs');
