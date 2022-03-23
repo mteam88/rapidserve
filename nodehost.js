@@ -70,6 +70,12 @@ app.get('/info', function (req, res) {
 app.get('/information', function (req, res) {
     res.redirect('/info');
 });
+app.delete('/lunchstaff/:id', (req, res) => {
+    const id = req.params.id;
+    Order.findByIdAndDelete(id)
+        .then()
+})
+
 app.get('/lunchstaff', function (req, res) {
     Order.find().sort({ createdAt: -1 })
         .then((result) => {
@@ -86,6 +92,9 @@ app.get('/home', function (req, res) {
 });
 app.get('/main', function (req, res) {
     res.redirect('/home');
+});
+app.get('/history', function (req, res) {
+    res.render('pages/history');
 });
 app.get('/rapid', function (req, res) {
     res.redirect('/home');

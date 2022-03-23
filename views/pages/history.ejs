@@ -2,8 +2,9 @@
 <html>
   <head>
     <%- include('../partials/_head') %>
+    <link rel="stylesheet" href="public/assets/indexstyle.css">
   </head>
-  <body>
+  <body id="grad">
     <div id="sidebar" class="sidebar">
       <span style="position: absolute;top:10px;"><img style="width: 55px;height: 55px;margin: 10px;" src="public/assets/profile-icon.png"><span class="sidebar-text" style="bottom: 22px;color:white"><b>Profile</b></span></span>
       <span style="position: absolute;top:105px;"><img style="width: 55px;height: 55px;margin: 10px;" src="public/assets/settings-icon.jpg"><span class="sidebar-text" style="bottom: 22px;color:white"><b>Settings</b></span></span>
@@ -13,22 +14,42 @@
       <span style="position: absolute;bottom:10px;"><img style="width: 55px;height: 55px;margin: 10px;" src="public/assets/logout-icon.png"><span class="sidebar-text" style="bottom: 22px;color:red"><b>Logout</b></span></span>
     </div>
     <div id="content" class="content">
-      <a href="/"><p>Home</p></a>
-      <br> 
-      <p>Welcome, lunch staff. Edit the menu with the button below.</p>
-      <button onclick="editMenu()">Edit Menu</button>
-      <h1>Orders:</h1>
-        <% if (orders.length > 0) { %>
-          <% orders.forEach(order => { %>
-            <h3 class="order-unformatted" id="orderBodies" orderId="test"><%= JSON.stringify(order) %></h3>
-          <% }) %>
-        <% } else { %>
-          <p>There are no orders to display...</p>
-        <% } %>
-        <div id="formattedOrders"></div>
-        <!--<button type="button" onclick="formatOrders();">GetOrders</button>-->
+      <div class="topnav shadow">
+        <a class="navlogospot" href="/home"><img class="navlogo" src="/public/assets/Rlogo.png"></img></a>
+        <a href="rapidpoll">Poll</a>
+        <a href="rapidorder">Order</a>
+        <a href="info">Info</a>
+      </div>
+  
+      <h1 class="bubbleheader">History</h1>
+      <div id="history">
+
+      </div>
     </div>
     <script>
-      formatOrders();
+        var history = JSON.parse(localStorage.getItem("history"));
+        if (!history) {
+            history = [{order:010001110000,order-time:Date.now()}];
+        }
+        var loopAmount = history.length;
+        for (var i = 0;i < loopAmount;i++) {
+            var historyItem = history[i];
+            var orderFormatted = "";
+            for (const [index, element] of historyItem.order.toString().split('').entries()) {
+                if (element == 1) {
+                    orderFormatted += ", " + menuObjectCode[index];
+                }
+            }
+            var orderDiv = document.createElement("div");
+            orderDiv.id = "history-item" + i;
+            orderDiv.classList.add("history-item");
+            var orderHeader = document.createElement("h2");
+            orderHeader.innerHTML = "History Item " + (i + 1);
+            orderDiv.appendChild(orderHeader);
+            var order = document.createElement("span");
+            order.innerHTML = orderFormatted.replace(", ","");
+            orderDiv.appendChild(order);
+        }
     </script>
   </body>
+</html>

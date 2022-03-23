@@ -73,14 +73,15 @@ function formatOrders() {
     for (var i = 0;i < loopAmount;i++) {
         orderElem = orderElems[0];
         var orderFormatted = "";
-        for (const [index, element] of orderElem.innerHTML.split('').entries()) {
+        var orderElemObject = JSON.parse(orderElem.innerHTML.replace(/_/g,"underscore"));
+        for (const [index, element] of orderElemObject.orderBody.split('').entries()) {
             if (element == 1) {
                 orderFormatted += "<br>" + menuObjectCode[index];
             }
         }
         orderElem.innerHTML = orderFormatted.replace("<br>", "");
-        var idtemp = orderElem.dataset.orderId
-        alert(idtemp);
+        orderElem.orderId = orderElemObject.underscoreid;
+        var idtemp = orderElem.orderId;
         orderElem.remove();
         var orderDiv = document.createElement("div");
         orderDiv.classList.add("order-formatted");
@@ -89,19 +90,31 @@ function formatOrders() {
         orderHeader.innerHTML = "Order " + orderNumber + "&#9660;";
         orderHeader.orderNum = orderNumber;
         orderDiv.dataset.orderId = idtemp;
-        alert(orderDiv.dataset.orderId);
         orderHeader.onclick = function(event) {var thisOrderDiv = event.target.parentElement;thisOrderDiv.lastChild.hidden = !thisOrderDiv.lastChild.hidden;var orderNum = event.target.orderNum;event.target.innerHTML = "Order " + orderNum + ((thisOrderDiv.lastChild.hidden) ? "&#9660;" : "&#9650;");};
         orderDiv.appendChild(orderHeader);
-        var order = document.createElement("p");
-        order.innerHTML = orderFormatted.replace("<br>","");
-        order.hidden = true;
-        orderDiv.appendChild(order);
         var button = document.createElement("button");
         button.value = "delete";
         button.onclick = function(event) {};
         orderDiv.appendChild(button);
+        var order = document.createElement("p");
+        order.innerHTML = orderFormatted.replace("<br>","");
+        order.hidden = true;
+        orderDiv.appendChild(order);
 
         document.getElementById("formattedOrders").appendChild(orderDiv);
         orderNumber += 1;
     }
+}
+
+function deleteOrderById(id) {
+    var endpoint = '/lunchstaff/${id}';
+    fetch(endpoint, {
+        method: 'DELETE',
+    })
+        .then(() => {
+
+        })
+        .catch((err) => {
+            console.warn(err);
+        })
 }

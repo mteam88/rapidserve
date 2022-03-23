@@ -23,6 +23,5 @@ function CheckIfLoaded() {
 }
 
 function ChangePage(event) {
-    var page = event.currentTarget.page;
-    window.location.href = event.currentTarget.page;
+    window.location.href = event.currentTarget.page.toLowerCase();
 }
