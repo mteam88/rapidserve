@@ -1,5 +1,5 @@
 {
-    "Main_Courses": ["Cheeseburger", "Chicken Sandwich"],
-    "Sides": ["Apples", "Celery"],
+    "Main_Courses": ["Cheeseburger", "Chicken Sandwich","Chicken Nuggets","Pizza"],
+    "Sides": ["Apples", "Celery","Orange","Peach"],
     "Drinks": ["Milk", "Orange Juice", "Apple Juice","Water"]
 }

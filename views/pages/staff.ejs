@@ -20,11 +20,15 @@
       <h1>Orders:</h1>
         <% if (orders.length > 0) { %>
           <% orders.forEach(order => { %>
-            <h3 id="orderBodies"><%= order.orderBody %></h3>
+            <h3 class="order-unformatted" id="orderBodies" data-orderId="<%- order._id %>"><%= order.orderBody %></h3>
           <% }) %>
         <% } else { %>
           <p>There are no orders to display...</p>
         <% } %>
-        <button type="button" onclick="formatOrders();">GetOrders</button>
+        <div id="formattedOrders"></div>
+        <!--<button type="button" onclick="formatOrders();">GetOrders</button>-->
     </div>
+    <script>
+      formatOrders();
+    </script>
   </body>

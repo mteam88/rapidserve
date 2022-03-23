@@ -24,23 +24,5 @@ function CheckIfLoaded() {
 
 function ChangePage(event) {
     var page = event.currentTarget.page;
-    var newPageURL = "pages/" + page + ".ejs";
-    newPageURL = "/views/pages/tesdt.txt";
-    if (fileExists(newPageURL)) {
-        alert("exists");
-    } else {
-        alert("does not exist");
-    }
-}
-
-function fileExists(url) {
-    if(url) {
-        var req = new XMLHttpRequest();
-        req.open('GET', url, false);
-        req.send(null);
-        var exists = (request.responseText);
-        return exists;
-    } else {
-        return false;
-    }
+    window.location.href = event.currentTarget.page;
 }
