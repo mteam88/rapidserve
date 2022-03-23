@@ -4,7 +4,11 @@
     <%- include('../partials/_head') %>
   </head>
   <body onload="updateContent()" id="grad">
-    <div class="topnav shadow">
+    <div id="sidebar" class="sidebar">
+      <p>test</p>
+    </div>
+    <div id="content" class="content">
+      <div class="topnav shadow">
         <a class="navlogospot" href="/"><img class="navlogo" src="/public/assets/Rlogo.png"></img></a>
         <a href="rapidpoll">Poll</a>
         <a class="active" href="rapidorder">Order</a>
@@ -40,109 +44,104 @@
           
         </table>
         <button id='submitButton' style="float: right;">Place Order</button>
-      </div> 
-      <script>
-        var menuCheck = window.setInterval(CreateMenu, 100);
-        const submitButton = document.getElementById('submitButton');
-
-        submitButton.addEventListener('click', (e) => {
-          const endpoint = '/rapidorder/';
-          var orderBody = {orderBody: "Blah!!!"};
-
-          var table = document.getElementById("ordertable").rows;
-          var boxes = [];
-
-          var loopAmount = table.length;
-          for (var i = 0;i < loopAmount;i++) {
-            if (table[i].id.includes("menu-row")) {
-              var loopAmount2 = table[i].cells.length;
-              for (var k = 0;k < loopAmount2;k++) {
-                boxes.push(table[i].cells[k]);
-              }
-            }
-          }
-          
-          var output = [];//CEDRIC starts here
-          var loopAmount = boxes.length;
-          for (var i = 0;i < loopAmount;i++) {
-            var BG = (boxes[i].style.backgroundColor == "red") ? 1 : 0;
-            //console.log(j);
-            output.push(BG);
-          } 
-          
-          console.log(output);
-          output = output.join('');
-          //alert(output);
-          var orderBody = output;
-          //CEDRIC this is stuff i did. feel free to comment it out.
-
-          var formatted = [];
-          var encodedKey = encodeURIComponent('orderBody');
-          var encodedValue = encodeURIComponent(output);
-          formatted.push(encodedKey + "=" + encodedValue);
-          //alert(formatted);
-
-          fetch(endpoint, {
-            method: 'POST',
-            headers: {
-              //'Content-Type': 'application/json'
-              'Accept': 'application/json',
-              'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: formatted
-          })
-          .then(response => response.json())
-              .then((data) => {
-                //alert(data);
-                //alert(data.status)
-                if (data.status == 'success') {
-                  //alert("success!!!");
-                  plcordr();
-                }
-          })
-          .catch((err) => {alert(err)})
-        });
-
-        function CreateMenu() {
-          if (menuObject) {
-            clearInterval(menuCheck);
-            var loopAmount = 0;
-            var tableRow = document.createElement("tr");
-            tableRow.id = "menu-row0";
-            for (var [key, value] of Object.entries(menuObject)) {
-              if (value.length > loopAmount) {
-                loopAmount = value.length + 2;
-              }
-              var rowCell = document.createElement("th");
-              rowCell.innerHTML = key.replace(/_/g,"");
-              tableRow.appendChild(rowCell);
-            }
-            document.getElementById("ordertable").appendChild(tableRow);
-
-            for (var i = 0;i < loopAmount;i++) {
-              if (i == 0) {
-                continue;
-              }
-              var tableRow = document.createElement("tr");
-              tableRow.id = "menu-row" + (1 + i);
-              for (var [key, value] of Object.entries(menuObject)) {
-                if (value.length < i) {
-                  var rowCell = document.createElement("td");
-                  rowCell.innerHTML = "";
-                  tableRow.appendChild(rowCell);
-                } else {
-                  var rowCell = document.createElement("td");
-                  rowCell.classList.add("selectable");
-                  rowCell.onclick = function() {changebg(this)};
-                  rowCell.innerHTML = value[i - 1];
-                  tableRow.appendChild(rowCell);
-                }
-              }
-              document.getElementById("ordertable").appendChild(tableRow);
+      </div>
+      <image src="/public/assets/Rlogo.png" id="bottomof"></image>
+    </div>
+    <script src="/public/js/sidebar.js"></script>
+    <script>
+      var menuCheck = window.setInterval(CreateMenu, 100);
+      const submitButton = document.getElementById('submitButton');
+      submitButton.addEventListener('click', (e) => {
+        const endpoint = '/rapidorder/';
+        var orderBody = {orderBody: "Blah!!!"};
+        var table = document.getElementById("ordertable").rows;
+        var boxes = [];
+        var loopAmount = table.length;
+        for (var i = 0;i < loopAmount;i++) {
+          if (table[i].id.includes("menu-row")) {
+            var loopAmount2 = table[i].cells.length;
+            for (var k = 0;k < loopAmount2;k++) {
+              boxes.push(table[i].cells[k]);
             }
           }
         }
-      </script>
-      <image src="/public/assets/Rlogo.png" id="bottomof"></image>
+        
+        var output = [];//CEDRIC starts here
+        var loopAmount = boxes.length;
+        for (var i = 0;i < loopAmount;i++) {
+          var BG = (boxes[i].style.backgroundColor == "red") ? 1 : 0;
+          //console.log(j);
+          output.push(BG);
+        } 
+        
+        console.log(output);
+        output = output.join('');
+        //alert(output);
+        var orderBody = output;
+        //CEDRIC this is stuff i did. feel free to comment it out.
+        var formatted = [];
+        var encodedKey = encodeURIComponent('orderBody');
+        var encodedValue = encodeURIComponent(output);
+        formatted.push(encodedKey + "=" + encodedValue);
+        //alert(formatted);
+        fetch(endpoint, {
+          method: 'POST',
+          headers: {
+            //'Content-Type': 'application/json'
+            'Accept': 'application/json',
+            'Content-Type': 'application/x-www-form-urlencoded',
+          },
+          body: formatted
+        })
+        .then(response => response.json())
+            .then((data) => {
+              //alert(data);
+              //alert(data.status)
+              if (data.status == 'success') {
+                //alert("success!!!");
+                plcordr();
+              }
+        })
+        .catch((err) => {alert(err)})
+      });
+      function CreateMenu() {
+        if (menuObject) {
+          clearInterval(menuCheck);
+          var loopAmount = 0;
+          var tableRow = document.createElement("tr");
+          tableRow.id = "menu-row0";
+          for (var [key, value] of Object.entries(menuObject)) {
+            if (value.length > loopAmount) {
+              loopAmount = value.length + 2;
+            }
+            var rowCell = document.createElement("th");
+            rowCell.innerHTML = key.replace(/_/g,"");
+            tableRow.appendChild(rowCell);
+          }
+          document.getElementById("ordertable").appendChild(tableRow);
+          for (var i = 0;i < loopAmount;i++) {
+            if (i == 0) {
+              continue;
+            }
+            var tableRow = document.createElement("tr");
+            tableRow.id = "menu-row" + (1 + i);
+            for (var [key, value] of Object.entries(menuObject)) {
+              if (value.length < i) {
+                var rowCell = document.createElement("td");
+                rowCell.innerHTML = "";
+                tableRow.appendChild(rowCell);
+              } else {
+                var rowCell = document.createElement("td");
+                rowCell.classList.add("selectable");
+                rowCell.onclick = function() {changebg(this)};
+                rowCell.innerHTML = value[i - 1];
+                tableRow.appendChild(rowCell);
+              }
+            }
+            document.getElementById("ordertable").appendChild(tableRow);
+          }
+        }
+      }
+    </script>
   </body>
 </html>
