@@ -1,5 +1,8 @@
 window.onload = function() {
+    var onGlobal = false;
+
     function SetOpacity(on) {
+        onGlobal = on;
         if (on) {
             if (!document.getElementById("overlay")) {
                 var overlay = document.createElement("div");
@@ -18,16 +21,26 @@ window.onload = function() {
     async function FinishOpacity(on) {
         var overlay = document.getElementById("overlay");
         var length = 50;
-        length = 50 - (((overlay.style.backgroundColor.split(',')[3]) ? 0 : overlay.style.backgroundColor.split(',')[3]) / length);
+        length = 50 - (overlay.style.backgroundColor.split(',')[3].replace(")","") / 0.4 * 50);
+        if (!length && length != 0) {
+            length = 50;
+        }
+        onGlobal = on;
         if (overlay) {
             if (on) {
                 for (var i = 0;i < length;i++) {
+                    if (!onGlobal) {
+                        break;
+                    }
                     overlay.style.backgroundColor = "rgba(0, 0, 0, " + (0.4 / length * i) + ")";
                     await sleep(1);
                 }
             } else {
-                for (var i = length;i > 0;i--) {
-                    overlay.style.backgroundColor = "rgba(0, 0, 0, " + (0.4 / length * i) + ")";
+                for (var i = 50 - length;i > 0;i--) {
+                    if (onGlobal) {
+                        break;
+                    }
+                    overlay.style.backgroundColor = "rgba(0, 0, 0, " + (0.4 / (50 - length) * i) + ")";
                     await sleep(1);
                 }
                 if (document.getElementById("overlay")) {
