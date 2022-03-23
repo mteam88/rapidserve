@@ -70,21 +70,28 @@ app.get('/info', function (req, res) {
 app.get('/information', function (req, res) {
     res.redirect('/info');
 });
-app.delete('/staff-orders/:id', (req, res) => {
-    const id = req.params.id;
-    Order.findByIdAndDelete(id)
-        .catch((err) => console.log(err));
-})
 
-app.get('/staff-orders', function (req, res) {
+app.get('/staff/orders', function (req, res) {
     Order.find().sort({ createdAt: -1 })
         .then((result) => {
-            res.render('./pages/staff-orders.ejs', {orders: result})
+            res.render('pages/staff-orders.ejs', {orders: result})
         })
         .catch((err) => {
             console.log(err);
         });
 });
+
+app.get('/staff/menu', function (req, res) {
+    res.render('pages/staff-menu.ejs');
+})
+
+app.delete('/staff/:id', (req, res) => {
+    const id = req.params.id;
+    Order.findByIdAndDelete(id)
+        .catch((err) => console.log(err));
+})
+
+
 
 
 app.get('/home', function (req, res) {

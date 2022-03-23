@@ -106,7 +106,7 @@ function formatOrders() {
 }
 
 function deleteOrderById(id) {
-    var endpoint = `/lunchstaff/${id}`;
+    var endpoint = `/staff/${id}`;
     fetch(endpoint, {
         method: 'DELETE',
     })
