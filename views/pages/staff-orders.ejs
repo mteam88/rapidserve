@@ -13,14 +13,18 @@
       <span style="position: absolute;bottom:10px;"><img style="width: 55px;height: 55px;margin: 10px;" src="public/assets/logout-icon.png"><span class="sidebar-text" style="bottom: 22px;color:red"><b>Logout</b></span></span>
     </div>
     <div id="content" class="content">
-      <a href="/"><p>Home</p></a>
+      <div class="topnav shadow">
+        <a class="navlogospot" href="/home"><img class="navlogo" src="/public/assets/Rlogo.png"></img></a>
+        <a class="active" href="staff-orders">Orders</a>
+        <a href="staff-menu">Menu</a>
+      </div>
       <br> 
       <p>Welcome, lunch staff. Edit the menu with the button below.</p>
       <button onclick="editMenu()">Edit Menu</button>
       <h1>Orders:</h1>
         <% if (orders.length > 0) { %>
           <% orders.forEach(order => { %>
-            <h3 class="order-unformatted" id="orderBodies" orderId="test"><%= JSON.stringify(order) %></h3>
+            <h3 class="order-unformatted" id="orderBodies"><%= JSON.stringify(order) %></h3>
           <% }) %>
         <% } else { %>
           <p>There are no orders to display...</p>

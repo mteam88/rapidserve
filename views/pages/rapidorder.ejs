@@ -3,7 +3,7 @@
   <head>
     <%- include('../partials/_head') %>
   </head>
-  <body onload="updateContent()" id="grad">
+  <body id="grad">
     <div id="sidebar" class="sidebar">
       <span class="sidebar-button" style="position: absolute;top:10px;"><img style="width: 55px;height: 55px;margin: 10px;" src="public/assets/profile-icon.png"><span class="sidebar-text" style="bottom: 22px;color:white">Profile</span></span>
       <span class="sidebar-button" style="position: absolute;top:105px;"><img style="width: 55px;height: 55px;margin: 10px;" src="public/assets/settings-icon.jpg"><span class="sidebar-text" style="bottom: 22px;color:white">Settings</span></span>
@@ -54,36 +54,16 @@
     </div>
     <script src="/public/js/sidebar.js"></script>
     <script>
+      var urlParameters = new URLSearchParams(window.location.search);
+      var outputBinary = [];
+
       var menuCheck = window.setInterval(CreateMenu, 100);
       const submitButton = document.getElementById('submitButton');
       submitButton.addEventListener('click', (e) => {
         const endpoint = '/rapidorder/';
-        var orderBody = {orderBody: "Blah!!!"};
-        var table = document.getElementById("ordertable").rows;
-        var boxes = [];
-        var loopAmount = table.length;
-        for (var i = 0;i < loopAmount;i++) {
-          if (table[i].id.includes("menu-row")) {
-            var loopAmount2 = table[i].cells.length;
-            for (var k = 0;k < loopAmount2;k++) {
-              boxes.push(table[i].cells[k]);
-            }
-          }
-        }
         
-        var output = [];//CEDRIC starts here
-        var loopAmount = boxes.length;
-        for (var i = 0;i < loopAmount;i++) {
-          var BG = (boxes[i].style.backgroundColor == "red") ? 1 : 0;
-          //console.log(j);
-          output.push(BG);
-        } 
-        
-        console.log(output);
-        output = output.join('');
-        //alert(output);
+        output = outputBinary.join('');
         var orderBody = output;
-        //CEDRIC this is stuff i did. feel free to comment it out.
         var formatted = [];
         var encodedKey = encodeURIComponent('orderBody');
         var encodedValue = encodeURIComponent(output);
@@ -100,18 +80,26 @@
         })
         .then(response => response.json())
             .then((data) => {
-              //alert(data);
-              //alert(data.status)
               if (data.status == 'success') {
-                //alert("success!!!");
+                sessionStorage.removeItem("orderPreset");
                 plcordr();
               }
         })
         .catch((err) => {alert(err)})
       });
+
       function CreateMenu() {
         if (menuObject) {
           clearInterval(menuCheck);
+          var orderPreset = sessionStorage.getItem("orderPreset");
+          if (!orderPreset) {
+            orderPreset = "0";
+          }
+          if (urlParameters.has("order")) {
+            orderPreset = urlParameters.get("order");
+          }
+          orderPreset = orderPreset.split("");
+          outputBinary = orderPreset;
           var loopAmount = 0;
           var tableRow = document.createElement("tr");
           tableRow.id = "menu-row0";
@@ -130,21 +118,25 @@
             }
             var tableRow = document.createElement("tr");
             tableRow.id = "menu-row" + (1 + i);
+            var k = 0;
             for (var [key, value] of Object.entries(menuObject)) {
-              if (value.length < i) {
-                var rowCell = document.createElement("td");
-                rowCell.innerHTML = "";
-                tableRow.appendChild(rowCell);
-              } else {
-                var rowCell = document.createElement("td");
+              var rowCell = document.createElement("td");
+              if (value.length >= i) {
                 rowCell.classList.add("selectable");
-                rowCell.onclick = function() {changebg(this)};
                 rowCell.innerHTML = value[i - 1];
+                if (orderPreset[(i - 1) * Object.keys(menuObject).length + k] == 1) {
+                  rowCell.style.backgroundColor = "red";
+                }
+                rowCell.number = (i - 1) * Object.keys(menuObject).length + k;
+                rowCell.onclick = function() {changebg(this);outputBinary[this.number] = (this.style.backgroundColor == "red") ? 1 : 0;sessionStorage.setItem("orderPreset", outputBinary.join(""));};
                 tableRow.appendChild(rowCell);
               }
+              tableRow.appendChild(rowCell);
+              k += 1;
             }
             document.getElementById("ordertable").appendChild(tableRow);
           }
+          sessionStorage.setItem("orderPreset", outputBinary.join(""));
         }
       }
     </script>

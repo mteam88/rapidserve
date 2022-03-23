@@ -1,5 +1,5 @@
 nutrislice argument
-NOTETOCEDRIC: "npm start" runs the server
+NOTETOCEDRIC: "npm run start" runs the server
 NOTETOCEDRIC: https://gitpod.io/#github.com/mteam88/rapidservehtml
 
 Make sure to focus on server interactions and not details
