@@ -73,7 +73,7 @@ app.get('/information', function (req, res) {
 app.delete('/lunchstaff/:id', (req, res) => {
     const id = req.params.id;
     Order.findByIdAndDelete(id)
-        .then()
+        .catch((err) => console.log(err));
 })
 
 app.get('/lunchstaff', function (req, res) {
@@ -94,7 +94,7 @@ app.get('/main', function (req, res) {
     res.redirect('/home');
 });
 app.get('/history', function (req, res) {
-    res.render('pages/history');
+    res.render('pages/history.ejs');
 });
 app.get('/rapid', function (req, res) {
     res.redirect('/home');
@@ -103,5 +103,6 @@ app.get('/rapidserve', function (req, res) {
     res.redirect('/home');
 });
 app.use((req, res, next) => {
+    console.log("404");
     res.status(404).redirect('/');
   });

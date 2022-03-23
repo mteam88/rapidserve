@@ -22,33 +22,56 @@
       </div>
   
       <h1 class="bubbleheader">History</h1>
-      <div id="history">
+      <div id="historyDiv" style="display: inline-block;padding: 10px;font-family: Arial, Helvetica, sans-serif;font-weight: bold;">
 
       </div>
     </div>
     <script>
-        var history = JSON.parse(localStorage.getItem("history"));
-        if (!history) {
-            history = [{order:010001110000,order-time:Date.now()}];
+        var orderHistory = JSON.parse(localStorage.getItem("order-history"));
+        if (!orderHistory) {
+            orderHistory = [{order:["Water","Cheesburger"],order_time:new Date()},{order:["Water","Cheesburger"],order_time:new Date()},{order:["Water","Cheesburger"],order_time:new Date()}];
         }
-        var loopAmount = history.length;
+        var loopAmount = orderHistory.length;
         for (var i = 0;i < loopAmount;i++) {
-            var historyItem = history[i];
+            var historyItem = orderHistory[i];
             var orderFormatted = "";
-            for (const [index, element] of historyItem.order.toString().split('').entries()) {
-                if (element == 1) {
-                    orderFormatted += ", " + menuObjectCode[index];
-                }
+            var loopAmount = orderHistory[i].order.length;
+            for (var k = 0;k < loopAmount;k++) {
+                orderFormatted += "<br>" + orderHistory[k].order[i];
             }
             var orderDiv = document.createElement("div");
             orderDiv.id = "history-item" + i;
             orderDiv.classList.add("history-item");
-            var orderHeader = document.createElement("h2");
-            orderHeader.innerHTML = "History Item " + (i + 1);
+            var orderTitle = document.createElement("span");
+            orderTitle.style.fontWeight = "bold";
+            orderTitle.style.fontSize = "25px";
+            orderTitle.innerHTML = "Order Item " + (i + 1) + " - ";
+            var orderHeader = document.createElement("span");
+            orderHeader.appendChild(orderTitle);
+            orderHeader.style.fontSize = "22px";
+            orderHeader.item = historyItem;
+            orderHeader.innerHTML += historyItem.order_time.toLocaleString("en-US") + "<span class='selectable' onclick=ReorderItem(this.parentElement.item)' style='color: rgba(0, 200, 0);margin: 10px;'>Re-order</span><span class='selectable' onclick='FavoriteHistoryItem(this.parentElement.item)' style='color: rgba(250, 239, 0);'>Favorite</span><br>";
             orderDiv.appendChild(orderHeader);
             var order = document.createElement("span");
-            order.innerHTML = orderFormatted.replace(", ","");
+            order.style.fontSize = "18px";
+            order.innerHTML = orderFormatted.replace("<br> ","");
             orderDiv.appendChild(order);
+            document.getElementById("historyDiv").appendChild(orderDiv);
+        }
+
+        function Favorite(order) {
+
+        }
+
+        function CanReorder(order) {
+          var loopAmount = order.length;
+          for (var i = 0;i < loopAmount;i++) {
+            if (!menuObjectCode.includes(order[i])) {
+              return false;
+            }
+          }
+
+          return true;
         }
     </script>
   </body>

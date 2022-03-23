@@ -79,22 +79,21 @@ function formatOrders() {
                 orderFormatted += "<br>" + menuObjectCode[index];
             }
         }
-        orderElem.innerHTML = orderFormatted.replace("<br>", "");
-        orderElem.orderId = orderElemObject.underscoreid;
-        var idtemp = orderElem.orderId;
         orderElem.remove();
         var orderDiv = document.createElement("div");
         orderDiv.classList.add("order-formatted");
         orderDiv.classList.add("selectable");
+        orderDiv.id = "staff-order" + i;
         var orderHeader = document.createElement("h2");
         orderHeader.innerHTML = "Order " + orderNumber + "&#9660;";
         orderHeader.orderNum = orderNumber;
-        orderDiv.dataset.orderId = idtemp;
         orderHeader.onclick = function(event) {var thisOrderDiv = event.target.parentElement;thisOrderDiv.lastChild.hidden = !thisOrderDiv.lastChild.hidden;var orderNum = event.target.orderNum;event.target.innerHTML = "Order " + orderNum + ((thisOrderDiv.lastChild.hidden) ? "&#9660;" : "&#9650;");};
         orderDiv.appendChild(orderHeader);
-        var button = document.createElement("button");
-        button.value = "delete";
-        button.onclick = function(event) {};
+        var button = document.createElement("p");
+        button.innerHTML = "delete";
+        button.orderId = orderElemObject.underscoreid;
+        button.orderNum = i;
+        button.onclick = function(event) {deleteOrderById(event.target.orderId);document.getElementById("staff-order" + event.target.orderNum).remove();};
         orderDiv.appendChild(button);
         var order = document.createElement("p");
         order.innerHTML = orderFormatted.replace("<br>","");
@@ -107,12 +106,12 @@ function formatOrders() {
 }
 
 function deleteOrderById(id) {
-    var endpoint = '/lunchstaff/${id}';
+    var endpoint = `/lunchstaff/${id}`;
     fetch(endpoint, {
         method: 'DELETE',
     })
-        .then(() => {
-
+        .then((result) => {
+            console.log(result);
         })
         .catch((err) => {
             console.warn(err);

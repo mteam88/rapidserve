@@ -189,3 +189,15 @@ tr:nth-child(odd) {
 .sidebar-button {
     cursor: pointer;
 }
+
+.history-item {
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 15px;
+    border: 1px solid black;
+}
+
+hr {
+    height: 1px;
+    background-color: black;
+    border: none;
+}
