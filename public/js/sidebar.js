@@ -6,5 +6,5 @@ document.body.appendChild(overlay);
 
 function CheckIfHovering() {
     var fullStyles = window.getComputedStyle(document.getElementById("sidebar"));
-    overlay.style.backgroundColor = "rgba(0, 0, 0, " + (0.4 / 225 * (Number(fullStyles.getPropertyValue("width").replace("px","")) - 74)) + ")";
+    overlay.style.backgroundColor = "rgba(0, 0, 0, " + (0.7 / 175 * (Number(fullStyles.getPropertyValue("width").replace("px","")) - 74)) + ")";
 }

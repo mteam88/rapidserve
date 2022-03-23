@@ -161,10 +161,11 @@ tr:nth-child(odd) {
     transition: 0.75s;
     transition-timing-function: ease;
     transition-delay: 100ms;
+    overflow-x: hidden;
 }
 
 .sidebar:hover {
-    width: 300px;
+    width: 250px;
 }
 
 .overlay {
@@ -175,4 +176,11 @@ tr:nth-child(odd) {
     height: 100%;
     z-index: 2;
     pointer-events: none;
+}
+
+.sidebar-text {
+    position: absolute;
+    left: 90px;
+    font-size: 25px;
+    font-family: Arial, Helvetica, sans-serif;
 }
