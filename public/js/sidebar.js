@@ -1,58 +1,10 @@
-window.onload = function() {
-    var onGlobal = false;
+window.setInterval(CheckIfHovering, 10);
+var overlay = document.createElement("div");
+overlay.id = "overlay";
+overlay.classList.add("overlay");
+document.body.appendChild(overlay);
 
-    function SetOpacity(on) {
-        onGlobal = on;
-        if (on) {
-            if (!document.getElementById("overlay")) {
-                var overlay = document.createElement("div");
-                overlay.id = "overlay";
-                overlay.style.backgroundColor = "rgba(0, 0, 0, 0)";
-                overlay.classList.add("overlay");
-                document.body.appendChild(overlay);
-                window.setTimeout(function() {FinishOpacity(true);}, 100);
-            }
-        } else {
-            if (document.getElementById("overlay")) {
-                window.setTimeout(function() {FinishOpacity(false);}, 100);
-            }
-        }
-    }
-    async function FinishOpacity(on) {
-        var overlay = document.getElementById("overlay");
-        var length = 50;
-        length = 50 - (overlay.style.backgroundColor.split(',')[3].replace(")","") / 0.4 * 50);
-        if (!length && length != 0) {
-            length = 50;
-        }
-        onGlobal = on;
-        if (overlay) {
-            if (on) {
-                for (var i = 0;i < length;i++) {
-                    if (!onGlobal) {
-                        break;
-                    }
-                    overlay.style.backgroundColor = "rgba(0, 0, 0, " + (0.4 / length * i) + ")";
-                    await sleep(1);
-                }
-            } else {
-                for (var i = 50 - length;i > 0;i--) {
-                    if (onGlobal) {
-                        break;
-                    }
-                    overlay.style.backgroundColor = "rgba(0, 0, 0, " + (0.4 / (50 - length) * i) + ")";
-                    await sleep(1);
-                }
-                if (document.getElementById("overlay")) {
-                    document.getElementById("overlay").remove();
-                }
-            }
-        }
-    }
-    var elements = document.getElementsByClassName("sidebar");
-    var loopAmount = elements.length;
-    for (var i = 0; i < loopAmount; i++) {
-        elements[i].addEventListener('mouseover', function() {SetOpacity(true);}, false);
-        elements[i].addEventListener('mouseout', function() {SetOpacity(false);}, false);
-    }
-};
+function CheckIfHovering() {
+    var fullStyles = window.getComputedStyle(document.getElementById("sidebar"));
+    overlay.style.backgroundColor = "rgba(0, 0, 0, " + (0.4 / 225 * (Number(fullStyles.getPropertyValue("width").replace("px","")) - 74)) + ")";
+}
