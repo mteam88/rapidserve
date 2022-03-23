@@ -64,3 +64,11 @@ function changebg(element) {
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
+
+function formatOrders() {
+    orderElems = document.getElementsByTagName("h3");
+    for (var i = 0, orderElem; orderElem = orderElems[i]; i++) {
+        alert(orderElem.innerHTML);
+        
+    }
+}

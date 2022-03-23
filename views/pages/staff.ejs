@@ -18,12 +18,13 @@
       <p>Welcome, lunch staff. Edit the menu with the button below.</p>
       <button onclick="editMenu()">Edit Menu</button>
       <h1>Orders:</h1>
-      <% if (orders.length > 0) { %>
-        <% orders.forEach(order => { %>
-          <h3><%= order.orderBody %></h3>
-        <% }) %>
-      <% } else { %>
-        <p>There are no orders to display...</p>
-      <% } %>
+        <% if (orders.length > 0) { %>
+          <% orders.forEach(order => { %>
+            <h3 id="orderBodies"><%= order.orderBody %></h3>
+          <% }) %>
+        <% } else { %>
+          <p>There are no orders to display...</p>
+        <% } %>
+        <button type="button" onclick="formatOrders();">GetOrders</button>
     </div>
   </body>
