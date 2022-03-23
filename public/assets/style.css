@@ -11,7 +11,7 @@
     float: left;
     color: #f2f2f2;
     text-align: center;
-    padding: 10px 30px;
+    padding: 10px 20px;
     text-decoration: none;
     font-size: 30px;
     border-radius: 20px;
@@ -31,9 +31,12 @@
 
 .topnav img.navlogo {
     padding-bottom: 0px;
+    padding-left: 9px;
+    padding-right: 1px;
     height: 54px;
     background: transparent;
     float: left;
+    border-radius: 20px;
 }
 .topnav a.navlogospot {
     float: center;
@@ -120,19 +123,56 @@ tr:nth-child(odd) {
     left: -300px;
     width: 300px;
 }
+
 #bottomof.addedclass {
     animation-name: zoom;
+    
     animation-duration: 4s;
 }
 @keyframes zoom {
     0%   {left:-300px;}
     100%  {left:150%;}
-  }
+}
+
 .shadow {
     box-shadow: 5px 5px rgb(0, 0, 0);
 }
+
 .bubbleheader {
     border-radius: 20px;
     padding: 10px;
     box-shadow: 5px 5px rgb(41, 58, 136);
+}
+
+.content {
+    margin: 20px;
+    margin-left: 95px;
+    padding: 10px;
+}
+
+.sidebar {
+    height: 100%;
+    width: 75px;
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    background-color: rgb(17, 17, 17);
+    z-index: 3;
+    transition: 0.75s;
+    transition-timing-function: ease;
+    transition-delay: 100ms;
+}
+
+.sidebar:hover {
+    height: 100%;
+    width: 300px;
+}
+
+.overlay {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
 }

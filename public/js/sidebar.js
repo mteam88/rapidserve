@@ -1,8 +1,5 @@
 window.onload = function() {
-    var onGlobal = false;
-
     function SetOpacity(on) {
-        onGlobal = on;
         if (on) {
             if (!document.getElementById("overlay")) {
                 var overlay = document.createElement("div");
@@ -25,7 +22,6 @@ window.onload = function() {
         if (overlay) {
             if (on) {
                 for (var i = 0;i < length;i++) {
-                    if ()
                     overlay.style.backgroundColor = "rgba(0, 0, 0, " + (0.4 / length * i) + ")";
                     await sleep(1);
                 }
