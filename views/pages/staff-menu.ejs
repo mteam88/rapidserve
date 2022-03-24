@@ -24,6 +24,7 @@
       <button onclick="EditMenu()">Edit Menu</button>
     </div>
     <script>
+        var table = document.getElementById("menu-table");
         var menuCheckStaff = window.setInterval(CreateMenuStaff, 100);
   
         function CreateMenuStaff() {
@@ -40,45 +41,105 @@
               rowCell.innerHTML = key.replace(/_/g,"");
               tableRow.appendChild(rowCell);
             }
-            document.getElementById("menu-table").appendChild(tableRow);
-            for (var i = 0;i < loopAmount;i++) {
+            table.appendChild(tableRow);
+            for (var i = 0;i < loopAmount + 1;i++) {
               if (i == 0) {
                 continue;
               }
               var tableRow = document.createElement("tr");
               tableRow.id = "menu-row" + (1 + i);
+              var k = 0;
               for (var [key, value] of Object.entries(menuObject)) {
                 var rowCell = document.createElement("td");
                 if (value.length >= i) {
-                    rowCell.classList.add("staffMenuRowCell");
-                    rowCell.innerHTML = value[i - 1];
-                    tableRow.appendChild(rowCell);
+                  rowCell.classList.add("staffMenuRowCell");
+                  rowCell.innerHTML = value[i - 1];
+                } else if (value.length == i - 1) {
+                  rowCell.classList.add("staffMenuAddRowCell");
+                  rowCell.classList.add("selectable");
+                  rowCell.xCell = k;
+                  rowCell.yCell = i;
                 }
                 tableRow.appendChild(rowCell);
+                k += 1;
               }
-              document.getElementById("menu-table").appendChild(tableRow);
+              if (i == loopAmount) {
+                tableRow.hidden = true;
+              }
+              table.appendChild(tableRow);
             }
           }
         }
 
         function EditMenu() {
-            var tableRow = document.createElement("tr");
-            tableRow.id = "menu-add-item";
-            for (var [key, value] of Object.entries(menuObject)) {
-              var rowCell = document.createElement("th");
-              rowCell.innerHTML = "<b>+</b>";
-              rowCell.style.textAlign = "center";
-              rowCell.style.fontSize = "20px";
-              rowCell.style.backgroundColor = "lightgreen";
-              rowCell.classList.add("selectable");
-              tableRow.appendChild(rowCell);
+            var addRowCells = document.getElementsByClassName("staffMenuAddRowCell");
+            addRowCells[0].parentElement.hidden = false;
+            var loopAmount = addRowCells.length;
+            for (var i = 0;i < loopAmount;i++) {
+                var addRowCell = addRowCells[i];
+                addRowCell.innerHTML = "<b>+</b>";
+                addRowCell.onclick = function(event) {AddCell(event.target.xCell, event.target.yCell);};
             }
-            document.getElementById("menu-table").appendChild(tableRow);
             var rowCells = document.getElementsByClassName("staffMenuRowCell");
             var loopAmount = rowCells.length;
             for (var i = 0;i < loopAmount;i++) {
                 var rowCell = rowCells[i];
             }
+        }
+
+        function AddCell(x, y) {
+          var addRowCellsOffset = 0;
+          if (y + 1 == table.rows.length) {
+            var addRowCells = document.getElementsByClassName("staffMenuAddRowCell");
+            var newRow = table.insertRow(y);
+            var loopAmount = table.rows[0].cells.length;
+            for (var i = 0;i < loopAmount;i++) {
+              var rowCell = newRow.insertCell(i);
+              var addRowCell = addRowCells[i + addRowCellsOffset];
+              if (i == x) {
+                rowCell.classList.add("staffMenuRowCell");
+                rowCell.innerHTML = "<span style='color: red'><i>empty</i></span>";
+                var loopAmount2 = addRowCells.length;
+                for (var k = 0;k < loopAmount2;k++) {
+                  var addRowCellTemp = addRowCells[k];
+                  if (addRowCellTemp.xCell == x) {
+                    addRowCellTemp.yCell = y + 1;
+                  }
+                }
+              } else if (addRowCell.yCell == y && addRowCell.xCell == i) {
+                rowCell.classList.add("staffMenuAddRowCellTemp");
+                rowCell.classList.add("selectable");
+                rowCell.innerHTML = "<b>+</b>";
+                rowCell.xCell = addRowCell.xCell;
+                rowCell.yCell = addRowCell.yCell;
+                rowCell.onclick = function(event) {AddCell(event.target.xCell, event.target.yCell);};
+                addRowCellsOffset -= 1;
+                addRowCell.onclick = "";
+                addRowCell.innerHTML = "";
+                addRowCell.classList.remove("staffMenuAddRowCell");
+                addRowCell.classList.remove("selectable");
+              }
+            }
+            var addRowCellsTemp = document.getElementsByClassName("staffMenuAddRowCellTemp");
+            var loopAmount = addRowCellsTemp.length;
+            for (var i = 0;i < loopAmount;i++) {
+              addRowCellsTemp[0].classList.add("staffMenuAddRowCell");
+              addRowCellsTemp[0].classList.remove("staffMenuAddRowCellTemp");
+            }
+          } else {
+            var rowCell = table.rows[y].cells[x];
+            rowCell.classList.add("staffMenuRowCell");
+            rowCell.classList.remove("staffMenuAddRowCell");
+            rowCell.classList.remove("selectable");
+            rowCell.innerHTML = "<span style='color: red'><i>empty</i></span>";
+            var addRowCell = table.rows[y + 1].cells[x];
+            addRowCell.classList.add("staffMenuAddRowCell");
+            addRowCell.classList.add("selectable");
+            addRowCell.xCell = x;
+            addRowCell.yCell = y + 1;
+            addRowCell.innerHTML = "<b>+</b>";
+            addRowCell.onclick = function(event) {AddCell(event.target.xCell, event.target.yCell);};
+          }
         }
       </script>
   </body>

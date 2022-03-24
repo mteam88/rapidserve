@@ -210,3 +210,9 @@ hr {
     background-color: black;
     border: none;
 }
+
+.staffMenuAddRowCell {
+    text-align: center;
+    font-size: 20px;
+    background-color: lightgreen;
+}
