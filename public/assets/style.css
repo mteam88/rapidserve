@@ -89,16 +89,47 @@ html {
 table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
-    width: 100%;
+    width: 98%;
     opacity: 0.8;
-    border: 1px solid black;
     margin: 5px;
+    font-weight: bold;
+    table-layout: fixed;
+    display: block;
+}
+
+td {
+    min-width: 326px;
+}
+
+tr {
+    height: 54px;
+    width: 1%;
+    white-space: nowrap;
 }
 
 table input {
-    margin-left: 1.5%;
-    width: 95%;
-    height: 24px;
+    width: 200px;
+    height: 30px;
+    background-color: transparent;
+    border: 2px solid black;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+table span.removeButton {
+    margin-left: 10px;
+    width: 100px;
+    font-size: 20px;
+    background-color: rgb(247, 40, 40);
+    border: 1px solid black;
+    border-radius: 10px;
+    font-weight: normal;
+    padding: 5px;
+    cursor: pointer;
+}
+
+table span.removeButton:hover {
+    background-color: rgb(179, 17, 17);
 }
 
 .rowCell {
@@ -115,9 +146,10 @@ table input {
 
 .menuHeader {
     border: 1px solid black;
-    text-align: left;
+    text-align: center;
     padding: 8px;
     background-color: darkgray;
+    font-size: 20px;
 }
 
 .staffMenuAddRowCell {
@@ -138,7 +170,7 @@ table input {
 
 .invisible {
     border: none;
-    background-color: transparent;
+    background-color: white;
 }
 
 #saveMenuButton {
