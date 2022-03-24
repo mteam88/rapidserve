@@ -46,6 +46,9 @@ function plcordr() {
 //}
 
 function changebg(element) {
+    if (element.classList.includes("transparent")) {
+        return;
+    }
 //    element.style.backgroundColor = (element.style.backgroundColor == "red") ? "white":"red";
 //    element.style.backgroundColor = (element.style.backgroundColor == "#dddddd") ? "red":"#dddddd";
     if (element.style.backgroundColor == "red") {

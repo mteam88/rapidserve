@@ -40,6 +40,11 @@
               rowCell.innerHTML = key.replace(/_/g," ");
               tableRow.appendChild(rowCell);
             }
+            var rowCell = tableRow.insertCell(tableRow.length);
+            rowCell.classList.add("staffMenuAddColumnCell");
+            rowCell.classList.add("selectable");
+            rowCell.innerHTML = "<b>+</b>";
+            rowCell.onclick = function(event) {AddColumn(event.target.xCell, event.target.yCell);};
             table.appendChild(tableRow);
             for (var i = 0;i < loopAmount + 1;i++) {
               if (i == 0) {
