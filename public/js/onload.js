@@ -8,19 +8,19 @@ if (request.status != 200) {
 } else {
     menuObject = JSON.parse(request.responseText);
 }
-var loopAmount = 0;
-for (var [key, value] of Object.entries(menuObject)) {
-    if (value.length + 1 > loopAmount) {
-      loopAmount = value.length + 1;
+var loopAmountLoad = 0;
+for (let [key, value] of Object.entries(menuObject)) {
+    if (value.length + 1 > loopAmountLoad) {
+      loopAmountLoad = value.length + 1;
     }
 }
-for (var i = 0;i < loopAmount;i++) {
-    if (i == 0) {
+for (var j = 0;j < loopAmountLoad;j++) {
+    if (j == 0) {
         continue;
     }
     for (var [key, value] of Object.entries(menuObject)) {
-        if (value.length >= i) {
-            menuObjectCode.push(value[i - 1]);
+        if (value.length >= j) {
+            menuObjectCode.push(value[j - 1]);
         }
     }
 }
