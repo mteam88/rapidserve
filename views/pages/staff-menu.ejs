@@ -6,11 +6,7 @@
   <body>
     <%- include('../partials/_staff-sidebar') %>
     <div id="content" class="content">
-      <div class="topnav shadow">
-        <a class="navlogospot" href="/home"><img class="navlogo" src="/public/assets/Rlogo.png"></img></a>
-        <a href="orders">Orders</a>
-        <a class="active" href="menu">Menu</a>
-      </div>
+      <%- include('../partials/_staff-topnav', {activeItem: "Menu"}) %>
       <br> 
       <p>Welcome, lunch staff. Edit the menu with the button below.</p>
         <table id="menu-table">
@@ -46,8 +42,7 @@
             rowCell.yCell = 0;
             rowCell.classList.add("staffMenuAddColumnCell");
             rowCell.classList.add("selectable");
-            rowCell.innerHTML = "<b>+</b>";
-            rowCell.onclick = function(event) {AddColumn(event.target.xCell, event.target.yCell);};
+            rowCell.hidden = true;
             table.appendChild(tableRow);
             for (var i = 0;i < loopAmount + 1;i++) {
               if (i == 0) {
@@ -73,9 +68,10 @@
               }
               var x = tableRow.length;
               var rowCell = tableRow.insertCell(x);
-              rowCell.classList.add("staffMenuRowCell");
+              rowCell.classList.add("invisible");
               rowCell.xCell = x;
               rowCell.yCell = i;
+              rowCell.hidden = true;
               table.appendChild(tableRow);
             }
           }
@@ -92,6 +88,16 @@
                 addRowCell.hidden = false;
                 addRowCell.innerHTML = "<b>+</b>";
                 addRowCell.onclick = function(event) {AddCell(event.target.xCell, event.target.yCell);};
+            }
+            var addColumnCells = document.getElementsByClassName("staffMenuAddColumnCell");
+            var loopAmount = addColumnCells.length;
+            for (var i = 0;i < loopAmount;i++) {
+                var addColumnCell = addColumnCells[i];
+                addColumnCell.hidden = false;
+                if (i == 0) {
+                  addColumnCell.innerHTML = "<b>+</b>";
+                  addColumnCell.onclick = function(event) {AddColumn();};
+                }
             }
             var rowCells = document.getElementsByClassName("staffMenuRowCell");
             var loopAmount = rowCells.length;
@@ -115,6 +121,15 @@
                 var addRowCell = addRowCells[i];
                 addRowCell.hidden = true;
                 addRowCell.innerHTML = "";
+            }
+            var addColumnCells = document.getElementsByClassName("staffMenuAddColumnCell");
+            var loopAmount = addColumnCells.length;
+            for (var i = 0;i < loopAmount;i++) {
+                var addColumnCell = addColumnCells[i];
+                addColumnCell.hidden = true;
+                if (i == 0) {
+                  addColumnCell.innerHTML = "";
+                }
             }
             var rowCells = document.getElementsByClassName("staffMenuRowCell");
             var loopAmount = rowCells.length;
@@ -140,7 +155,9 @@
               tempAddRowCells[addRowCells[i].xCell] = addRowCells[i];
             }
             addRowCells = tempAddRowCells;
+            table.rows[y - 1].id = "menu-row" + (y - 1);
             var newRow = table.insertRow(y);
+            newRow.id = "menu-row" + y;
             var loopAmount = table.rows[0].cells.length;
             for (var i = 0;i < loopAmount;i++) {
               var rowCell = newRow.insertCell(i);
@@ -200,18 +217,24 @@
         }
 
         function AddColumn() {
-          var loopAmount = table.length;
+          var loopAmount = table.rows.length;
           for (var i = 0;i < loopAmount;i++) {
             var tableRow = table.rows[i];
-            var x = tableRow.length;
-            var newCell = tableRow.insertCell(x);
-            newCell.xCell = x;
-            newCell.yCell = i;
+            var x = tableRow.cells.length;
+            var newCell;
             if (i == 0) {
-              newCell.classList.add("staffMenuAddRowCell");
-              newCell.classList.add("selectable");
+              newCell = tableRow.insertCell(x - 1);
+              newCell.classList.add("menuHeader");
+              newCell.classList.remove("staffMenuAddColumnCell");
+              newCell.classList.remove("selectable");
+            } else {
+              newCell = tableRow.insertCell(x);
               newCell.xCell = x;
               newCell.yCell = i;
+            }
+            if (i == 1) {
+              newCell.classList.add("staffMenuAddRowCell");
+              newCell.classList.add("selectable");
               newCell.innerHTML = "<b>+</b>";
               newCell.onclick = function(event) {AddCell(event.target.xCell, event.target.yCell);};
             } else {

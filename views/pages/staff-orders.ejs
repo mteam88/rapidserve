@@ -6,14 +6,9 @@
   <body>
     <%- include('../partials/_staff-sidebar') %>
     <div id="content" class="content">
-      <div class="topnav shadow">
-        <a class="navlogospot" href="/home"><img class="navlogo" src="/public/assets/Rlogo.png"></img></a>
-        <a class="active" href="orders">Orders</a>
-        <a href="menu">Menu</a>
-      </div>
+      <%- include('../partials/_staff-topnav', {activeItem: "Orders"}) %>
       <br> 
-      <p>Welcome, lunch staff. Edit the menu with the button below. Select the delete button next to each order to remove it from the database. It may take a few seconds to go into effect.</p>
-      <button onclick="editMenu()">Edit Menu</button>
+      <p>Welcome, lunch staff. Select the delete button next to each order to remove it from the database. It may take a few seconds to go into effect.</p>
       <h1>Orders:</h1>
         <% if (orders.length > 0) { %>
           <% orders.forEach(order => { %>
