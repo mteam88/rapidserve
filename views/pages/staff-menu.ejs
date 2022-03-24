@@ -40,6 +40,14 @@
               rowCell.innerHTML = key.replace(/_/g," ");
               tableRow.appendChild(rowCell);
             }
+            var x = tableRow.length;
+            var rowCell = tableRow.insertCell(x);
+            rowCell.xCell = x;
+            rowCell.yCell = 0;
+            rowCell.classList.add("staffMenuAddColumnCell");
+            rowCell.classList.add("selectable");
+            rowCell.innerHTML = "<b>+</b>";
+            rowCell.onclick = function(event) {AddColumn(event.target.xCell, event.target.yCell);};
             table.appendChild(tableRow);
             for (var i = 0;i < loopAmount + 1;i++) {
               if (i == 0) {
@@ -63,6 +71,11 @@
                 tableRow.appendChild(rowCell);
                 k += 1;
               }
+              var x = tableRow.length;
+              var rowCell = tableRow.insertCell(x);
+              rowCell.classList.add("invisible");
+              rowCell.xCell = x;
+              rowCell.yCell = i;
               table.appendChild(tableRow);
             }
           }
