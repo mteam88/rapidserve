@@ -4,12 +4,7 @@
     <%- include('../partials/_head') %>
   </head>
   <body>
-    <div id="sidebar" class="sidebar">
-      <span style="position: absolute;top:10px;"><img style="width: 55px;height: 55px;margin: 10px;" src="/public/assets/profile-icon.png"><span class="sidebar-text" style="bottom: 22px;color:white"><b>Profile</b></span></span>
-      <span style="position: absolute;top:105px;"><img style="width: 55px;height: 55px;margin: 10px;" src="/public/assets/settings-icon.jpg"><span class="sidebar-text" style="bottom: 22px;color:white"><b>Settings</b></span></span>
-      <span style="position: absolute;top:375px;"><img style="width: 55px;height: 55px;margin: 10px;" src="/public/assets/about-icon.png"><span class="sidebar-text" style="bottom: 22px;color:white"><b>About</b></span></span>
-      <span style="position: absolute;bottom:10px;"><img style="width: 55px;height: 55px;margin: 10px;" src="/public/assets/logout-icon.png"><span class="sidebar-text" style="bottom: 22px;color:red"><b>Logout</b></span></span>
-    </div>
+    <%- include('../partials/_staff-sidebar') %>
     <div id="content" class="content">
       <div class="topnav shadow">
         <a class="navlogospot" href="/home"><img class="navlogo" src="/public/assets/Rlogo.png"></img></a>
@@ -21,13 +16,16 @@
         <table id="menu-table">
           
         </table>
-      <button onclick="EditMenu()">Edit Menu</button>
+      <button id="editMenuButton" onclick="EditMenu()">Edit Menu</button>
+      <button id="discardMenuButton" onclick="DiscardMenu()" hidden>Discard</button>
+      <button id="saveMenuButton" onclick="SaveMenu()" hidden>Save</button>
     </div>
     <script>
         var table = document.getElementById("menu-table");
         var menuCheckStaff = window.setInterval(CreateMenuStaff, 100);
   
         function CreateMenuStaff() {
+          table.innerHTML = "";
           if (menuObject) {
             clearInterval(menuCheckStaff);
             var loopAmount = 0;
@@ -38,7 +36,8 @@
                 loopAmount = value.length + 1;
               }
               var rowCell = document.createElement("th");
-              rowCell.innerHTML = key.replace(/_/g,"");
+              rowCell.classList.add("menuHeader");
+              rowCell.innerHTML = key.replace(/_/g," ");
               tableRow.appendChild(rowCell);
             }
             table.appendChild(tableRow);
@@ -51,20 +50,18 @@
               var k = 0;
               for (var [key, value] of Object.entries(menuObject)) {
                 var rowCell = document.createElement("td");
+                rowCell.xCell = k;
+                rowCell.yCell = i;
                 if (value.length >= i) {
                   rowCell.classList.add("staffMenuRowCell");
                   rowCell.innerHTML = value[i - 1];
                 } else if (value.length == i - 1) {
                   rowCell.classList.add("staffMenuAddRowCell");
                   rowCell.classList.add("selectable");
-                  rowCell.xCell = k;
-                  rowCell.yCell = i;
+                  rowCell.hidden = true;
                 }
                 tableRow.appendChild(rowCell);
                 k += 1;
-              }
-              if (i == loopAmount) {
-                tableRow.hidden = true;
               }
               table.appendChild(tableRow);
             }
@@ -72,11 +69,14 @@
         }
 
         function EditMenu() {
+            document.getElementById("editMenuButton").hidden = true;
+            document.getElementById("discardMenuButton").hidden = false;
+            document.getElementById("saveMenuButton").hidden = false;
             var addRowCells = document.getElementsByClassName("staffMenuAddRowCell");
-            addRowCells[0].parentElement.hidden = false;
             var loopAmount = addRowCells.length;
             for (var i = 0;i < loopAmount;i++) {
                 var addRowCell = addRowCells[i];
+                addRowCell.hidden = false;
                 addRowCell.innerHTML = "<b>+</b>";
                 addRowCell.onclick = function(event) {AddCell(event.target.xCell, event.target.yCell);};
             }
@@ -84,6 +84,33 @@
             var loopAmount = rowCells.length;
             for (var i = 0;i < loopAmount;i++) {
                 var rowCell = rowCells[i];
+                rowCell.innerHTML = "<input type='text' placeholder='Input order' value='" + rowCell.innerHTML.replace('<span style="color: red"><i>empty</i></span>',"") + "'>";
+            }
+        }
+
+        function DiscardMenu() {
+          CreateMenuStaff();
+        }
+
+        function SaveMenu() {
+            document.getElementById("editMenuButton").hidden = false;
+            document.getElementById("discardMenuButton").hidden = true;
+            document.getElementById("saveMenuButton").hidden = true;
+            var addRowCells = document.getElementsByClassName("staffMenuAddRowCell");
+            var loopAmount = addRowCells.length;
+            for (var i = 0;i < loopAmount;i++) {
+                var addRowCell = addRowCells[i];
+                addRowCell.hidden = true;
+                addRowCell.innerHTML = "";
+            }
+            var rowCells = document.getElementsByClassName("staffMenuRowCell");
+            var loopAmount = rowCells.length;
+            for (var i = 0;i < loopAmount;i++) {
+                var rowCell = rowCells[i];
+                rowCell.innerHTML = rowCell.firstChild.value;
+                if (rowCell.innerHTML == "") {
+                  rowCell.innerHTML = "<span style='color: red'><i>empty</i></span>";
+                }
             }
         }
 
@@ -91,31 +118,45 @@
           var addRowCellsOffset = 0;
           if (y + 1 == table.rows.length) {
             var addRowCells = document.getElementsByClassName("staffMenuAddRowCell");
+            var tempAddRowCells = [];
+            var loopAmount = addRowCells.length;
+            for (var i = 0;i < loopAmount;i++) {
+              tempAddRowCells.push("");
+            }
+            for (var i = 0;i < loopAmount;i++) {
+              tempAddRowCells[addRowCells[i].xCell] = addRowCells[i];
+            }
+            addRowCells = tempAddRowCells;
             var newRow = table.insertRow(y);
             var loopAmount = table.rows[0].cells.length;
             for (var i = 0;i < loopAmount;i++) {
               var rowCell = newRow.insertCell(i);
-              var addRowCell = addRowCells[i + addRowCellsOffset];
+              rowCell.classList.add("invisible");
+              rowCell.xCell = i;
+              rowCell.yCell = y;
+              var addRowCell = addRowCells[i];
               if (i == x) {
+                rowCell.classList.remove("invisible");
                 rowCell.classList.add("staffMenuRowCell");
-                rowCell.innerHTML = "<span style='color: red'><i>empty</i></span>";
+                rowCell.innerHTML = "<input type='text' placeholder='Input order'>";
                 var loopAmount2 = addRowCells.length;
                 for (var k = 0;k < loopAmount2;k++) {
                   var addRowCellTemp = addRowCells[k];
                   if (addRowCellTemp.xCell == x) {
                     addRowCellTemp.yCell = y + 1;
+                    addRowCell.classList.remove("invisible");
                   }
                 }
               } else if (addRowCell.yCell == y && addRowCell.xCell == i) {
+                rowCell.classList.remove("invisible");
                 rowCell.classList.add("staffMenuAddRowCellTemp");
                 rowCell.classList.add("selectable");
                 rowCell.innerHTML = "<b>+</b>";
-                rowCell.xCell = addRowCell.xCell;
-                rowCell.yCell = addRowCell.yCell;
                 rowCell.onclick = function(event) {AddCell(event.target.xCell, event.target.yCell);};
                 addRowCellsOffset -= 1;
                 addRowCell.onclick = "";
                 addRowCell.innerHTML = "";
+                addRowCell.classList.add("invisible");
                 addRowCell.classList.remove("staffMenuAddRowCell");
                 addRowCell.classList.remove("selectable");
               }
@@ -129,16 +170,41 @@
           } else {
             var rowCell = table.rows[y].cells[x];
             rowCell.classList.add("staffMenuRowCell");
+            rowCell.classList.remove("invisible");
             rowCell.classList.remove("staffMenuAddRowCell");
             rowCell.classList.remove("selectable");
-            rowCell.innerHTML = "<span style='color: red'><i>empty</i></span>";
+            rowCell.innerHTML = "<input type='text' placeholder='Input order'>";
             var addRowCell = table.rows[y + 1].cells[x];
+            addRowCell.classList.remove("invisible");
+            addRowCell.classList.remove("staffMenuRowCell");
             addRowCell.classList.add("staffMenuAddRowCell");
             addRowCell.classList.add("selectable");
             addRowCell.xCell = x;
             addRowCell.yCell = y + 1;
             addRowCell.innerHTML = "<b>+</b>";
             addRowCell.onclick = function(event) {AddCell(event.target.xCell, event.target.yCell);};
+          }
+        }
+
+        function AddColumn() {
+          var loopAmount = table.length;
+          for (var i = 0;i < loopAmount;i++) {
+            var tableRow = table.rows[i];
+            var x = tableRow.length;
+            var newCell = tableRow.insertCell(x);
+            newCell.xCell = x;
+            newCell.yCell = i;
+            if (i == 0) {
+              newCell.classList.add("staffMenuAddRowCell");
+              newCell.classList.add("selectable");
+              newCell.xCell = x;
+              newCell.yCell = i;
+              newCell.innerHTML = "<b>+</b>";
+              newCell.onclick = function(event) {AddCell(event.target.xCell, event.target.yCell);};
+            } else {
+              newCell.classList.add("staffMenuRowCell");
+              newCell.classList.add("invisible");
+            }
           }
         }
       </script>
