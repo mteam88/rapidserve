@@ -94,11 +94,47 @@ table {
     border: 1px solid black;
     margin: 5px;
 }
-  
-td, th {
+
+table input {
+    margin-left: 1.5%;
+    width: 95%;
+    height: 24px;
+}
+
+.rowCell {
+    border: 1px solid black;
+    text-align: left;
+    padding: 1px;
+}
+
+.staffMenuRowCell {
     border: 1px solid black;
     text-align: left;
     padding: 8px;
+}
+
+.menuHeader {
+    border: 1px solid black;
+    text-align: left;
+    padding: 8px;
+    background-color: darkgray;
+}
+
+.staffMenuAddRowCell {
+    text-align: center;
+    font-size: 20px;
+    background-color: lightgreen;
+    border: 1px solid black;
+    padding: 8px;
+}
+
+.invisible {
+    border: none;
+    background-color: transparent;
+}
+
+#saveMenuButton {
+    background-color: lightgreen;
 }
 
 .selectable {
@@ -209,10 +245,4 @@ hr {
     height: 1px;
     background-color: black;
     border: none;
-}
-
-.staffMenuAddRowCell {
-    text-align: center;
-    font-size: 20px;
-    background-color: lightgreen;
 }
