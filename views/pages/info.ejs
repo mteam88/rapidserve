@@ -6,12 +6,7 @@
   <body id="grad">
     <%- include('../partials/_sidebar') %>
     <div id="content" class="content">
-      <div class="topnav shadow">
-        <a class="navlogospot" href="/"><img class="navlogo" src="/public/assets/Rlogo.png"></img></a>
-        <a href="rapidpoll">Poll</a>
-        <a href="rapidorder">Order</a>
-        <a class="active" href="info">Info</a>
-      </div>
+      <%- include('../partials/_topnav', {activeItem: ""}) %>
       <h1 class="bubbleheader">Info</h1>
       <p>
         Cedric Hotopp and Matthew Edelen are the creators of this website. 
