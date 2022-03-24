@@ -58,9 +58,6 @@ app.post('/rapidorder', (req, res) => {
 app.get('/', function (req, res) {
     res.redirect('/home');
 });
-app.get('/rapidpoll', function (req, res) {
-    res.render('pages/rapidpoll.ejs');
-});
 app.get('/rapidorder', function (req, res) {
     res.render('pages/rapidorder.ejs');
 });
