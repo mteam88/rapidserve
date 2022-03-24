@@ -9,3 +9,7 @@ Get domain name
 Set up client-side server communication
 Find a way to encrypt/hide mysql credentials
 UI
+
+FUNCTION FIRST F---- FANCY//
+No its frick. End your messages with "//"
+I added a dash
