@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <%- include('/workspace/rapidserver/views/partials/_head.ejs') %>
+</head>
+
+<body id="grad">
+    <%- include('/workspace/rapidserver/views/partials/_sidebar') %>
+        <div id="content" class="content">
+            <%- include('/workspace/rapidserver/views/partials/_topnav', {activeItem: "" }) %>
+                <h1 class="bubbleheader">Rapid Register</h1>
+                <p>Create an account below</p>
+                <h1>Register</h1>
+                <%- include ('/workspace/rapidserver/views/partials/messages') %>
+                <form action="/profile/register" method="POST">
+                    <div>
+                        <label for="name">Name</label>
+                        <input type="name" name="name" placeholder="Enter Name"
+                            value="<%= typeof name != 'undefined' ? name : '' %>" />
+
+                    </div>
+                    <div>
+                        <label for="email">Email</label>
+                        <input type="email" name="email" placeholder="Enter Email"
+                            value="<%= typeof email != 'undefined' ? email : '' %>" />
+                    </div>
+                    <div>
+                        <label for="password">Password</label>
+                        <input type="password" name="password" placeholder="Create Password"
+                            value="<%= typeof password != 'undefined' ? password : '' %>" />
+                    </div>
+                    <div>
+                        <label for="password2">Confirm Password</label>
+                        <input type="password" name="password2" placeholder="Confirm Password"
+                            value="<%= typeof password2 != 'undefined' ? password2 : '' %>" />
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">
+                        Register
+                    </button>
+                </form>
+                <p>Have An Account? <a href="/profile/login">Login</a></p>
+
+        </div>
+        <!--Content div close-->
+</body>
+
+</html>

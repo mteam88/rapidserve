@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('/workspace/rapidserver/views/partials/_head.ejs') %>
+  </head>
+  <body id="grad">
+    <%- include('/workspace/rapidserver/views/partials/_sidebar') %>
+    <div id="content" class="content">
+      <%- include('/workspace/rapidserver/views/partials/_topnav', {activeItem: ""}) %>
+      <h1 class="bubbleheader">Rapid Login</h1>
+      <%- include ('/workspace/rapidserver/views/partials/messages') %>
+      <p>Login to an account below</p>
+      <form action="/profile/login" method="POST">
+      <div>
+      <label for="email">Email</label>
+      <input
+      type="email"
+      name="email"
+      placeholder="Enter Email"
+      />
+      </div>
+      <div>
+          <label for="password">Password</label>
+          <input
+            type="password"
+            name="password"
+            placeholder="Enter Password"
+          />
+        
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Login</button>
+        
+      </form>
+    </div> <!--Content div close-->
+  </body>
+</html>
