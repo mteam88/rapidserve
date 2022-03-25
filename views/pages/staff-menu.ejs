@@ -9,9 +9,9 @@
       <%- include('../partials/_staff-topnav', {activeItem: "Menu"}) %>
       <br> 
       <p>Welcome, lunch staff. Edit the menu with the button below.</p>
-      <button id="editMenuButton" onclick="EditMenu()">Edit Menu</button>
-      <button id="discardMenuButton" onclick="DiscardMenu()" hidden>Discard</button>
-      <button id="saveMenuButton" onclick="SaveMenu()" hidden>Save</button>
+      <button id="editMenuButton" onmousedown="EditMenu()">Edit Menu</button>
+      <button id="discardMenuButton" onmousedown="DiscardMenu()" hidden>Discard</button>
+      <button id="saveMenuButton" onmousedown="SaveMenu()" hidden>Save</button>
       <div style="overflow-x: auto;">
         <table id="menu-table">
           
@@ -44,7 +44,7 @@
             rowCell.yCell = 0;
             rowCell.classList.add("staffMenuAddColumnCell");
             rowCell.classList.add("selectable");
-            rowCell.hidden = true;
+            rowCell.classList.add("invisible");
             table.appendChild(tableRow);
             for (var i = 0;i < loopAmount + 1;i++) {
               if (i == 0) {
@@ -63,7 +63,7 @@
                 } else if (value.length == i - 1) {
                   rowCell.classList.add("staffMenuAddRowCell");
                   rowCell.classList.add("selectable");
-                  rowCell.hidden = true;
+                  rowCell.classList.add("invisible");
                 }
                 tableRow.appendChild(rowCell);
                 k += 1;
@@ -73,7 +73,6 @@
               rowCell.classList.add("invisible");
               rowCell.xCell = x;
               rowCell.yCell = i;
-              rowCell.hidden = true;
               table.appendChild(tableRow);
             }
           }
@@ -87,18 +86,18 @@
             var loopAmount = addRowCells.length;
             for (var i = 0;i < loopAmount;i++) {
                 var addRowCell = addRowCells[i];
-                addRowCell.hidden = false;
+                addRowCell.classList.remove("invisible");
                 addRowCell.innerHTML = "<b>+</b>";
-                addRowCell.onclick = function(event) {AddCell(this.xCell, this.yCell);};
+                addRowCell.onmousedown = function(event) {AddCell(this.xCell, this.yCell);};
             }
             var addColumnCells = document.getElementsByClassName("staffMenuAddColumnCell");
             var loopAmount = addColumnCells.length;
             for (var i = 0;i < loopAmount;i++) {
                 var addColumnCell = addColumnCells[i];
-                addColumnCell.hidden = false;
+                addColumnCell.classList.remove("invisible");
                 if (i == 0) {
                   addColumnCell.innerHTML = "<b>+</b>";
-                  addColumnCell.onclick = function(event) {AddColumn();};
+                  addColumnCell.onmousedown = function(event) {AddColumn();};
                 }
             }
             var rowCells = document.getElementsByClassName("staffMenuRowCell");
@@ -121,14 +120,14 @@
             var loopAmount = addRowCells.length;
             for (var i = 0;i < loopAmount;i++) {
                 var addRowCell = addRowCells[i];
-                addRowCell.hidden = true;
+                addRowCell.classList.add("invisible");
                 addRowCell.innerHTML = "";
             }
             var addColumnCells = document.getElementsByClassName("staffMenuAddColumnCell");
             var loopAmount = addColumnCells.length;
             for (var i = 0;i < loopAmount;i++) {
                 var addColumnCell = addColumnCells[i];
-                addColumnCell.hidden = true;
+                addColumnCell.classList.add("invisible");
                 if (i == 0) {
                   addColumnCell.innerHTML = "";
                 }
@@ -171,6 +170,7 @@
                 rowCell.classList.remove("invisible");
                 rowCell.classList.add("staffMenuRowCell");
                 rowCell.innerHTML = "<input type='text' placeholder='Input order'/><span onclick='RemoveCell(this.parentElement.xCell, this.parentElement.yCell);' class='removeButton'>Remove</span>";
+                rowCell.onmousedown = "";
                 var loopAmount2 = addRowCells.length;
                 for (var k = 0;k < loopAmount2;k++) {
                   var addRowCellTemp = addRowCells[k];
@@ -184,21 +184,20 @@
                 rowCell.classList.add("staffMenuAddRowCellTemp");
                 rowCell.classList.add("selectable");
                 rowCell.innerHTML = "<b>+</b>";
-                rowCell.onclick = function(event) {AddCell(this.xCell, this.yCell);};
+                rowCell.onmousedown = function(event) {AddCell(this.xCell, this.yCell);};
                 addRowCellsOffset -= 1;
-                addRowCell.onclick = "";
+                addRowCell.onmousedown = "";
                 addRowCell.innerHTML = "";
                 addRowCell.classList.add("invisible");
+                addRowCell.classList.add("staffMenuRowCell");
                 addRowCell.classList.remove("staffMenuAddRowCell");
                 addRowCell.classList.remove("selectable");
               }
             }
             var rowCell = newRow.insertCell(newRow.length);
-            rowCell.classList.add("staffMenuRowCell");
             rowCell.classList.add("invisible");
             rowCell.xCell = i;
             rowCell.yCell = y;
-            rowCell.hidden = true;
             table.rows[y + 1].cells[i].yCell + 1;
             var addRowCellsTemp = document.getElementsByClassName("staffMenuAddRowCellTemp");
             var loopAmount = addRowCellsTemp.length;
@@ -213,8 +212,8 @@
             rowCell.classList.remove("staffMenuAddRowCell");
             rowCell.classList.remove("selectable");
             rowCell.innerHTML = "<input type='text' placeholder='Input order'/><span onclick='RemoveCell(this.parentElement.xCell, this.parentElement.yCell);' class='removeButton'>Remove</span>";
+            rowCell.onmousedown = "";
             var addRowCell = table.rows[y + 1].cells[x];
-            addRowCell.hidden = false;
             addRowCell.classList.remove("invisible");
             addRowCell.classList.remove("staffMenuRowCell");
             addRowCell.classList.add("staffMenuAddRowCell");
@@ -222,7 +221,7 @@
             addRowCell.xCell = x;
             addRowCell.yCell = y + 1;
             addRowCell.innerHTML = "<b>+</b>";
-            addRowCell.onclick = function(event) {AddCell(this.xCell, this.yCell);};
+            addRowCell.onmousedown = function(event) {AddCell(this.xCell, this.yCell);};
           }
         }
 
@@ -237,6 +236,7 @@
               newCell.classList.add("menuHeader");
               newCell.classList.remove("staffMenuAddColumnCell");
               newCell.classList.remove("selectable");
+              newCell.onmousedown = "";
             } else {
               newCell = tableRow.insertCell(x - 1);
               newCell.xCell = x - 1;
@@ -246,10 +246,8 @@
               newCell.classList.add("staffMenuAddRowCell");
               newCell.classList.add("selectable");
               newCell.innerHTML = "<b>+</b>";
-              newCell.onclick = function(event) {AddCell(this.xCell, this.yCell);};
+              newCell.onmousedown = function(event) {AddCell(this.xCell, this.yCell);};
             } else if (l != 0) {
-              newCell.hidden = true;
-              newCell.classList.add("staffMenuRowCell");
               newCell.classList.add("invisible");
             }
           }
@@ -261,16 +259,15 @@
             var oldCell = table.rows[y + i].cells[x];
             var newCell = table.rows[y + i + 1].cells[x];
             oldCell.innerHTML = newCell.innerHTML;    
-            oldCell.onclick = newCell.onclick;
+            oldCell.onmousedown = newCell.onmousedown;
             oldCell.classList = newCell.classList;
           }
           var oldCell = table.rows[y + loopAmount].cells[x];
           oldCell.classList.remove("staffMenuAddRowCell");
           oldCell.classList.remove("selectable");
-          oldCell.classList.add("staffMenuRowCell");
           oldCell.classList.add("invisible");
           oldCell.innerHTML = "";
-          oldCell.onclick = "";
+          oldCell.onmousedown = "";
         }
       </script>
   </body>
