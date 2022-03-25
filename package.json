@@ -31,6 +31,7 @@
     "connect-flash": "^0.1.1",
     "dotenv": "^16.0.0",
     "ejs": "^3.1.6",
+    "email-validator": "^2.0.4",
     "express": "^4.17.3",
     "express-ejs-layouts": "^2.5.1",
     "express-openid-connect": "^2.7.1",
@@ -45,6 +46,7 @@
     "php": "^1.0.2",
     "php-cgi": "^0.2.0",
     "php-node": "^0.0.2",
+    "tld-extract": "^2.0.1",
     "xhr2": "^0.2.1"
   }
 }

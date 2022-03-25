@@ -13,6 +13,7 @@ const flash = require('connect-flash');
 const passport = require('passport');
 require("./config/passport")(passport)
 var email_validator = require("email-validator");
+var parser = require('tld-extract');
 
 //var sphp = require('sphp');
 
@@ -134,9 +135,12 @@ app.post('/profile/register', function (req, res) {
         errors.push({msg : 'password must be at least 6 characters'})
     }
 
-    if (email_validator.validate(email) != 1) {
+    if (email_validator.validate(email) != true) {
+        errors.push({msg : 'please enter a valid email'})
+    } else {
         
     }
+
     if(errors.length > 0 ) {
     res.render('pages/profile/register', {
         errors : errors,
