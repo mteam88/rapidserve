@@ -14,8 +14,10 @@ const crypto = require('crypto');
 const passport = require('passport');
 const fs = require('fs');
 require("./config/passport")(passport);
-var email_validator = require("email-validator");
+const nodemailer = require("nodemailer");
+const email_validator = require("email-validator");
 //var tld_parser = require('tld-extract');
+const nodemailerfunc = require('./config/nodemailerfunc')
 const SESSION_SECRET = process.env.SESSION_SECRET;
 
 //var sphp = require('sphp');
@@ -180,27 +182,25 @@ app.post('/profile/register', function (req, res) {
                     console.log(newActive.hash);
 
                    //hash password
-                    bcrypt.genSalt(10,(err,salt)=> 
+                    bcrypt.genSalt(10,(err,salt)=> {
                     bcrypt.hash(newUser.password,salt,
                         (err,hash)=> {
-                            if(err) throw err;
+                            if (err) throw err;
                                 //save pass to hash
                                 newUser.password = hash;
                             //save user
                             newUser.save()
                             .then((value)=>{
-                                savedActive = newActive.save()
+                                newActive.save()
+                                //send confirmation email
+                                nodemailerfunc.main();
                                 req.flash('success_msg','You have now registered and logged in!')
-                                req.logIn(value, function () {
-                                    // Manually save session before redirect. See bug https://github.com/expressjs/session/pull/69
-                                    req.session.save(function(){
-                                        res.redirect('/profile');
-                                    });
+                                res.redirect('/profile');
                                 });
                             })
                             .catch(err=> console.log(err));
                             
-                        }));
+                        });
                 })
              //ELSE statement ends here
             }
