@@ -1,20 +1,22 @@
 //It's not me, It's you, goodbye my not love, I will always forget you
 
 // Load Node modules
-require('dotenv').config({path: __dirname + '/.env'})
+require('dotenv').config({path: __dirname + '/.env'});
 var express = require('express');
-const morgan = require('morgan')
+const morgan = require('morgan');
 const mongoose = require('mongoose');
 const Order = require('./models/order');
 const User = require("./models/user.js");
 const bcrypt = require('bcrypt');
 const session = require('express-session');
 const flash = require('connect-flash');
+const crypto = require('crypto');
 const passport = require('passport');
-require("./config/passport")(passport)
+const fs = require('fs');
+require("./config/passport")(passport);
 var email_validator = require("email-validator");
 //var tld_parser = require('tld-extract');
-const SESSION_SECRET = process.env.SESSION_SECRET
+const SESSION_SECRET = process.env.SESSION_SECRET;
 
 //var sphp = require('sphp');
 
@@ -169,28 +171,37 @@ app.post('/profile/register', function (req, res) {
                     email : email,
                     password : password
                 });
+                const newActive = new Active({
+                    hash: "undefined",
+                    userId: newUser._id
+                })
+                crypto.randomBytes(128, function(err, buffer) {
+                    newActive.hash = buffer.toString('hex');
+                    console.log(newActive.hash);
+
                    //hash password
-                bcrypt.genSalt(10,(err,salt)=> 
-                bcrypt.hash(newUser.password,salt,
-                    (err,hash)=> {
-                        if(err) throw err;
-                            //save pass to hash
-                            newUser.password = hash;
-                        //save user
-                        newUser.save()
-                        .then((value)=>{
-                            //console.log(value)
-                            req.flash('success_msg','You have now registered and logged in!')
-                            req.login()
-                            res.redirect('/rapidorder');
-                        })
-                        .catch(err=> console.log(err));
-                        
-                    }));
-                    const newActive = new Active({
-                        hash: "undefined",
-                        userId: newUser._id
-                    })
+                    bcrypt.genSalt(10,(err,salt)=> 
+                    bcrypt.hash(newUser.password,salt,
+                        (err,hash)=> {
+                            if(err) throw err;
+                                //save pass to hash
+                                newUser.password = hash;
+                            //save user
+                            newUser.save()
+                            .then((value)=>{
+                                savedActive = newActive.save()
+                                req.flash('success_msg','You have now registered and logged in!')
+                                req.logIn(value, function () {
+                                    // Manually save session before redirect. See bug https://github.com/expressjs/session/pull/69
+                                    req.session.save(function(){
+                                        res.redirect('/profile');
+                                    });
+                                });
+                            })
+                            .catch(err=> console.log(err));
+                            
+                        }));
+                })
              //ELSE statement ends here
             }
         });
@@ -235,6 +246,39 @@ app.get('/logout', function (req, res) {
 app.get('/staff', function (req, res) {
     res.redirect('/staff/orders');
 })
+
+app.get('/profile/confirm/:hash', (req, res) => {
+    var reqhash = req.params.hash;
+    Active.findOneAndDelete({ hash: reqhash })
+        .then((value) => {
+            console.log(value);
+            User.updateOne(
+                {"_id": value.userId},
+                { $set: { active: true}}
+                ).then(() => {
+                    res.redirect('/profile');
+                })
+        })
+})
+
+app.post('/staff/menu', (req, res) => {
+    var menu = req.body.menu;
+    //save to menu.json
+
+    /*fs.readFile(__dirname+'/link-data.json', (err, data)=>{
+        if (err) throw err
+        dataJson = JSON.parse(data) //object with your link-data.json file
+        postData = JSON.parse(body) //postData is the variable containing your data coming from the client.
+        dataJson.push(postData)//adds the data into the json file.
+
+        //Update file
+        fs.writeFile(__dirname+'/link-data.json', JSON.stringify(dataJson), (err)=>{
+            if(err) console.log(err)
+            res.end()
+        })
+    })*/
+})
+
 app.use((req, res, next) => {
     console.log("404");
     res.status(404).redirect('/');
