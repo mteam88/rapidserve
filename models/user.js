@@ -4,6 +4,10 @@ const UserSchema  = new mongoose.Schema({
       type  : String,
       required : true
   } ,
+  active :{
+    type: Boolean,
+    default: false
+  },
   email :{
     type  : String,
     required : true
