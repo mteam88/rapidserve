@@ -11,6 +11,9 @@
       <h1 class="bubbleheader">Rapid Profile</h1>
       <% if (authStatus == true) { %>
         <h3> You are logged in as <%= user.name %>! </h3>
+        <% if (user.active === false) { %>
+          <h3> Your account is not yet activated. </h3>
+        <% } %>
         <button onclick="window.location.href='/logout';">Logout</button>
         <% } else {%>
             <h3> You are not logged in. </h3>
