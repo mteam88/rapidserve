@@ -117,7 +117,7 @@ app.get('/profile', function (req, res) {
 app.post('/profile/register', function (req, res) {
     const {name,email, password, password2} = req.body;
     let errors = [];
-    console.log(' Name ' + name+ ' email :' + email+ ' pass:' + password);
+    //console.log(' Name ' + name+ ' email :' + email+ ' pass:' + password);
     if(!name || !email || !password || !password2) {
         errors.push({msg : "Please fill in all fields"})
     }
@@ -140,7 +140,7 @@ app.post('/profile/register', function (req, res) {
     } else {
         //validation passed
         User.findOne({email : email}).exec((err,user)=>{
-            console.log(user);   
+            //console.log(user);   
             if(user) {
                 errors.push({msg: 'email already registered'});
                 res.render('pages/profile/register',{errors,name,email,password,password2});
@@ -161,7 +161,7 @@ app.post('/profile/register', function (req, res) {
                         //save user
                         newUser.save()
                         .then((value)=>{
-                            console.log(value)
+                            //console.log(value)
                             req.flash('success_msg','You have now registered!')
                         res.redirect('/profile/login');
                         })
@@ -206,6 +206,13 @@ app.get('/rapid', function (req, res) {
 app.get('/rapidserve', function (req, res) {
     res.redirect('/home');
 });
+app.get('/logout', function (req, res) {
+    req.logout();
+    res.redirect('/home');
+});
+app.get('/staff', function (req, res) {
+    res.redirect('/staff/orders');
+})
 app.use((req, res, next) => {
     console.log("404");
     res.status(404).redirect('/');
