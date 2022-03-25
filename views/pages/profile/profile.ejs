@@ -9,9 +9,16 @@
       <%- include('/workspace/rapidserver/views/partials/_topnav', {activeItem: ""}) %>
 
       <h1 class="bubbleheader">Rapid Profile</h1>
-      <p>Create an account or login</p>
-      <a href="/profile/register">Register</a>
-      <a href="/profile/login"> Login</a>
+      <% if (authStatus == true) { %>
+        <h3> You are logged in as <%= user.name %>! </h3>
+        <button onclick="window.location.href='/logout';">Logout</button>
+        <% } else {%>
+            <h3> You are not logged in. </h3>
+            <p>Create an account or login</p>
+            <button onclick="window.location.href='/profile/register';">Register</button>
+            <button onclick="window.location.href='/profile/login';"> Login</a>
+          <% } %> 
+      <!--display authentication status-->
     </div> <!--Content div close-->
   </body>
 </html>

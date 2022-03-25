@@ -14,6 +14,7 @@ const passport = require('passport');
 require("./config/passport")(passport)
 var email_validator = require("email-validator");
 //var tld_parser = require('tld-extract');
+const SESSION_SECRET = process.env.SESSION_SECRET
 
 //var sphp = require('sphp');
 
@@ -30,7 +31,7 @@ app.use((req, res, next) => {
   next();
 });
 app.use(session({
-    secret : 'secret',
+    secret : SESSION_SECRET,
     resave : true,
     saveUninitialized : true
    }));
@@ -115,7 +116,8 @@ app.delete('/staff/:id', (req, res) => {
 })
 
 app.get('/profile', function (req, res) {
-    res.render('pages/profile/profile');
+    //console.log(req.isAuthenticated());
+    res.render('pages/profile/profile',{authStatus: req.isAuthenticated(), user: req.user});
 });
 
 app.post('/profile/register', function (req, res) {
@@ -176,10 +178,11 @@ app.post('/profile/register', function (req, res) {
                         newUser.save()
                         .then((value)=>{
                             //console.log(value)
-                            req.flash('success_msg','You have now registered!')
-                        res.redirect('/profile/login');
+                            req.flash('success_msg','You have now registered and logged in!')
+                            req.login()
+                            res.redirect('/rapidorder');
                         })
-                        .catch(value=> console.log(value));
+                        .catch(err=> console.log(err));
                         
                     }));
              //ELSE statement ends here
@@ -190,7 +193,7 @@ app.post('/profile/register', function (req, res) {
 
 app.post('/profile/login', (req, res, next) => {
     passport.authenticate('local',{
-        successRedirect : '/home',
+        successRedirect : '/profile',
         failureRedirect : '/profile/login',
         failureFlash : true,
         })(req,res,next);
@@ -203,7 +206,6 @@ app.get('/profile/login', function (req, res) {
 app.get('/profile/register', function (req, res) {
     res.render('pages/profile/register');
 });
-
 
 app.get('/home', function (req, res) {
     res.render('pages/index');
@@ -222,7 +224,7 @@ app.get('/rapidserve', function (req, res) {
 });
 app.get('/logout', function (req, res) {
     req.logout();
-    res.redirect('/home');
+    res.redirect('/profile');
 });
 app.get('/staff', function (req, res) {
     res.redirect('/staff/orders');
