@@ -1,6 +1,7 @@
 //It's not me, It's you, goodbye my not love, I will always forget you
 
 // Load Node modules
+require('dotenv').config({path: __dirname + '/.env'})
 var express = require('express');
 const morgan = require('morgan')
 const mongoose = require('mongoose');
@@ -11,7 +12,6 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const passport = require('passport');
 require("./config/passport")(passport)
-const {ensureAuthenticated} = require("/workspace/rapidserver/config/auth.js")
 
 //var sphp = require('sphp');
 
@@ -77,9 +77,11 @@ app.post('/rapidorder', (req, res) => {
         })
 })
 
+
 app.get('/', function (req, res) {
     res.redirect('/home');
 });
+
 app.get('/rapidorder', function (req, res) {
     res.render('pages/rapidorder.ejs');
 });
