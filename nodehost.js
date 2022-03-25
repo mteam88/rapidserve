@@ -12,6 +12,7 @@ const session = require('express-session');
 const flash = require('connect-flash');
 const passport = require('passport');
 require("./config/passport")(passport)
+var email_validator = require("email-validator");
 
 //var sphp = require('sphp');
 
@@ -131,6 +132,10 @@ app.post('/profile/register', function (req, res) {
     //check if password is more than 6 characters
     if(password.length < 6 ) {
         errors.push({msg : 'password must be at least 6 characters'})
+    }
+
+    if (email_validator.validate(email) != 1) {
+        
     }
     if(errors.length > 0 ) {
     res.render('pages/profile/register', {
