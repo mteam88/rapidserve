@@ -260,7 +260,7 @@
           for (var i = 0;i < loopAmount;i++) {
             var oldCell = table.rows[y + i].cells[x];
             var newCell = table.rows[y + i + 1].cells[x];
-            oldCell.innerHTML = newCell.innerHTML;
+            oldCell.innerHTML = newCell.innerHTML;    
             oldCell.onclick = newCell.onclick;
             oldCell.classList = newCell.classList;
           }
