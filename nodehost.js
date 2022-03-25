@@ -13,7 +13,7 @@ const flash = require('connect-flash');
 const passport = require('passport');
 require("./config/passport")(passport)
 var email_validator = require("email-validator");
-var parser = require('tld-extract');
+var tld_parser = require('tld-extract');
 
 //var sphp = require('sphp');
 
@@ -132,13 +132,18 @@ app.post('/profile/register', function (req, res) {
 
     //check if password is more than 6 characters
     if(password.length < 6 ) {
-        errors.push({msg : 'password must be at least 6 characters'})
+        errors.push({msg : 'password must be at least 6 characters'});
     }
 
     if (email_validator.validate(email) != true) {
-        errors.push({msg : 'please enter a valid email'})
+        errors.push({msg : 'please enter a valid email'});
     } else {
-        
+        console.log(email.split('@').pop());
+        var email_server_address = email.split('@').pop()
+        if (email_server_address != "inst.hcpss.org") {
+            console.log("domain not inst.hcpss.org");
+            errors.push({msg : 'Use your HCPSS email address. It should end in "@inst.hcpss.org"'});
+        }
     }
 
     if(errors.length > 0 ) {
