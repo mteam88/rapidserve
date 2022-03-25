@@ -19,6 +19,7 @@ const SESSION_SECRET = process.env.SESSION_SECRET
 //var sphp = require('sphp');
 
 const ejs = require('ejs');
+const Active = require('./models/active');
 // Initialise Express
 var app = express();
 //app.use(sphp.express('public/'));
@@ -164,6 +165,7 @@ app.post('/profile/register', function (req, res) {
             } else {
                 const newUser = new User({
                     name : name,
+                    active: false,
                     email : email,
                     password : password
                 });
@@ -185,6 +187,10 @@ app.post('/profile/register', function (req, res) {
                         .catch(err=> console.log(err));
                         
                     }));
+                    const newActive = new Active({
+                        hash: "undefined",
+                        userId: newUser._id
+                    })
              //ELSE statement ends here
             }
         });
