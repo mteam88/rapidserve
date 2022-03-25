@@ -251,7 +251,6 @@ app.get('/profile/confirm/:hash', (req, res) => {
     var reqhash = req.params.hash;
     Active.findOneAndDelete({ hash: reqhash })
         .then((value) => {
-            console.log(value);
             User.updateOne(
                 {"_id": value.userId},
                 { $set: { active: true}}
