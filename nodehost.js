@@ -13,7 +13,7 @@ const flash = require('connect-flash');
 const passport = require('passport');
 require("./config/passport")(passport)
 var email_validator = require("email-validator");
-var tld_parser = require('tld-extract');
+//var tld_parser = require('tld-extract');
 
 //var sphp = require('sphp');
 
