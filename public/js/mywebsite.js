@@ -46,7 +46,7 @@ function plcordr() {
 //}
 
 function changebg(element) {
-    if (element.classList.includes("transparent")) {
+    if (element.classList.contains("invisible")) {
         return;
     }
 //    element.style.backgroundColor = (element.style.backgroundColor == "red") ? "white":"red";
@@ -55,7 +55,7 @@ function changebg(element) {
         if (Number(element.parentElement.id.replace("menu-row","")) / 2 == Math.floor(Number(element.parentElement.id.replace("menu-row","")) / 2)) {
             toset = "#dddddd";
         } else {
-            toset = "white";
+            toset = "#fcfcfc";
         }
     } else {
         toset = "red";

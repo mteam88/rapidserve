@@ -82,8 +82,9 @@ html {
     overflow: hidden;
     position: absolute;
     z-index: 100;
-    width:300px;
-    right: 95px;
+    width: 300px;
+    right: 135px;
+    pointer-events: none;
 }
 
 table {
@@ -105,6 +106,14 @@ tr {
     height: 54px;
     width: 1%;
     white-space: nowrap;
+}
+
+tr:nth-child(even) {
+    background-color: #dddddd;
+}
+
+tr:nth-child(odd) {
+    background-color: #fcfcfc;
 }
 
 table input {
@@ -135,7 +144,15 @@ table span.removeButton:hover {
 .rowCell {
     border: 1px solid black;
     text-align: left;
-    padding: 1px;
+    padding: 8px;
+}
+
+.menuHeader {
+    border: 1px solid black;
+    text-align: center;
+    padding: 8px;
+    background-color: darkgray;
+    font-size: 20px;
 }
 
 .staffMenuRowCell {
@@ -193,13 +210,6 @@ table span.removeButton:hover {
     -moz-user-select: -moz-none;
     -o-user-select: none;
     user-select: none;
-}
-
-tr:nth-child(even) {
-    background-color: #dddddd;
-}
-tr:nth-child(odd) {
-    background-color: #fcfcfc;
 }
 
 #bottomof {

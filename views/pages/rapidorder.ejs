@@ -25,17 +25,12 @@
         </p>
       </div>
 
-      <div id=orderstuff>
-        <!-- <form action="/rapidorder" method="POST">
-          <label for="body">orderBody</label>
-          <textarea id="body" name="orderBody" required></textarea>
-          <button>Submit</button>
-        </form> -->
-        
-        
-       <table id="ordertable">
+      <div id="orderstuff">
+        <div id="table-div" style="overflow-x: auto;">
+          <table id="ordertable">
           
-        </table>
+          </table>
+        </div>
         <button id='submitButton' style="float: right;">Place Order</button>
       </div>
       <image src="/public/assets/Rlogo.png" id="bottomof"></image>
@@ -97,7 +92,7 @@
             }
             var rowCell = document.createElement("th");
             rowCell.classList.add("menuHeader");
-            rowCell.innerHTML = key.replace(/_/g,"");
+            rowCell.innerHTML = key.replace(/_/g," ");
             tableRow.appendChild(rowCell);
           }
           document.getElementById("ordertable").appendChild(tableRow);
@@ -112,6 +107,7 @@
               var rowCell = document.createElement("td");
               if (value.length >= i) {
                 rowCell.classList.add("selectable");
+                rowCell.classList.add("rowCell");
                 rowCell.innerHTML = value[i - 1];
                 if (orderPreset[(i - 1) * Object.keys(menuObject).length + k] == 1) {
                   rowCell.style.backgroundColor = "red";
