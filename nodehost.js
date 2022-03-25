@@ -138,10 +138,8 @@ app.post('/profile/register', function (req, res) {
     if (email_validator.validate(email) != true) {
         errors.push({msg : 'please enter a valid email'});
     } else {
-        console.log(email.split('@').pop());
         var email_server_address = email.split('@').pop()
         if (email_server_address != "inst.hcpss.org") {
-            console.log("domain not inst.hcpss.org");
             errors.push({msg : 'Use your HCPSS email address. It should end in "@inst.hcpss.org"'});
         }
     }
