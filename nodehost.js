@@ -67,6 +67,8 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
         console.log(err);
     })
 
+nodemailerfunc.initializeTransporter();
+
 // Set the view engine to ejs
 app.set('view engine', 'ejs');
 
@@ -198,7 +200,7 @@ app.post('/profile/register', function (req, res) {
                                 res.redirect('/profile');
                                 });
                             })
-                            .catch(err=> console.log(err));
+                            //.catch(err=> console.log(err));
                             
                         });
                 })
