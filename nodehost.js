@@ -36,7 +36,7 @@ app.use((req, res, next) => {
   next();
 });
 app.use(session({
-    secret : SESSION_SECRET,
+    keys : [SESSION_SECRET],
     resave : true,
     saveUninitialized : true
    }));
