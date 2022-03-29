@@ -63,7 +63,7 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then((result) => {
         console.log("connected to MongoDB")
         app.listen(process.env.PORT || 3030) // Listens on env variable if set, alternative 3030.
-        console.log("Listening on port 3030. Check code for more info.");
+        console.log("Listening on port " + process.env.PORT + ". Check code for more info.");
     })
     .catch((err) => {
         console.log(err);
