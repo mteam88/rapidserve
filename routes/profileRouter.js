@@ -1,6 +1,25 @@
 var express = require('express')
 var router = express.Router()
+const email_validator = require('email-validator');
 const nodeMailerMain = require("../config/nodeMailerMain")
+
+require('dotenv').config({path: __dirname + '/.env'});
+var express = require('express');
+const morgan = require('morgan');
+const mongoose = require('mongoose');
+const Order = require('../models/order');
+const User = require("../models/user.js");
+const bcrypt = require('bcrypt');
+const session = require('cookie-session');
+const flash = require('connect-flash');
+const crypto = require('crypto');
+const passport = require('passport');
+const fs = require('fs');
+require("../config/passport")(passport);
+const nodemailer= require("nodemailer");
+
+const Active = require('../models/active');
+const { ensureAuthenticated } = require('../config/auth');
 
 HOSTPATH = process.env.HOSTPATH;
 
@@ -77,7 +96,7 @@ router.post('/register', function (req, res) {
                             .then((value)=>{
                                 newActive.save()
                                 //send confirmation email
-                                nodeMailerMain.nodeMailerMain();
+                                //nodeMailerMain.nodeMailerMain();
                                 req.flash('success_msg','You have now registered and logged in!')
                                 res.redirect('/profile');
                                 });
