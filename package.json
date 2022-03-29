@@ -27,6 +27,7 @@
   },
   "homepage": "https://github.com/mteam88/rapidservehtml#readme",
   "dependencies": {
+    "node": "16.13",
     "bcrypt": "^5.0.1",
     "connect-flash": "^0.1.1",
     "dotenv": "^16.0.0",
