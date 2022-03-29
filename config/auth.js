@@ -5,7 +5,7 @@ module.exports = {
             return next();
         }
     }
-    req.flash('error_msg' , 'please login to use this');
+    req.flash('error_msg' , 'You need to login to use this page');
     res.redirect('/profile/login');
     }
     }

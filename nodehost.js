@@ -16,6 +16,7 @@ const fs = require('fs');
 require("./config/passport")(passport);
 const nodemailer = require("nodemailer");
 const email_validator = require("email-validator");
+const profileRouter = require("./routes/profileRouter");
 //var tld_parser = require('tld-extract');
 //const nodemailerfunc = require('./config/nodemailerfunc')
 const SESSION_SECRET = process.env.SESSION_SECRET;
@@ -26,13 +27,14 @@ const APPURL = process.env.APPURL;
 
 const ejs = require('ejs');
 const Active = require('./models/active');
+const { ensureAuthenticated } = require('./config/auth');
 // Initialise Express
 var app = express();
 //app.use(sphp.express('public/'));
 // Render static files
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true}));
-app.use(morgan('dev'));
+app.use(morgan('tiny'));
 app.use((req, res, next) => {
   res.locals.path = req.path;
   next();
@@ -55,6 +57,7 @@ app.use(session({
 
 // using app.use to serve up static CSS files in public/assets/ folder when /public link is called in ejs files
 // app.use("/route", express.static("foldername"));
+app.use('/profile', profileRouter);
 app.use('/public', express.static('public'));
 
 //Connect to MongoDB
@@ -140,7 +143,7 @@ app.get('/', function (req, res) {
     res.redirect('/home');
 });
 
-app.get('/rapidorder', function (req, res) {
+app.get('/rapidorder', ensureAuthenticated, function (req, res, next) {
     res.render('pages/rapidorder.ejs');
 });
 app.get('/info', function (req, res) {
@@ -170,110 +173,6 @@ app.delete('/staff/:id', (req, res) => {
         .catch((err) => console.log(err));
 })
 
-app.get('/profile', function (req, res) {
-    //console.log(req.isAuthenticated());
-    res.render('pages/profile/profile',{authStatus: req.isAuthenticated(), user: req.user, HOSTPATH: HOSTPATH});
-});
-
-app.post('/profile/register', function (req, res) {
-    const {name,email, password, password2} = req.body;
-    let errors = [];
-    //console.log(' Name ' + name+ ' email :' + email+ ' pass:' + password);
-    if(!name || !email || !password || !password2) {
-        errors.push({msg : "Please fill in all fields"})
-    }
-    //check if match
-    if(password !== password2) {
-        errors.push({msg : "passwords dont match"});
-    }
-
-    //check if password is more than 6 characters
-    if(password.length < 6 ) {
-        errors.push({msg : 'password must be at least 6 characters'});
-    }
-
-    if (email_validator.validate(email) != true) {
-        errors.push({msg : 'please enter a valid email'});
-    } else {
-        var email_server_address = email.split('@').pop()
-        if (email_server_address != "inst.hcpss.org") {
-            errors.push({msg : 'Use your HCPSS email address. It should end in "@inst.hcpss.org"'});
-        }
-    }
-
-    if(errors.length > 0 ) {
-    res.render('pages/profile/register', {
-        errors : errors,
-        name : name,
-        email : email,
-        password : password,
-        password2 : password2});
-    } else {
-        //validation passed
-        User.findOne({email : email}).exec((err,user)=>{
-            //console.log(user);   
-            if(user) {
-                errors.push({msg: 'email already registered'});
-                res.render('pages/profile/register',{errors,name,email,password,password2});
-                
-            } else {
-                const newUser = new User({
-                    name : name,
-                    active: false,
-                    email : email,
-                    password : password
-                });
-                const newActive = new Active({
-                    hash: "undefined",
-                    userId: newUser._id
-                })
-                crypto.randomBytes(128, function(err, buffer) {
-                    newActive.hash = buffer.toString('hex');
-                    //console.log(newActive.hash);
-
-                   //hash password
-                    bcrypt.genSalt(10,(err,salt)=> {
-                    bcrypt.hash(newUser.password,salt,
-                        (err,hash)=> {
-                            if (err) throw err;
-                                //save pass to hash
-                                newUser.password = hash;
-                            //save user
-                            newUser.save()
-                            .then((value)=>{
-                                newActive.save()
-                                //send confirmation email
-                                //nodeMailerMain();
-                                req.flash('success_msg','You have now registered and logged in!')
-                                res.redirect('/profile');
-                                });
-                            })
-                            //.catch(err=> console.log(err));
-                            
-                        });
-                })
-             //ELSE statement ends here
-            }
-        });
-    }
-})
-
-app.post('/profile/login', (req, res, next) => {
-    passport.authenticate('local',{
-        successRedirect : '/profile',
-        failureRedirect : '/profile/login',
-        failureFlash : true,
-        })(req,res,next);
-})
-
-app.get('/profile/login', function (req, res) {
-    res.render('pages/profile/login', {HOSTPATH: HOSTPATH});
-});
-
-app.get('/profile/register', function (req, res) {
-    res.render('pages/profile/register', {HOSTPATH: HOSTPATH});
-});
-
 app.get('/home', function (req, res) {
     res.render('pages/index');
 });
@@ -297,19 +196,6 @@ app.get('/staff', function (req, res) {
     res.redirect('/staff/orders');
 })
 
-app.get('/profile/confirm/:hash', (req, res) => {
-    var reqhash = req.params.hash;
-    Active.findOneAndDelete({ hash: reqhash })
-        .then((value) => {
-            User.updateOne(
-                {"_id": value.userId},
-                { $set: { active: true}}
-                ).then(() => {
-                    res.redirect('/profile');
-                })
-        })
-})
-
 app.post('/staff/menu', (req, res) => {
     var menu = req.body.menu;
     //save to menu.json
@@ -329,5 +215,7 @@ app.post('/staff/menu', (req, res) => {
 })
 
 app.use((req, res, next) => {
-    res.status(404).redirect('/');
+    res.status(404);
+    console.log('404 status, request to ' + req.url);
+    res.redirect('/');
   })
