@@ -20,6 +20,7 @@ const email_validator = require("email-validator");
 //const nodemailerfunc = require('./config/nodemailerfunc')
 const SESSION_SECRET = process.env.SESSION_SECRET;
 const HOSTPATH = process.env.HOSTPATH;
+const APPURL = process.env.APPURL;
 
 //var sphp = require('sphp');
 
@@ -61,7 +62,7 @@ const dbURI = process.env.DBURI;
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then((result) => {
         console.log("connected to MongoDB")
-        app.listen(process.env.PORT || 3030) // This is actually the port it will listen on, default 3030 as of now.
+        app.listen(process.env.PORT || 3030) // Listens on env variable if set, alternative 3030.
         console.log("Listening on port 3030. Check code for more info.");
     })
     .catch((err) => {
@@ -71,7 +72,7 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 
 // async..await is not allowed in global scope, must use a wrapper
-async function nodeMailerMain() {
+async function nodeMailerMain(targetEmail, targetName, hash) {
   // Generate test SMTP service account from ethereal.email
   // Only needed if you don't have a real mail account for testing
   //let testAccount = await nodemailer.createTestAccount().catch((err) => console.log(err))
@@ -93,10 +94,10 @@ async function nodeMailerMain() {
 
   let message = {
     from: 'Tsla <tengtsla@gmail.com>',
-    to: 'Me <medele5794@inst.hcpss.org>',
-    subject: 'Nodemailer is unicode friendly ✔',
-    text: 'Hello to myself!',
-    html: '<p><b>Hello</b> to myself!</p>'
+    to: targetName + ' <'+ targetEmail +'>',
+    subject: targetName + ', Confirm your email for rapidserve',
+    text: 'Please confirm your email by clicking the following link:\n' + APPURL + '/profile/confirm/'+ hash,
+    html: '<p><b>Hello' + targetName + '</b></p> <br> <p>Please confirm your email by clicking the following link:</p><br>' + APPURL + '/profile/confirm/'+ hash
   };
 
   // send mail with defined transport object
@@ -242,7 +243,7 @@ app.post('/profile/register', function (req, res) {
                             .then((value)=>{
                                 newActive.save()
                                 //send confirmation email
-                                nodeMailerMain();
+                                //nodeMailerMain();
                                 req.flash('success_msg','You have now registered and logged in!')
                                 res.redirect('/profile');
                                 });
