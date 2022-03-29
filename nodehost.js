@@ -17,7 +17,7 @@ require("./config/passport")(passport);
 const nodemailer = require("nodemailer");
 const email_validator = require("email-validator");
 //var tld_parser = require('tld-extract');
-const nodemailerfunc = require('./config/nodemailerfunc')
+//const nodemailerfunc = require('./config/nodemailerfunc')
 const SESSION_SECRET = process.env.SESSION_SECRET;
 
 //var sphp = require('sphp');
@@ -67,7 +67,53 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
         console.log(err);
     })
 
-nodemailerfunc.initializeTransporter();
+
+
+// async..await is not allowed in global scope, must use a wrapper
+async function nodeMailerMain() {
+  // Generate test SMTP service account from ethereal.email
+  // Only needed if you don't have a real mail account for testing
+  //let testAccount = await nodemailer.createTestAccount().catch((err) => console.log(err))
+
+  // create reusable transporter object using the default SMTP transport
+  let transporter = nodemailer.createTransport({
+    host: "smtp.google.com",
+    port: 465,
+    secure: true, // true for 465, false for other ports
+    auth: {
+      user: process.env.TSLAUSER, // generated ethereal user
+      pass: process.env.TSLAPASS, // generated ethereal password
+    },
+  })//.catch((err) => console.log(err))
+
+  //console.log(testAccount.smtp.host);
+
+  console.log("successfully created transporter");
+
+  let message = {
+    from: 'Tsla <tengtsla@gmail.com>',
+    to: 'Me <medele5794@inst.hcpss.org>',
+    subject: 'Nodemailer is unicode friendly ✔',
+    text: 'Hello to myself!',
+    html: '<p><b>Hello</b> to myself!</p>'
+  };
+
+  // send mail with defined transport object
+  transporter.sendMail(message, (error, info) => {
+    if (error) {
+      return console.log(error);
+    }
+    console.log('Email sent: ' + info.response);
+    //console.log("Message sent: %s", info.messageId);
+    // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+  
+    // Preview only available when sending through an Ethereal account
+    //console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+    // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+  });
+}
+
+
 
 // Set the view engine to ejs
 app.set('view engine', 'ejs');
@@ -181,7 +227,7 @@ app.post('/profile/register', function (req, res) {
                 })
                 crypto.randomBytes(128, function(err, buffer) {
                     newActive.hash = buffer.toString('hex');
-                    console.log(newActive.hash);
+                    //console.log(newActive.hash);
 
                    //hash password
                     bcrypt.genSalt(10,(err,salt)=> {
@@ -195,7 +241,7 @@ app.post('/profile/register', function (req, res) {
                             .then((value)=>{
                                 newActive.save()
                                 //send confirmation email
-                                nodemailerfunc.main();
+                                nodeMailerMain();
                                 req.flash('success_msg','You have now registered and logged in!')
                                 res.redirect('/profile');
                                 });
@@ -281,6 +327,5 @@ app.post('/staff/menu', (req, res) => {
 })
 
 app.use((req, res, next) => {
-    console.log("404");
     res.status(404).redirect('/');
   })

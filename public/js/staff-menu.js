@@ -324,10 +324,10 @@ function CreateMenuStaff() {
     rowCell.classList.add("staffMenuAddColumnCell","invisible");
     rowCell.xCell = tableRow.length, rowCell.yCell = 0;
     loopAmount++;
-    for (let i = 0, tableRow = table.insertRow(table.rows.length), k = 0;i < loopAmount;i++, tableRow = table.insertRow(table.rows.length)) {
+    for (let i = 0, k = 0;i < loopAmount;i++, tableRow = table.insertRow(table.rows.length)) {
       if (i === 0) continue;
       tableRow.id = "menu-row" + i;
-      for (let value of Object.entries(menuObject)) {
+      for (let [key, value] of Object.entries(menuObject)) {
         rowCell = tableRow.insertCell(tableRow.cells.length);
         rowCell.classList.add("invisible");
         rowCell.xCell = k, rowCell.yCell = i;
@@ -342,6 +342,7 @@ function CreateMenuStaff() {
       rowCell.classList.add("invisible");
       rowCell.xCell = tableRow.length, rowCell.yCell = i;
     }
+    tableRow.remove();
     table.rows[table.rows.length - 1].hidden = true;
     for (let tableRow of table.rows) tableRow.cells[tableRow.cells.length - 1].hidden = true;
   }
@@ -349,16 +350,16 @@ function CreateMenuStaff() {
 
 function EditMenu() {
   document.getElementById("editMenuButton").hidden = true, document.getElementById("saveMenuButton").hidden = document.getElementById("discardMenuButton").hidden = false;
-  let addRowCells = document.getElementsByClassName("staffMenuAddRowCell"), addColumnCells = document.getElementsByClassName("staffMenuAddColumnCell");
+  let addRowCells = document.getElementsByClassName("staffMenuAddRowCell"), addColumnCells = document.getElementsByClassName("staffMenuAddColumnCell"), addColumnCellsArray = Array.prototype.slice.call(addColumnCells);
   for (let addRowCell of addRowCells) {
     addRowCell.classList.add("selectable");
     addRowCell.classList.remove("invisible");
-    addRowCell.innerHTML = "<b>+</b>", addRowCell.onmousedown = () => {AddCell(this.xCell, this.yCell);};
+    addRowCell.innerHTML = "<b>+</b>", addRowCell.onmousedown = function() {AddCell(this.xCell, this.yCell);};
   }
   for (let addColumnCell of addColumnCells) {
     addColumnCell.classList.add("selectable");
     addColumnCell.classList.remove("invisible");
-    if (addColumnCells.indexOf(addColumnCell) === 0) {
+    if (Array.prototype.slice.call(addColumnCells).indexOf(addColumnCell) === 0) {
       addColumnCell.innerHTML = "<b>+</b>", addColumnCell.onmousedown = () => {AddColumn();};
     }
   }
@@ -378,7 +379,7 @@ function SaveMenu() {
   let sectionNamesTaken = [];
   let headerCells = document.getElementsByClassName("staffMenuHeaderCell");
   for (let headerCell of headerCells) {
-    if (headerCell.firstChild.value.length === 0) document.getElementById("error-text").innerHTML = "You have a section with no name (Section: " + (headerCells.indexOf(headerCell) + 1) + ")";
+    if (headerCell.firstChild.value.length === 0) document.getElementById("error-text").innerHTML = "You have a section with no name (Section: " + (Array.prototype.slice.call(headerCells).indexOf(headerCell) + 1) + ")";
     else if (sectionNamesTaken.includes(headerCell.firstChild.value.toLowerCase().replace(/ /g,"_"))) document.getElementById("error-text").innerHTML = "You have duplicate section names (" + headerCell.firstChild.value.toLowerCase() + ")";
     else sectionNamesTaken.push(headerCell.firstChild.value.toLowerCase().replace(/ /g,"_"));
   }
@@ -394,7 +395,7 @@ function SaveMenu() {
     addColumnCell.classList.add("invisible");
     addColumnCell.classList.remove("selectable");
     addColumnCell.onmousedown = "";
-    if (addColumnCells.indexOf(addColumnCell) === 0) addColumnCell.innerHTML = "";
+    if (Array.prototype.slice.call(addColumnCells).indexOf(addColumnCell) === 0) addColumnCell.innerHTML = "";
   }
   headerCells = document.getElementsByClassName("staffMenuHeaderCell");
   for (let headerCell of headerCells) {
@@ -426,6 +427,7 @@ function AddCell(x, y) {
     newRow.id = "menu-row" + y;
     let loopAmount = table.rows[0].cells.length - 1;
     for (let i = 0, addRowCell = addRowCells[0], rowCell = newRow.insertCell(0);i < loopAmount;i++, addRowCell = addRowCells[i + addRowCellsOffset], rowCell = newRow.insertCell(i)) {
+      if (!addRowCell) addRowCell = "";
       rowCell.xCell = i, rowCell.yCell = y;
       if (i === x) {
         rowCell.classList.add("staffMenuRowCell");
@@ -438,7 +440,7 @@ function AddCell(x, y) {
         }
       } else if (addRowCell.yCell == y && addRowCell.xCell == i) {
         rowCell.classList.add("staffMenuAddRowCellTemp","selectable");
-        rowCell.innerHTML = "<b>+</b>", rowCell.onmousedown = () => {AddCell(this.xCell, this.yCell);};
+        rowCell.innerHTML = "<b>+</b>", rowCell.onmousedown = function() {AddCell(this.xCell, this.yCell);};
         addRowCellsOffset--;
         addRowCell.onmousedown = addRowCell.innerHTML = "";
         addRowCell.classList.remove("staffMenuAddRowCell","selectable");
@@ -447,7 +449,7 @@ function AddCell(x, y) {
     let rowCell = newRow.insertCell(newRow.length);
     rowCell.classList.add("invisible");
     rowCell.xCell = newRow.length, rowCell.yCell = y;
-    table.rows[y + 1].cells[newRow.length].yCell++;
+    table.rows[y + 1].cells[newRow.length - 1].yCell++;
     let addRowCellsTemp = document.getElementsByClassName("staffMenuAddRowCellTemp");
     for (let addRowCellTemp of addRowCellsTemp) {
       addRowCellTemp.classList.add("staffMenuAddRowCell");
@@ -460,15 +462,15 @@ function AddCell(x, y) {
     rowCell.innerHTML = "<input type='text' placeholder='Input order'/><span onclick='RemoveCell(this.parentElement.xCell, this.parentElement.yCell);' class='removeButton'>Remove</span>", rowCell.onmousedown = "";
     addRowCell.classList.remove("invisible","staffMenuRowCell");
     addRowCell.classList.add("staffMenuAddRowCell","selectable");
-    addRowCell.xCell = x, addRowCell.yCell = y + 1, addRowCell.innerHTML = "<b>+</b>", addRowCell.onmousedown = () => {AddCell(this.xCell, this.yCell);};
+    addRowCell.xCell = x, addRowCell.yCell = y + 1, addRowCell.innerHTML = "<b>+</b>", addRowCell.onmousedown = function() {AddCell(this.xCell, this.yCell);};
   }
 }
 
 function AddColumn() {
   for (let tableRow of table.rows) {
     let newCell = tableRow.insertCell(tableRow.cells.length - 1);
-    newCell.xCell = tableRow.cells.length - 1, newCell.yCell = table.rows.indexOf(tableRow);
-    switch (table.rows.indexOf(tableRow)) {
+    newCell.xCell = tableRow.cells.length - 1, newCell.yCell = Array.prototype.slice.call(table.rows).indexOf(tableRow);
+    switch (Array.prototype.slice.call(table.rows).indexOf(tableRow)) {
       case 0:
         newCell.classList.add("staffMenuHeaderCell");
         newCell.classList.remove("staffMenuAddColumnCell","selectable");
@@ -476,7 +478,7 @@ function AddColumn() {
         break;
       case 1:
         newCell.classList.add("staffMenuAddRowCell","selectable");
-        newCell.innerHTML = "<b>+</b>", newCell.onmousedown = () => {AddCell(this.xCell, this.yCell);};
+        newCell.innerHTML = "<b>+</b>", newCell.onmousedown = function() {AddCell(this.xCell, this.yCell);};
         break;
       default:
         newCell.classList.add("invisible");
