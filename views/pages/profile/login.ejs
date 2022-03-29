@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <%- include('/workspace/rapidserver/views/partials/_head.ejs') %>
+    <%- include(HOSTPATH + '/views/partials/_head.ejs') %>
   </head>
   <body id="grad">
-    <%- include('/workspace/rapidserver/views/partials/_sidebar') %>
+    <%- include(HOSTPATH + '/views/partials/_sidebar') %>
     <div id="content" class="content">
-      <%- include('/workspace/rapidserver/views/partials/_topnav', {activeItem: ""}) %>
+      <%- include(HOSTPATH + '/views/partials/_topnav', {activeItem: ""}) %>
       <h1 class="bubbleheader">Rapid Login</h1>
-      <%- include ('/workspace/rapidserver/views/partials/messages') %>
+      <%- include (HOSTPATH + '/views/partials/messages') %>
       <p>Login to an account below</p>
       <form action="/profile/login" method="POST">
       <div>

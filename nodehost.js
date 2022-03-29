@@ -19,6 +19,7 @@ const email_validator = require("email-validator");
 //var tld_parser = require('tld-extract');
 //const nodemailerfunc = require('./config/nodemailerfunc')
 const SESSION_SECRET = process.env.SESSION_SECRET;
+const HOSTPATH = process.env.HOSTPATH;
 
 //var sphp = require('sphp');
 
@@ -56,7 +57,7 @@ app.use(session({
 app.use('/public', express.static('public'));
 
 //Connect to MongoDB
-const dbURI = "mongodb+srv://rapidserver:nHz0ChzcY1JuBDG3@rapidserve.m4dah.mongodb.net/rapiddata?retryWrites=true&w=majority";
+const dbURI = process.env.DBURI;
 mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then((result) => {
         console.log("connected to MongoDB")
@@ -170,7 +171,7 @@ app.delete('/staff/:id', (req, res) => {
 
 app.get('/profile', function (req, res) {
     //console.log(req.isAuthenticated());
-    res.render('pages/profile/profile',{authStatus: req.isAuthenticated(), user: req.user});
+    res.render('pages/profile/profile',{authStatus: req.isAuthenticated(), user: req.user, HOSTPATH: HOSTPATH});
 });
 
 app.post('/profile/register', function (req, res) {
@@ -265,11 +266,11 @@ app.post('/profile/login', (req, res, next) => {
 })
 
 app.get('/profile/login', function (req, res) {
-    res.render('pages/profile/login');
+    res.render('pages/profile/login', {HOSTPATH: HOSTPATH});
 });
 
 app.get('/profile/register', function (req, res) {
-    res.render('pages/profile/register');
+    res.render('pages/profile/register', {HOSTPATH: HOSTPATH});
 });
 
 app.get('/home', function (req, res) {

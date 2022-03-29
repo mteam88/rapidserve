@@ -2,17 +2,17 @@
 <html>
 
 <head>
-    <%- include('/workspace/rapidserver/views/partials/_head.ejs') %>
+    <%- include(HOSTPATH + '/views/partials/_head.ejs') %>
 </head>
 
 <body id="grad">
-    <%- include('/workspace/rapidserver/views/partials/_sidebar') %>
+    <%- include(HOSTPATH + '/views/partials/_sidebar') %>
         <div id="content" class="content">
-            <%- include('/workspace/rapidserver/views/partials/_topnav', {activeItem: "" }) %>
+            <%- include(HOSTPATH + '/views/partials/_topnav', {activeItem: "" }) %>
                 <h1 class="bubbleheader">Rapid Register</h1>
                 <p>Create an account below</p>
                 <h1>Register</h1>
-                <%- include ('/workspace/rapidserver/views/partials/messages') %>
+                <%- include (HOSTPATH + '/views/partials/messages') %>
                 <form action="/profile/register" method="POST">
                     <div>
                         <label for="name">Name</label>
