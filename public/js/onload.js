@@ -1,12 +1,15 @@
 var menuObject;
+var sectionsObject;
 var menuObjectCode = [];
 var request = new XMLHttpRequest();
 request.open("GET", "/public/assets/menu.json", false);
 request.send(null);
 if (request.status != 200) {
     menuObject = "could not recive menu";
+    sectionsObject = "could not recive sections data";
 } else {
-    menuObject = JSON.parse(request.responseText);
+    menuObject = JSON.parse(request.responseText).menu;
+    sectionsObject = JSON.parse(request.responseText).sections;
 }
 var loopAmountLoad = 0;
 for (let [key, value] of Object.entries(menuObject)) {
