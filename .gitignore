@@ -1,2 +1,3 @@
 credentials.txt
-.envnode_modules
+.env
+node_modules
