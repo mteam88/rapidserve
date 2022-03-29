@@ -1,5 +1,6 @@
 var express = require('express')
 var router = express.Router()
+const nodeMailerMain = require("../config/nodeMailerMain")
 
 HOSTPATH = process.env.HOSTPATH;
 
@@ -8,7 +9,7 @@ router.get('/', function (req, res) {
     res.render('pages/profile/profile',{authStatus: req.isAuthenticated(), user: req.user, HOSTPATH: HOSTPATH});
 });
 
-app.post('/register', function (req, res) {
+router.post('/register', function (req, res) {
     const {name,email, password, password2} = req.body;
     let errors = [];
     //console.log(' Name ' + name+ ' email :' + email+ ' pass:' + password);
@@ -76,7 +77,7 @@ app.post('/register', function (req, res) {
                             .then((value)=>{
                                 newActive.save()
                                 //send confirmation email
-                                //nodeMailerMain();
+                                nodeMailerMain.nodeMailerMain();
                                 req.flash('success_msg','You have now registered and logged in!')
                                 res.redirect('/profile');
                                 });
@@ -91,7 +92,7 @@ app.post('/register', function (req, res) {
     }
 })
 
-app.post('/login', (req, res, next) => {
+router.post('/login', (req, res, next) => {
     passport.authenticate('local',{
         successRedirect : '/profile',
         failureRedirect : '/profile/login',
@@ -99,15 +100,15 @@ app.post('/login', (req, res, next) => {
         })(req,res,next);
 })
 
-app.get('/login', function (req, res) {
+router.get('/login', function (req, res) {
     res.render('pages/profile/login', {HOSTPATH: HOSTPATH});
 });
 
-app.get('/register', function (req, res) {
+router.get('/register', function (req, res) {
     res.render('pages/profile/register', {HOSTPATH: HOSTPATH});
 });
 
-app.get('/confirm/:hash', (req, res) => {
+router.get('/confirm/:hash', (req, res) => {
     var reqhash = req.params.hash;
     Active.findOneAndDelete({ hash: reqhash })
         .then((value) => {

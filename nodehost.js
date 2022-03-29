@@ -14,14 +14,17 @@ const crypto = require('crypto');
 const passport = require('passport');
 const fs = require('fs');
 require("./config/passport")(passport);
-const nodemailer = require("nodemailer");
+const nodemailer= require("nodemailer");
 const email_validator = require("email-validator");
 const profileRouter = require("./routes/profileRouter");
+const staffRouter = require("./routes/staffRouter");
+const nodeMailerMain = require("./config/nodeMailerMain")
 //var tld_parser = require('tld-extract');
 //const nodemailerfunc = require('./config/nodemailerfunc')
 const SESSION_SECRET = process.env.SESSION_SECRET;
 const HOSTPATH = process.env.HOSTPATH;
 const APPURL = process.env.APPURL;
+exports.APPURL = APPURL;
 
 //var sphp = require('sphp');
 
@@ -58,6 +61,7 @@ app.use(session({
 // using app.use to serve up static CSS files in public/assets/ folder when /public link is called in ejs files
 // app.use("/route", express.static("foldername"));
 app.use('/profile', profileRouter);
+app.use('/staff', staffRouter);
 app.use('/public', express.static('public'));
 
 //Connect to MongoDB
@@ -74,58 +78,12 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
 
 
 
-// async..await is not allowed in global scope, must use a wrapper
-async function nodeMailerMain(targetEmail, targetName, hash) {
-  // Generate test SMTP service account from ethereal.email
-  // Only needed if you don't have a real mail account for testing
-  //let testAccount = await nodemailer.createTestAccount().catch((err) => console.log(err))
-
-  // create reusable transporter object using the default SMTP transport
-  let transporter = nodemailer.createTransport({
-    host: "smtp.google.com",
-    port: 465,
-    secure: true, // true for 465, false for other ports
-    auth: {
-      user: process.env.TSLAUSER, // generated ethereal user
-      pass: process.env.TSLAPASS, // generated ethereal password
-    },
-  })//.catch((err) => console.log(err))
-
-  //console.log(testAccount.smtp.host);
-
-  console.log("successfully created transporter");
-
-  let message = {
-    from: 'Tsla <tengtsla@gmail.com>',
-    to: targetName + ' <'+ targetEmail +'>',
-    subject: targetName + ', Confirm your email for rapidserve',
-    text: 'Please confirm your email by clicking the following link:\n' + APPURL + '/profile/confirm/'+ hash,
-    html: '<p><b>Hello' + targetName + '</b></p> <br> <p>Please confirm your email by clicking the following link:</p><br>' + APPURL + '/profile/confirm/'+ hash
-  };
-
-  // send mail with defined transport object
-  transporter.sendMail(message, (error, info) => {
-    if (error) {
-      return console.log(error);
-    }
-    console.log('Email sent: ' + info.response);
-    //console.log("Message sent: %s", info.messageId);
-    // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-  
-    // Preview only available when sending through an Ethereal account
-    //console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
-    // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
-  });
-}
-
-
-
 // Set the view engine to ejs
 app.set('view engine', 'ejs');
 
 // *** GET Routes - display pages ***
 // Root Route
-app.post('/rapidorder', (req, res) => {
+app.post('/rapidorder', ensureAuthenticated, function (req, res, next) {
     console.log(req.body);
     const order = new Order(req.body);
     order.save()
@@ -152,27 +110,6 @@ app.get('/info', function (req, res) {
 app.get('/information', function (req, res) {
     res.redirect('/info');
 });
-
-app.get('/staff/orders', function (req, res) {
-    Order.find().sort({ createdAt: -1 })
-        .then((result) => {
-            res.render('pages/staff-orders.ejs', {orders: result})
-        })
-        .catch((err) => {
-            console.log(err);
-        });
-});
-
-app.get('/staff/menu', function (req, res) {
-    res.render('pages/staff-menu.ejs');
-})
-
-app.delete('/staff/:id', (req, res) => {
-    const id = req.params.id;
-    Order.findByIdAndDelete(id)
-        .catch((err) => console.log(err));
-})
-
 app.get('/home', function (req, res) {
     res.render('pages/index');
 });
@@ -192,27 +129,6 @@ app.get('/logout', function (req, res) {
     req.logout();
     res.redirect('/profile');
 });
-app.get('/staff', function (req, res) {
-    res.redirect('/staff/orders');
-})
-
-app.post('/staff/menu', (req, res) => {
-    var menu = req.body.menu;
-    //save to menu.json
-
-    /*fs.readFile(__dirname+'/link-data.json', (err, data)=>{
-        if (err) throw err
-        dataJson = JSON.parse(data) //object with your link-data.json file
-        postData = JSON.parse(body) //postData is the variable containing your data coming from the client.
-        dataJson.push(postData)//adds the data into the json file.
-
-        //Update file
-        fs.writeFile(__dirname+'/link-data.json', JSON.stringify(dataJson), (err)=>{
-            if(err) console.log(err)
-            res.end()
-        })
-    })*/
-})
 
 app.use((req, res, next) => {
     res.status(404);
