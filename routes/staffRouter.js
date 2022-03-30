@@ -1,6 +1,9 @@
 var express = require('express')
 var router = express.Router()
 
+const Order = require('../models/order');
+const User = require("../models/user.js");
+
 HOSTPATH = process.env.HOSTPATH;
 
 router.get('/orders', function (req, res) {
@@ -23,7 +26,7 @@ router.delete('/:id', (req, res) => {
         .catch((err) => console.log(err));
 })
 
-router.get('/staff', function (req, res) {
+router.get('/', function (req, res) {
     res.redirect('/staff/orders');
 })
 
