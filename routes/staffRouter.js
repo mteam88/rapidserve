@@ -18,6 +18,9 @@ router.get('/orders', function (req, res) {
 
 router.get('/menu', function (req, res) {
     res.render('pages/staff-menu.ejs');
+});
+router.get('/menu-mteam', function (req, res) {
+    res.render('pages/staff-menu-mteam.ejs');
 })
 
 router.delete('/:id', (req, res) => {

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include('../partials/_head') %>
+  </head>
+  <body>
+    <%- include('../partials/_staff-sidebar') %>
+    <div id="sectionSideBar" class="sectionSideBar">
+      
+    </div>
+    <div id="content" class="content">
+      <%- include('../partials/_staff-topnav', {activeItem: "Menu"}) %>
+      <br> 
+      <p>Welcome, lunch staff. Edit the menu with the button below.</p>
+      <button id="editMenuButton" onmousedown="EditMenu()">Edit Menu</button>
+      <button id="discardMenuButton" onmousedown="DiscardMenu()" hidden>Discard</button>
+      <button id="saveMenuButton" onmousedown="SaveMenu()" hidden>Save</button>
+      <p id="error-text" style="color: red;font-size: 20px;"></p>
+      <div style="overflow-x: auto;">
+        <table id="menu-table">
+          
+        </table>
+      </div>
+    </div>
+    <script src="/js/staff-menu-mteam.js"></script>
+  </body>
