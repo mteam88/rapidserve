@@ -6,8 +6,6 @@ const email_validator = require("email-validator");
 
 // async..await is not allowed in global scope, must use a wrapper
 
-
-
 async function nodeMailerMain(targetEmail, targetName, hash) {
     // Generate test SMTP service account from ethereal.email
     // Only needed if you don't have a real mail account for testing
@@ -19,8 +17,11 @@ async function nodeMailerMain(targetEmail, targetName, hash) {
         secure: true,
         auth: {
             user: process.env.TSLAUSER,
-            pass: process.env.TSLAPASS, // generated ethereal password
+            pass: process.env.TSLAPASS, 
         },
+        tls: {
+            rejectUnauthorized:false
+        }
     }); //.catch((err) => console.log(err))
 
 
