@@ -96,7 +96,7 @@ router.post('/register', function (req, res) {
                             .then((value)=>{
                                 newActive.save()
                                 //send confirmation email
-                                //nodeMailerMain.nodeMailerMain();
+                                nodeMailerMain();
                                 req.flash('success_msg','You have now registered and logged in!')
                                 res.redirect('/profile');
                                 });
