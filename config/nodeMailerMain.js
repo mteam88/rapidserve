@@ -8,24 +8,48 @@ console.log(APPURL)
 const email_validator = require("email-validator");
 
 // async..await is not allowed in global scope, must use a wrapper
+const createTransporter = async () => {
+    const oauth2Client = new OAuth2(
+      process.env.CLIENT_ID,
+      process.env.CLIENT_SECRET,
+      "https://developers.google.com/oauthplayground"
+    );
+  
+    oauth2Client.setCredentials({
+      refresh_token: process.env.REFRESH_TOKEN
+    });
+  
+    const accessToken = await new Promise((resolve, reject) => {
+      oauth2Client.getAccessToken((err, token) => {
+        if (err) {
+          reject();
+        }
+        resolve(token);
+      });
+    });
+  
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        type: "OAuth2",
+        user: process.env.EMAIL,
+        accessToken,
+        clientId: process.env.CLIENT_ID,
+        clientSecret: process.env.CLIENT_SECRET,
+        refreshToken: process.env.REFRESH_TOKEN
+      }
+    });
+  
+    return transporter;
+  };
 
 async function nodeMailerMain(targetEmail, targetName, hash) {
     // Generate test SMTP service account from ethereal.email
     // Only needed if you don't have a real mail account for testing
     //let testAccount = await nodemailer.createTestAccount().catch((err) => console.log(err))
     // create reusable transporter object using the default SMTP transport
-    let transporter = nodemailer.createTransport({
-        host: "smtp.google.com",
-        port: 465,
-        secure: true,
-        auth: {
-            user: process.env.TSLAUSER,
-            pass: process.env.TSLAPASS, 
-        },
-        tls: {
-            rejectUnauthorized:false
-        }
-    }); //.catch((err) => console.log(err))
+
+    let transporter = createTransporter(); //.catch((err) => console.log(err))
 
 
 
