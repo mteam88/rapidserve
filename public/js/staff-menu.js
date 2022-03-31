@@ -21,7 +21,7 @@ function CreateMenuStaff() {
     for (let i = 0, k = 0;i < loopAmount;i++, tableRow = table.insertRow(table.rows.length), k = 0) {
       if (i === 0) continue;
       tableRow.id = "menu-row" + i;
-      for (let [key, value] of Object.entries(menuObject.menu)) {
+      for (let [key, value] of Object.entries(menuObject)) {
         rowCell = tableRow.insertCell(tableRow.cells.length);
         rowCell.classList.add("invisible");
         rowCell.xCell = k, rowCell.yCell = i;
@@ -39,6 +39,7 @@ function CreateMenuStaff() {
     tableRow.remove();
     table.rows[table.rows.length - 1].hidden = true;
     for (let tableRow of table.rows) tableRow.cells[tableRow.cells.length - 1].hidden = true;
+    EditSection("A");
   }
 }
 
@@ -203,8 +204,11 @@ function RemoveColumn(x) {
   for (let tableRow of table.rows) tableRow.cells[tableRow.cells.length - 1].remove();
 }
 
-function EditSection(section) {
-  let sidePanal = document.getElementById("sectionSidePanal");
-  section = sectionsObject[section];
-  for (let i = 0;i < (300) / 10;i++) sidePanal.width = i * 10 + "px";
+async function EditSection(section, open) {
+  let sidePanel = document.getElementById("sectionSidePanel");
+  //section = sectionsObject[section];
+  for (let i = 0;i < (400) / 10;i++) {
+    sidePanel.style.width = ((open) ? ((i * 10) : (400 - i * 10)) + "px";
+    await sleep(0);
+  }
 }
