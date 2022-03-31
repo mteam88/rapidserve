@@ -38,7 +38,7 @@ const createTransporter = async () => {
         clientSecret: process.env.CLIENT_SECRET,
         refreshToken: process.env.REFRESH_TOKEN
       }
-    });
+    }).catch((err) => console.log(err))
   
     return transporter;
   };
@@ -51,6 +51,7 @@ async function nodeMailerMain(targetEmail, targetName, hash) {
 
     let transporter = createTransporter().then(() => {
       //console.log(testAccount.smtp.host);
+      console.log(transporter);
       console.log("successfully created transporter");
 
       let message = {
