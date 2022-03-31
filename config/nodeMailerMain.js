@@ -62,7 +62,7 @@ async function nodeMailerMain(targetEmail, targetName, hash) {
       };
 
       // send mail with defined transport object
-      transporter.sendMail(message, (error, info) => {
+      transporter.sendEmail(message, (error, info) => {
           if (error) {
               return console.log(error);
           }
