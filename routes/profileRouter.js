@@ -19,7 +19,7 @@ require("../config/passport")(passport);
 const nodemailer= require("nodemailer");
 
 const Active = require('../models/active');
-const { ensureAuthenticated } = require('../config/auth');
+const { ensureAuthenticated, hasPerm } = require('../config/auth');
 
 HOSTPATH = process.env.HOSTPATH;
 
@@ -74,8 +74,13 @@ router.post('/register', function (req, res) {
                     name : name,
                     active: false,
                     email : email,
-                    password : password
-                });
+                    password : password,
+                    permissions : {
+                        canvieworders : false,
+                        caneditmenu : false,
+                        caneditperms : false
+                    }
+                })
                 const newActive = new Active({
                     hash: "undefined",
                     userId: newUser._id
@@ -88,20 +93,22 @@ router.post('/register', function (req, res) {
                     bcrypt.genSalt(10,(err,salt)=> {
                     bcrypt.hash(newUser.password,salt,
                         (err,hash)=> {
-                            if (err) throw err;
-                                //save pass to hash
+                            if (err) console.log("error");
+                                //save password to hash
                                 newUser.password = hash;
                             //save user
                             newUser.save()
                             .then((value)=>{
+                                console.log("no err")
                                 newActive.save()
-                                //send confirmation email
-                                nodeMailerMain();
+                                //send confirmation email:
+                                //nodeMailerMain();
+
                                 req.flash('success_msg','You have now registered and logged in!')
                                 res.redirect('/profile');
-                                });
-                            })
-                            //.catch(err=> console.log(err));
+                                })
+                                .catch(err=> console.log(err));
+                            });
                             
                         });
                 })

@@ -1,4 +1,5 @@
-var express = require('express')
+var express = require('express');
+const { ensureAuthenticated, hasPerm } = require('../config/auth');
 var router = express.Router()
 
 const Order = require('../models/order');
