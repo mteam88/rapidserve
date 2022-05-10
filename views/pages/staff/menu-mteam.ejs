@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <%- include('../partials/_head') %>
+    <%- include(HOSTPATH + '/views/partials/_head') %>
   </head>
   <body>
-    <%- include('../partials/_staff-sidebar') %>
+    <%- include(HOSTPATH + '/views/partials/_staff-sidebar') %>
     <div id="sectionSideBar" class="sectionSideBar">
       
     </div>
     <div id="content" class="content">
-      <%- include('../partials/_staff-topnav', {activeItem: "Menu"}) %>
+      <%- include(HOSTPATH + '/views/partials/_staff-topnav', {activeItem: "Menu"}) %>
       <br> 
       <p>Welcome, lunch staff. Edit the menu with the button below.</p>
       <button id="editMenuButton" onmousedown="EditMenu()">Edit Menu</button>

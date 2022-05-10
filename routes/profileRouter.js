@@ -104,7 +104,7 @@ router.post('/register', function (req, res) {
                                 //send confirmation email:
                                 //nodeMailerMain();
 
-                                req.flash('success_msg','You have now registered and logged in!')
+                                req.flash('success_msg','You have now registered and logged in!') //maybe not working
                                 res.redirect('/profile');
                                 })
                                 .catch(err=> console.log(err));

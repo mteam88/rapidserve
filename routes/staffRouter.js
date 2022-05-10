@@ -7,34 +7,31 @@ const User = require("../models/user.js");
 
 HOSTPATH = process.env.HOSTPATH;
 
-router.get('/orders', function (req, res) {
+router.get('/orders', ensureAuthenticated, hasPerm("canvieworders"), function (req, res) {
     Order.find().sort({ createdAt: -1 })
         .then((result) => {
-            res.render('pages/staff-orders.ejs', { orders: result })
+            res.render('pages/staff/orders.ejs', { orders: result, HOSTPATH: HOSTPATH })
         })
         .catch((err) => {
             console.log(err);
         });
 });
 
-router.get('/menu', function (req, res) {
-    res.render('pages/staff-menu.ejs');
+router.get('/menu', ensureAuthenticated, hasPerm("canvieworders"), function (req, res) {
+    res.render('pages/staff/menu.ejs', { HOSTPATH: HOSTPATH });
 });
-router.get('/menu-mteam', function (req, res) {
-    res.render('pages/staff-menu-mteam.ejs');
-})
 
-router.delete('/:id', (req, res) => {
+router.delete('/:id', ensureAuthenticated, hasPerm("canvieworders"), (req, res) => {
     const id = req.params.id;
     Order.findByIdAndDelete(id)
         .catch((err) => console.log(err));
 })
 
-router.get('/', function (req, res) {
+router.get('/', ensureAuthenticated, hasPerm("canvieworders"), function (req, res) {
     res.redirect('/staff/orders');
 })
 
-router.post('/menu', (req, res) => {
+router.post('/menu', ensureAuthenticated, hasPerm("caneditmenu"), (req, res) => {
     var menu = req.body.menu;
     //save to menu.json
 

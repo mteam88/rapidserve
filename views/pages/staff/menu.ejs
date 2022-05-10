@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <%- include(HOSTPATH + '/views/partials/_head') %>
+  </head>
+  <body>
+    <%- include(HOSTPATH + '/views/partials/_staff-sidebar') %>
+    <div id="sectionSidePanel" class="sectionSidePanel">
+      
+    </div>
+    <div id="content" class="content">
+      <%- include(HOSTPATH + '/views/partials/_staff-topnav', {activeItem: "Menu"}) %>
+      <br>
+      <div id="schools" class="schools">
+        <span id="schoolLeftArrow" class="school-arrow selectable" style="text-align: left;left: 1%;" onmouseenter="this.innerHTML = '&#9664;'" onmouseleave="this.innerHTML = '&#9665;'" onclick="if (schoolPage == 0) schoolPage = schools.length - 1; else schoolPage--;schoolList.innerHTML = '<span>' + schools[schoolPage] + '</span>';">&#9665;</span>
+        <span id="schoolList" class="school-list no-select"></span>
+        <span id="schoolRightArrow" class="school-arrow selectable" style="text-align: right;right: 1%" onmouseenter="this.innerHTML = '&#9654;'" onmouseleave="this.innerHTML = '&#9655;'" onclick="if (schoolPage == schools.length - 1) schoolPage = 0; else schoolPage++;schoolList.innerHTML = '<span>' + schools[schoolPage] + '</span>';">&#9655</span>
+      </div>
+      <p>Welcome, lunch staff. Edit the menu with the button below.</p>
+      <button id="editMenuButton" onmousedown="EditMenu()">Edit Menu</button>
+      <button id="discardMenuButton" onmousedown="DiscardMenu()" hidden>Discard</button>
+      <button id="saveMenuButton" onmousedown="SaveMenu()" hidden>Save</button>
+      <p id="error-text" style="color: red;font-size: 20px;"></p>
+      <div style="overflow-x: auto;">
+        <table id="menu-table">
+          
+        </table>
+      </div>
+    </div>
+    <script src="/js/staff-menu.js"></script>
+  </body>

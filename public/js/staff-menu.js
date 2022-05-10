@@ -4,7 +4,7 @@ var table = document.getElementById("menu-table"), schoolList = document.getElem
 var menuCheckStaff = window.setInterval(CreateMenuStaff, 100);
   
 function CreateMenuStaff() {
-  schoolList.innerHTML = schools[schoolPage];
+  schoolList.innerHTML = "<span>" + schools[schoolPage] + "</span>";
   table.innerHTML = "";
   if (menuObject) {
     clearInterval(menuCheckStaff);
@@ -127,7 +127,7 @@ function AddCell(x, y) {
     newRow.id = "menu-row" + y;
     let loopAmount = table.rows[0].cells.length - 1, rowCell = newRow.insertCell(0);
     for (let i = 0, addRowCell = addRowCells[0];i < loopAmount;i++, addRowCell = addRowCells[i], rowCell = newRow.insertCell(i)) {
-      if (!addRowCell) addRowCell = "";
+      if (!addRowCell) addRowCell.innerHTML = "";
       rowCell.xCell = i, rowCell.yCell = y;
       if (i === x) {
         rowCell.classList.add("staffMenuRowCell");

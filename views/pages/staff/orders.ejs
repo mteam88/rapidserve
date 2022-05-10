@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <%- include('../partials/_head') %>
+    <%- include(HOSTPATH + '/views/partials/_head') %>
   </head>
   <body>
-    <%- include('../partials/_staff-sidebar') %>
+    <%- include(HOSTPATH + '/views/partials/_staff-sidebar') %>
     <div id="content" class="content">
-      <%- include('../partials/_staff-topnav', {activeItem: "Orders"}) %>
+      <%- include(HOSTPATH + '/views/partials/_staff-topnav', {activeItem: "Orders"}) %>
       <br> 
       <p>Welcome, lunch staff. Select the delete button next to each order to remove it from the database. It may take a few seconds to go into effect.</p>
       <h1>Orders:</h1>
