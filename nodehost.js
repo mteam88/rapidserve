@@ -30,7 +30,7 @@ exports.APPURL = APPURL;
 
 const ejs = require('ejs');
 const Active = require('./models/active');
-const { ensureAuthenticated } = require('./config/auth');
+const { ensureAuthenticated , hasPerm} = require('./config/auth');
 // Initialise Express
 var app = express();
 //app.use(sphp.express('public/'));

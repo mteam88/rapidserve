@@ -1,7 +1,10 @@
-var table = document.getElementById("menu-table");
+var schools = ["Wilde Lake MS", "Clemens Crossing ES", "Atholton HS", "Wilde Lake HS", "Running Brook ES", "Bryant Woods ES", "Atholton ES", "Hammond HS", "Hammond MS"];
+var schoolPage = 0;
+var table = document.getElementById("menu-table"), schoolList = document.getElementById("schoolList");
 var menuCheckStaff = window.setInterval(CreateMenuStaff, 100);
   
 function CreateMenuStaff() {
+  schoolList.innerHTML = schools[schoolPage];
   table.innerHTML = "";
   if (menuObject) {
     clearInterval(menuCheckStaff);
@@ -208,7 +211,7 @@ async function EditSection(section, open) {
   let sidePanel = document.getElementById("sectionSidePanel");
   //section = sectionsObject[section];
   for (let i = 0;i < (400) / 10;i++) {
-    sidePanel.style.width = ((open) ? ((i * 10) : (400 - i * 10)) + "px";
+    sidePanel.style.width = (open) ? (i * 10) : (400 - i * 10) + "px";
     await sleep(0);
   }
 }
