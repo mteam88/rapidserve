@@ -1,25 +1,31 @@
 const mongoose = require('mongoose');
 const UserSchema  = new mongoose.Schema({
-  name :{
+  name: {
       type  : String,
       required : true
   } ,
-  active :{
+  active: {
     type: Boolean,
     default: false
   },
-  email :{
+  email: {
     type  : String,
     required : true
-} ,
-password :{
+  },
+  password: {
     type  : String,
     required : true
-} ,
-date :{
+  },
+  date: {
     type : Date,
     default : Date.now
-}
+  },
+  permissions: {
+    required : true,
+    canvieworders : {type : Boolean, required : true},
+    caneditmenu : {type : Boolean, required : true},
+    caneditperms : {type : Boolean, required : true}
+  }
 });
 const User= mongoose.model('User',UserSchema);
 
