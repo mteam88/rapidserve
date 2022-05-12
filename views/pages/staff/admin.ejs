@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <%- include(HOSTPATH + '/views/partials/_head' ) %>
+</head>
+
+<body>
+    <%- include(HOSTPATH + '/views/partials/_staff-sidebar' ) %>
+        <div id="sectionSidePanel" class="sectionSidePanel">
+
+        </div>
+        <div id="content" class="content">
+            <%- include(HOSTPATH + '/views/partials/_staff-topnav' , {activeItem: "none" }) %>
+                <br>
+                
+        </div>
+        <script src="/js/staff-menu.js"></script>
+</body>

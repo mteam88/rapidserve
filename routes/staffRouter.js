@@ -31,6 +31,10 @@ router.get('/', ensureAuthenticated, hasPerm("canvieworders"), function (req, re
     res.redirect('/staff/orders');
 })
 
+router.get('/admin', ensureAuthenticated, hasPerm("caneditperms"), function (req, res) {
+    res.render('pages/staff/admin', {HOSTPATH: HOSTPATH});
+})
+
 router.post('/menu', ensureAuthenticated, hasPerm("caneditmenu"), (req, res) => {
     var menu = req.body.menu;
     //save to menu.json
