@@ -4,7 +4,7 @@
 require('dotenv').config({path: __dirname + '/.env'});
 var express = require('express');
 const morgan = require('morgan');
-const mongoose = require('mongoose');
+const mongoose = require('mongoose').set('debug', true);
 const Order = require('./models/order');
 const User = require("./models/user.js");
 const bcrypt = require('bcrypt');

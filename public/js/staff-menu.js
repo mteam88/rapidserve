@@ -1,4 +1,4 @@
-var schools = ["Wilde Lake Middle School", "Clemens Crossing ES", "Atholton HS", "Wilde Lake HS", "Running Brook ES", "Bryant Woods ES", "Atholton ES", "Hammond HS", "Hammond MS"];
+var schools = ["Wilde Lake Middle Schools", "Clemens Crossing ES", "Atholton HS", "Wilde Lake HS", "Running Brook ES", "Bryant Woods ES", "Atholton ES", "Hammond HS", "Hammond MS"];
 var schoolPage = 0;
 var table = document.getElementById("menu-table"), schoolList = document.getElementById("schoolList");
 var menuCheckStaff = window.setInterval(CreateMenuStaff, 100);
@@ -9,13 +9,12 @@ function CreateMenuStaff() {
   schoolList.innerHTML = "<span>" + schools[schoolPage] + "</span>";
   table.innerHTML = "";
   if (menuObject) {
-    schoolMenuObject = menuObject[schools[schoolPage]];
-    if (!schoolMenuObject) {
-      schoolMenuObject = {};
-      schoolSectionsObject = {};
+    let schoolObject = menuObject[schools[schoolPage]];
+    if (!schoolObject) {
+      schoolObject = {menu:{},sections:{}};
     }
-    schoolMenuObject = menuObject[schools[schoolPage]].menu;
-    schoolSectionsObject = menuObject[schools[schoolPage]].sections;
+    schoolMenuObject = schoolObject.menu;
+    schoolSectionsObject = schoolObject.sections;
     clearInterval(menuCheckStaff);
     let k = loopAmount = 0, tableRow = table.insertRow(table.rows.length);
     tableRow.id = "menu-row0";
@@ -48,7 +47,7 @@ function CreateMenuStaff() {
       rowCell.classList.add("invisible");
       rowCell.xCell = tableRow.length, rowCell.yCell = i;
     }
-    tableRow.remove();
+    if (Object.entries(schoolMenuObject).length > 0) tableRow.remove();
     table.rows[table.rows.length - 1].hidden = true;
     for (let tableRow of table.rows) tableRow.cells[tableRow.cells.length - 1].hidden = true;
     EditSection("A");
@@ -74,6 +73,7 @@ function EditMenu() {
   for (let rowCell of rowCells) rowCell.innerHTML = "<input type='text' placeholder='Input order' value='" + rowCell.innerHTML.replace('<span style="color: red"><i>empty</i></span>',"") + "'/><span onclick='RemoveCell(this.parentElement.xCell, this.parentElement.yCell);' class='removeButton'>Remove</span>";
   for (let headerCell of headerCells) headerCell.innerHTML = "<input type='text' placeholder='Input section' value='" + headerCell.innerHTML.replace('<span style="color: red"><i>empty</i></span>',"") + "'/><span onclick='RemoveColumn(this.parentElement.xCell);' class='removeButton'>Remove</span>";
   table.rows[table.rows.length - 1].hidden = false;
+  alert(table.rows.length);
   for (let tableRow of table.rows) tableRow.cells[tableRow.cells.length - 1].hidden = false;
 }
 
@@ -86,9 +86,13 @@ function SaveMenu() {
   let sectionNamesTaken = [];
   let headerCells = document.getElementsByClassName("staffMenuHeaderCell");
   for (let headerCell of headerCells) {
-    if (headerCell.firstChild.value.length === 0) document.getElementById("error-text").innerHTML = "You have a section with no name (Section: " + (Array.prototype.slice.call(headerCells).indexOf(headerCell) + 1) + ")";
-    else if (sectionNamesTaken.includes(headerCell.firstChild.value.toLowerCase().replace(/ /g,"_"))) document.getElementById("error-text").innerHTML = "You have duplicate section names (" + headerCell.firstChild.value.toLowerCase() + ")";
-    else sectionNamesTaken.push(headerCell.firstChild.value.toLowerCase().replace(/ /g,"_"));
+    if (headerCell.firstChild.value.length === 0) {
+      document.getElementById("error-text").innerHTML = "You have a section with no name (Section: " + (Array.prototype.slice.call(headerCells).indexOf(headerCell) + 1) + ")";
+      return;
+    } else if (sectionNamesTaken.includes(headerCell.firstChild.value.toLowerCase().replace(/ /g,"_"))) {
+      document.getElementById("error-text").innerHTML = "You have duplicate section names (" + headerCell.firstChild.value.toLowerCase() + ")";
+      return;
+    } else sectionNamesTaken.push(headerCell.firstChild.value.toLowerCase().replace(/ /g,"_"));
   }
   document.getElementById("editMenuButton").hidden = false, document.getElementById("saveMenuButton").hidden = document.getElementById("discardMenuButton").hidden = true;
   document.getElementById("error-text").innerHTML = "";
@@ -107,16 +111,16 @@ function SaveMenu() {
   headerCells = document.getElementsByClassName("staffMenuHeaderCell");
   for (let headerCell of headerCells) {
     headerCell.innerHTML = headerCell.firstChild.value;
-    menuObject[schoolList[schoolPage]][headerCell.innerHTML] = [];
+    schoolMenuObject[headerCell.innerHTML] = [];
   }
-  let rowCells = document.getElementsByClassName("staffMenuRowCell"), cellOffset = 0, rowCell;
-  for (let i in rowCells) {
+  let rowCells = document.getElementsByClassName("staffMenuRowCell"), loopAmount = rowCells.length, cellOffset = 0, rowCell;
+  for (let i = 0;i < loopAmount - cellOffset;i++) {
     if (!rowCells[Number(i) + cellOffset]) continue;
     rowCell = rowCells[Number(i) + cellOffset], rowCell.innerHTML = rowCell.firstChild.value;
     if (rowCell.innerHTML.length === 0) {
       RemoveCell(rowCell.xCell, rowCell.yCell);
       cellOffset--;
-    } else menuObject[schoolList[schoolPage]][table.rows[0].cells[rowCell.xCell].innerHTML].push(rowCell.innerHTML.replace(/ /g,"_"));
+    } else schoolMenuObject[table.rows[0].cells[rowCell.xCell].innerHTML].push(rowCell.innerHTML.replace(/ /g,"_"));
   }
   table.rows[table.rows.length - 1].hidden = true;
   for (let tableRow of table.rows) tableRow.cells[tableRow.cells.length - 1].hidden = true;
@@ -136,7 +140,7 @@ function AddCell(x, y) {
     newRow.id = "menu-row" + y;
     let loopAmount = table.rows[0].cells.length - 1, rowCell = newRow.insertCell(0);
     for (let i = 0, addRowCell = addRowCells[0];i < loopAmount;i++, addRowCell = addRowCells[i], rowCell = newRow.insertCell(i)) {
-      if (!addRowCell) addRowCell.innerHTML = "";
+      if (!addRowCell) continue;
       rowCell.xCell = i, rowCell.yCell = y;
       if (i === x) {
         rowCell.classList.add("staffMenuRowCell");
@@ -157,7 +161,8 @@ function AddCell(x, y) {
     }
     rowCell.classList.add("invisible");
     rowCell.xCell = newRow.length - 1, rowCell.yCell = y;
-    table.rows[y + 1].cells[table.rows[y + 1].cells.length - 1].yCell++;
+    let thisCell = table.rows[y + 1].cells[table.rows[y + 1].cells.length - 1];
+    if (thisCell.xCell != x && thisCell.yCell != y + 1) thisCell.yCell++;
     let addRowCellsTemp = document.getElementsByClassName("staffMenuAddRowCellTemp"), offset = 0;
     for (let i in addRowCellsTemp) {
       if (!addRowCellsTemp[0 + offset]) {
@@ -181,7 +186,7 @@ function AddCell(x, y) {
 function AddColumn() {
   for (let tableRow of table.rows) {
     let newCell = tableRow.insertCell(tableRow.cells.length - 1);
-    newCell.xCell = tableRow.cells.length - 2, newCell.yCell = Array.prototype.slice.call(table.rows).indexOf(tableRow);
+    newCell.xCell = Array.prototype.slice.call(tableRow.cells).indexOf(newCell), newCell.yCell = Array.prototype.slice.call(table.rows).indexOf(tableRow);
     switch (Array.prototype.slice.call(table.rows).indexOf(tableRow)) {
       case 0:
         newCell.classList.add("staffMenuHeaderCell");
@@ -199,7 +204,8 @@ function AddColumn() {
 }
 
 function RemoveCell(x, y) {
-  let loopAmount = table.rows.length - y - 1;
+  let loopAmount = table.rows.length;
+  for (let i = 0;i < loopAmount;i++) if (table.rows[i].cells[x - 1].classList.contains("invisible")) loopAmount = i - y - 1;
   for (let i = 0, oldCell = table.rows[y].cells[x], newCell = table.rows[y + 1].cells[x];i < loopAmount;i++, oldCell = table.rows[y + i].cells[x], newCell = table.rows[y + i + 1].cells[x]) oldCell.innerHTML = newCell.innerHTML, oldCell.onmousedown = newCell.onmousedown, oldCell.classList = newCell.classList;
   let oldCell = table.rows[y + loopAmount].cells[x];
   oldCell.classList.remove("staffMenuAddRowCell","selectable");

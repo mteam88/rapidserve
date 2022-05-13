@@ -7,13 +7,35 @@
 
 <body>
     <%- include(HOSTPATH + '/views/partials/_staff-sidebar' ) %>
-        <div id="sectionSidePanel" class="sectionSidePanel">
+        <div id="sectionSidePanel" class="sectionSidePanel"></div>
+        <script>
+            function editperms(pcaller) {
+                var idtoedit = pcaller.dataset.userid;
+                var newcanvieworders = prompt("canvieworders (true or false): ");
+                if (newcanvieworders != "true") newcanvieworders = false;  
+                var newcaneditmenu = prompt("caneditmenu (true or false): ");
+                if (newcaneditmenu != "true") newcaneditmenu = false;
+                var newcaneditperms = prompt("caneditperms (true or false): ");
+                if (newcaneditperms != "true") newcaneditperms = false;
 
-        </div>
+                var endpoint = `/staff/admin?userid=${idtoedit}&caneditmenu=${newcaneditmenu}&canvieworders=${newcanvieworders}&caneditperms=${newcaneditperms}`;
+                fetch(endpoint, {
+                    method: 'POST'
+                })
+                    .then((result) => {
+                        alert(result)
+                    })
+                    .catch((err) => {
+                        console.warn(err);
+                    })
+            }
+        </script>
         <div id="content" class="content">
             <%- include(HOSTPATH + '/views/partials/_staff-topnav' , {activeItem: "none" }) %>
-                <br>
-                
+            <br>
+            <% for (var i = 0; i < users.length ; i++) { %>
+                <p data-userid="<%= users[i].id %>" onclick="editperms(this)"> <%= users[i].email %> </p>
+            <% } %>
         </div>
         <script src="/js/staff-menu.js"></script>
 </body>

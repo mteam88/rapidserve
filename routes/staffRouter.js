@@ -32,7 +32,24 @@ router.get('/', ensureAuthenticated, hasPerm("canvieworders"), function (req, re
 })
 
 router.get('/admin', ensureAuthenticated, hasPerm("caneditperms"), function (req, res) {
-    res.render('pages/staff/admin', {HOSTPATH: HOSTPATH});
+    User.find({}, function(err, users) {
+        res.render('pages/staff/admin', {HOSTPATH: HOSTPATH, users: users});
+      });
+})
+
+router.post('/admin', ensureAuthenticated, hasPerm("caneditperms"), function (req, res) {
+    console.log(req.query.userid)
+    User.findById(req.query.userid, function (err, doc) {
+        console.log(doc)
+        delete req.query.userid;
+        doc.permissions = req.query;
+        doc.save(function(err) {
+            if (err) console.warn(err);
+            else {
+                res.send("Success")
+            }
+        })
+    })
 })
 
 router.post('/menu', ensureAuthenticated, hasPerm("caneditmenu"), (req, res) => {
