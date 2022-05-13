@@ -23,7 +23,7 @@
                     method: 'POST'
                 })
                     .then((result) => {
-                        alert(result)
+                        alert("Success")
                     })
                     .catch((err) => {
                         console.warn(err);
@@ -33,9 +33,15 @@
         <div id="content" class="content">
             <%- include(HOSTPATH + '/views/partials/_staff-topnav' , {activeItem: "none" }) %>
             <br>
+            <h1>Admin Permission Editing</h1>
+            <p>Click on a user to edit their permssions. Search for a specific email with Ctrl/Cmd+F</p>
             <% for (var i = 0; i < users.length ; i++) { %>
-                <p data-userid="<%= users[i].id %>" onclick="editperms(this)"> <%= users[i].email %> <%= users[i].permissions %> </p>
+                <p class="bubble" data-userid="<%= users[i].id %>" onclick="editperms(this)">
+                     user email: <%= users[i].email %> <br>
+                     canvieworders: <%= users[i].permissions.canvieworders %> <br>
+                     caneditmenu: <%= users[i].permissions.caneditmenu %> <br>
+                     caneditperms: <%= users[i].permissions.caneditperms %>  <br> <br>
+                </p>
             <% } %>
         </div>
-        <script src="/js/staff-menu.js"></script>
 </body>
