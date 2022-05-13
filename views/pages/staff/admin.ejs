@@ -34,7 +34,7 @@
             <%- include(HOSTPATH + '/views/partials/_staff-topnav' , {activeItem: "none" }) %>
             <br>
             <% for (var i = 0; i < users.length ; i++) { %>
-                <p data-userid="<%= users[i].id %>" onclick="editperms(this)"> <%= users[i].email %> </p>
+                <p data-userid="<%= users[i].id %>" onclick="editperms(this)"> <%= users[i].email %> <%= users[i].permissions %> </p>
             <% } %>
         </div>
         <script src="/js/staff-menu.js"></script>
