@@ -14,6 +14,15 @@
         <% if (user.active === false) { %>
           <h3> Your account is not yet activated. You will not be able to use resources until you confirm your email.</h3>
         <% } %>
+        <% if (user.permissions.canvieworders == true) { %>
+          <button onclick="window.location.href='/staff/orders';">View Orders</button>
+        <% } %>
+        <% if (user.permissions.caneditmenu == true) { %>
+          <button onclick="window.location.href='/staff/menu';">Edit School Menu</button>
+        <% } %>
+        <% if (user.permissions.canvieworders == true) { %>
+          <button onclick="window.location.href='/staff/orders';">View Orders</button>
+        <% } %>
         <button onclick="window.location.href='/logout';">Logout</button>
         <% } else {%>
             <h3> You are not logged in. </h3>
