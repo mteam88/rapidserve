@@ -25,7 +25,8 @@ HOSTPATH = process.env.HOSTPATH;
 
 router.get('/', function (req, res) {
     //console.log(req.isAuthenticated());
-    res.render('pages/profile/profile',{authStatus: req.isAuthenticated(), user: req.user, HOSTPATH: HOSTPATH});
+    res.send(process.cwd());
+    //res.render('pages/profile/profile',{authStatus: req.isAuthenticated(), user: req.user, HOSTPATH: HOSTPATH});
 });
 
 router.post('/register', function (req, res) {
