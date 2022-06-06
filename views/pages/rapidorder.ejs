@@ -25,105 +25,94 @@
         </p>
       </div>
 
-      <div id="orderstuff">
-        <div id="table-div" style="overflow-x: auto;">
-          <table id="ordertable">
-          
-          </table>
-        </div>
-        <button id='submitButton' style="float: right;">Place Order</button>
-      </div>
-      <image src="/public/assets/Rlogo.png" id="bottomof"></image>
-    </div>
-    <script src="/public/js/sidebar.js"></script>
-    <script>
-      var urlParameters = new URLSearchParams(window.location.search);
-      var outputBinary = [];
-
-      var menuCheck = window.setInterval(CreateMenu, 100);
-      const submitButton = document.getElementById('submitButton');
-      submitButton.addEventListener('click', (e) => {
-        const endpoint = 'rapidorder/';
+      <div id=orderstuff>
+        <!-- <form action="/rapidorder" method="POST">
+          <label for="body">orderBody</label>
+          <textarea id="body" name="orderBody" required></textarea>
+          <button>Submit</button>
+        </form> -->
         
-        output = outputBinary.join('');
-        var orderBody = output;
-        var formatted = [];
-        var encodedKey = encodeURIComponent('orderBody');
-        var encodedValue = encodeURIComponent(output);
-        formatted.push(encodedKey + "=" + encodedValue);
-        //alert(formatted);
-        fetch(endpoint, {
-          method: 'POST',
-          headers: {
-            //'Content-Type': 'application/json'
-            'Accept': 'application/json',
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
-          body: formatted
-        })
-        .then(response => response.json())
-            .then((data) => {
-              if (data.status == 'success') {
-                sessionStorage.removeItem("orderPreset");
-                plcordr();
-              }
-        })
-        .catch((err) => {alert(err)})
-      });
+        
+       <table id="ordertable">
+          <tr id="headerrow">
+            <th>Main Course</th>
+            <th>Side</th>
+            <th>Drink</th>
+          </tr>
+          <tr id="menu-row0" class="selectable">
+            <td onclick="changebg(this)">Chicken Sandwich</td>
+            <td onclick="changebg(this)">Apples</td>
+            <td onclick="changebg(this)">Milk</td>
+          </tr>
+          <tr id="menu-row1" class="selectable">
+            <td onclick="changebg(this)">Cheeseburger</td>
+            <td onclick="changebg(this)">Lettuce</td>
+            <td onclick="changebg(this)">Apple Juice</td>
+          </tr>
+        </table>
+        <button id='submitButton' style="float: right;">Place Order</button>
+      </div> 
+      <script>
+        const submitButton = document.getElementById('submitButton');
 
-      function CreateMenu() {
-        if (menuObject) {
-          clearInterval(menuCheck);
-          var orderPreset = sessionStorage.getItem("orderPreset");
-          if (!orderPreset) {
-            orderPreset = "0";
-          }
-          if (urlParameters.has("order")) {
-            orderPreset = urlParameters.get("order");
-          }
-          orderPreset = orderPreset.split("");
-          outputBinary = orderPreset;
-          var loopAmount = 0;
-          var tableRow = document.createElement("tr");
-          tableRow.id = "menu-row0";
-          for (var [key, value] of Object.entries(menuObject)) {
-            if (value.length + 1 > loopAmount) {
-              loopAmount = value.length + 1;
-            }
-            var rowCell = document.createElement("th");
-            rowCell.classList.add("menuHeader");
-            rowCell.innerHTML = key.replace(/_/g," ");
-            tableRow.appendChild(rowCell);
-          }
-          document.getElementById("ordertable").appendChild(tableRow);
+        submitButton.addEventListener('click', (e) => {
+          const endpoint = '/rapidorder/';
+          var orderBody = {orderBody: "Blah!!!"};
+
+          var table = document.getElementById("ordertable").rows;
+          var boxes = [];
+
+          var loopAmount = table.length;
           for (var i = 0;i < loopAmount;i++) {
-            if (i == 0) {
-              continue;
-            }
-            var tableRow = document.createElement("tr");
-            tableRow.id = "menu-row" + (1 + i);
-            var k = 0;
-            for (var [key, value] of Object.entries(menuObject)) {
-              var rowCell = document.createElement("td");
-              if (value.length >= i) {
-                rowCell.classList.add("selectable");
-                rowCell.classList.add("rowCell");
-                rowCell.innerHTML = value[i - 1];
-                if (orderPreset[(i - 1) * Object.keys(menuObject).length + k] == 1) {
-                  rowCell.style.backgroundColor = "red";
-                }
-                rowCell.number = (i - 1) * Object.keys(menuObject).length + k;
-                rowCell.onclick = function() {changebg(this);outputBinary[this.number] = (this.style.backgroundColor == "red") ? 1 : 0;sessionStorage.setItem("orderPreset", outputBinary.join(""));};
-                tableRow.appendChild(rowCell);
+            if (table[i].id.includes("menu-row")) {
+              var loopAmount2 = table[i].cells.length;
+              for (var k = 0;k < loopAmount2;k++) {
+                boxes.push(table[i].cells[k]);
               }
-              tableRow.appendChild(rowCell);
-              k += 1;
             }
-            document.getElementById("ordertable").appendChild(tableRow);
           }
-          sessionStorage.setItem("orderPreset", outputBinary.join(""));
-        }
-      }
-    </script>
+          
+          var output = [];//CEDRIC starts here
+          var loopAmount = boxes.length;
+          for (var i = 0;i < loopAmount;i++) {
+            var BG = (boxes[i].style.backgroundColor == "red") ? 1 : 0;
+            //console.log(j);
+            output.push(BG);
+          } 
+          
+          console.log(output);
+          output = output.join('');
+          //alert(output);
+          var orderBody = output;
+          //CEDRIC this is stuff i did. feel free to comment it out.
+
+          var formatted = [];
+          var encodedKey = encodeURIComponent('orderBody');
+          var encodedValue = encodeURIComponent(output);
+          formatted.push(encodedKey + "=" + encodedValue);
+          //alert(formatted);
+
+          fetch(endpoint, {
+            method: 'POST',
+            headers: {
+              //'Content-Type': 'application/json'
+              'Accept': 'application/json',
+              'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: formatted
+          })
+          .then(response => response.json())
+              .then((data) => {
+                //alert(data);
+                //alert(data.status)
+                if (data.status == 'success') {
+                  //alert("success!!!");
+                  plcordr();
+                }
+          })
+          .catch((err) => {alert(err)})
+        });
+      </script>
+      <image src="/public/assets/Rlogo.png" id="bottomof"></image>
   </body>
 </html>
