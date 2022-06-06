@@ -100,7 +100,7 @@ function formatOrders() {
         orderDiv.appendChild(button);
         var order = document.createElement("p");
         order.innerHTML = orderFormatted.replace("<br>","");
-        order.hidden = true;
+        order.hidden = false;
         orderDiv.appendChild(order);
 
         document.getElementById("formattedOrders").appendChild(orderDiv);
