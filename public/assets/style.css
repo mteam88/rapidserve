@@ -2,6 +2,14 @@ body {
     font-family: arial, sans-serif;
 }
 
+p {
+    font-size: 30px;
+}
+
+li {
+    font-size: 30px;
+}
+
 /* Add a black background color to the top navigation */
 .topnav {
     background-color: rgb(85, 85, 85);
@@ -50,9 +58,9 @@ body {
     font-size: 17px;
 }
 button {
-    height: 50px;
-    width: 75px;
-    font-size: 30;
+    height: 100px;
+    width: 150px;
+    font-size: 25px;
     background-color: red;
     border-radius: 20px;
     padding: 2px;
