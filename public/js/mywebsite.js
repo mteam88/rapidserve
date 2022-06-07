@@ -69,7 +69,7 @@ function sleep(ms) {
 }
 
 function formatOrders() {
-    var orderNumber = 1;
+
     var orderElems = document.getElementsByClassName("order-unformatted");
     var orderElem;
     var loopAmount = orderElems.length;
@@ -88,8 +88,8 @@ function formatOrders() {
         orderDiv.classList.add("selectable");
         orderDiv.id = "staff-order" + i;
         var orderHeader = document.createElement("h2");
-        orderHeader.innerHTML = "Order " + orderNumber + "&#9660;";
-        orderHeader.orderNum = orderNumber;
+        orderHeader.innerHTML = "Order " + orderElemObject.underscoreid.slice(-7, -1) + "&#9660;";
+        orderHeader.orderNum = orderElemObject.underscoreid;
         orderHeader.onclick = function(event) {var thisOrderDiv = event.target.parentElement;thisOrderDiv.lastChild.hidden = !thisOrderDiv.lastChild.hidden;var orderNum = event.target.orderNum;event.target.innerHTML = "Order " + orderNum + ((thisOrderDiv.lastChild.hidden) ? "&#9660;" : "&#9650;");};
         orderDiv.appendChild(orderHeader);
         var button = document.createElement("p");
@@ -104,7 +104,7 @@ function formatOrders() {
         orderDiv.appendChild(order);
 
         document.getElementById("formattedOrders").appendChild(orderDiv);
-        orderNumber += 1;
+
     }
 }
 
